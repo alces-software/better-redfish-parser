@@ -27,9 +27,47 @@ const assetSchema = new mongoose.Schema({
       type: String,
       default: ''
    },
-   createdAt: {
-      type: Date,
-      default: Date.now
+   imported_json: {
+      type: String,
+      default: ''
+   },
+
+   // Extracted hardware data
+   cores: {
+      type: mongoose.Schema.Types.Mixed,
+      default: 'Not found'
+   },
+   processor_name: {
+      type: String,
+      default: 'Not found'
+   },
+   processor_count: {
+      type: mongoose.Schema.Types.Mixed,
+      default: 'Not found'
+   },
+   memory: {
+      type: String,
+      default: 'Not Found'
+   },
+   model: {
+      type: String,
+      default: 'Not Found'
+   },
+   serial_number: {
+      type: String,
+      default: 'Not Found'
+   },
+   manufacturer: {
+      type: String,
+      default: 'Not Found'
+   },
+   led: {
+      type: String,
+      default: 'Not Found'
+   },
+   description: {
+      type: String,
+      default: 'Not Found'
    }
 });
 

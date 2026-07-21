@@ -2,7 +2,8 @@ const Asset = require('../../models/Asset');
 
 module.exports = {
    info: {
-      method: 'POST'
+      method: 'POST',
+      endpoint: '/:uuid'
    },
    /**
     * @param {import('express').Request} req

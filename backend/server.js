@@ -17,33 +17,29 @@ const routes = [];
 readdirSync(`${__dirname}/endpoints`).forEach((dir) => {
    readdirSync(`${__dirname}/endpoints/${dir}`).forEach((endpoint) => {
       const { info, call } = require(`./endpoints/${dir}/${endpoint}`);
-
-      const path = `/${dir}${info.endpoint || ''}`;
-
       routes.push({
          method: info.method.toLowerCase(),
-         path,
+         path: `/${dir}${info.endpoint || ''}`,
          call
       });
    });
 });
 
 routes
-   .sort((a, b) => {
-      const score = (route) => {
-         const segments = route.path.split('/').filter(Boolean);
-
-         return segments.reduce((total, segment) => {
+   .map((route) => ({
+      ...route,
+      score: route.path
+         .split('/')
+         .filter(Boolean)
+         .reduce((total, segment) => {
             if (segment.startsWith(':')) return total;
             if (segment.includes('*')) return -10;
             return total + 10;
-         }, 0);
-      };
-
-      return score(b) - score(a);
-   })
+         }, 0)
+   }))
+   .sort((a, b) => b.score - a.score)
    .forEach(({ method, path, call }) => {
-      router[method](path, call);
+      router[method](`/api${path.startsWith('/') ? path : `/${path}`}`, call);
    });
 
 // Connect to the database

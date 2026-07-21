@@ -12,7 +12,16 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const updatedRack = await Rack.findByIdAndUpdate(req.params.id, req.body, { new: true });
+         const { id } = req.params || {};
+         const body = req.body || {};
+
+         if (!id) {
+            return res
+               .status(400)
+               .json({ success: false, message: 'Rack ID missing from request' });
+         }
+
+         const updatedRack = await Rack.findByIdAndUpdate(id, body, { new: true });
 
          if (!updatedRack) {
             return res.status(404).json({ success: false, message: 'Rack not found' });

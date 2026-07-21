@@ -12,11 +12,16 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const current = await Asset.findOne({
-            uuid: req.params.uuid
-         }).sort({
-            version: -1
-         });
+         const { uuid } = req.params || {};
+         const { name, rack, uPosition, notes } = req.body || {};
+
+         if (!uuid) {
+            return res
+               .status(400)
+               .json({ success: false, message: 'Asset UUID missing from request' });
+         }
+
+         const current = await Asset.findOne({ uuid }).sort({ version: -1 });
 
          if (!current) {
             return res.status(404).json({ success: false, message: 'Asset not found' });
@@ -25,11 +30,10 @@ module.exports = {
          const newVersion = new Asset({
             uuid: current.uuid,
             version: current.version + 1,
-
-            name: req.body.name ?? current.name,
-            rack: req.body.rack ?? current.rack,
-            uPosition: req.body.uPosition ?? current.uPosition,
-            notes: req.body.notes ?? current.notes
+            name: name ?? current.name,
+            rack: rack ?? current.rack,
+            uPosition: uPosition ?? current.uPosition,
+            notes: notes ?? current.notes
          });
 
          await newVersion.save();

@@ -12,11 +12,15 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const assets = await Asset.find({
-            uuid: req.params.uuid
-         })
-            .populate('rack')
-            .sort({ version: -1 });
+         const { uuid } = req.params || {};
+
+         if (!uuid) {
+            return res
+               .status(400)
+               .json({ success: false, message: 'Asset UUID missing from request' });
+         }
+
+         const assets = await Asset.find({ uuid }).populate('rack').sort({ version: -1 });
 
          if (!assets.length) {
             return res.status(404).json({ success: false, message: 'Asset not found' });

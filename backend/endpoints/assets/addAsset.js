@@ -12,31 +12,22 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const rack = await Rack.findById(req.body.rack);
+         const { rack, name, uuid, uPosition, notes } = req.body || {};
 
-         if (!rack) {
+         const targetRack = await Rack.findById(rack);
+
+         if (!targetRack) {
             return res.status(404).json({ success: false, message: 'Rack not found' });
          }
 
          // Prevent creating a second "first version"
-         const existing = await Asset.findOne({
-            uuid: req.body.uuid,
-            version: 1
-         });
+         const existing = await Asset.findOne({ uuid, version: 1 });
 
          if (existing) {
             return res.status(409).json({ success: false, message: 'Asset already exists' });
          }
 
-         const asset = new Asset({
-            name: req.body.name,
-            uuid: req.body.uuid,
-            version: 1,
-            rack: rack._id,
-            uPosition: req.body.uPosition,
-            notes: req.body.notes
-         });
-
+         const asset = new Asset({ name: name, uuid, version: 1, rack: targetRack._id, uPosition, notes });
          const savedAsset = await asset.save();
 
          return res.status(201).json({ success: true, body: savedAsset });

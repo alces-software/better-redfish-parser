@@ -7,7 +7,7 @@ const assetSchema = new mongoose.Schema({
    },
    uuid: {
       type: String,
-      required: true,
+      required: true
    },
    version: {
       type: Number,

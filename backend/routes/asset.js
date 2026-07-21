@@ -4,20 +4,16 @@ const Rack = require('../models/Rack');
 
 const router = express.Router();
 
-
 // Get all asset history
 router.get('/', async (req, res) => {
    try {
-      const assets = await Asset.find()
-         .populate('rack')
-         .sort({ uuid: 1, version: -1 });
+      const assets = await Asset.find().populate('rack').sort({ uuid: 1, version: -1 });
 
       res.json(assets);
    } catch (err) {
       res.status(500).json({ message: err.message });
    }
 });
-
 
 // Get latest version of every asset
 router.get('/latest', async (req, res) => {
@@ -50,12 +46,10 @@ router.get('/latest', async (req, res) => {
       });
 
       res.json(assets);
-
    } catch (err) {
       res.status(500).json({ message: err.message });
    }
 });
-
 
 // Get full history for one asset
 router.get('/:uuid/history', async (req, res) => {
@@ -63,8 +57,8 @@ router.get('/:uuid/history', async (req, res) => {
       const assets = await Asset.find({
          uuid: req.params.uuid
       })
-      .populate('rack')
-      .sort({ version: -1 });
+         .populate('rack')
+         .sort({ version: -1 });
 
       if (!assets.length) {
          return res.status(404).json({
@@ -73,7 +67,6 @@ router.get('/:uuid/history', async (req, res) => {
       }
 
       res.json(assets);
-
    } catch (err) {
       res.status(500).json({ message: err.message });
    }
@@ -85,9 +78,8 @@ router.get('/:uuid', async (req, res) => {
       const asset = await Asset.findOne({
          uuid: req.params.uuid
       })
-      .sort({ version: -1 })
-      .populate('rack');
-
+         .sort({ version: -1 })
+         .populate('rack');
 
       if (!asset) {
          return res.status(404).json({
@@ -96,7 +88,6 @@ router.get('/:uuid', async (req, res) => {
       }
 
       res.json(asset);
-
    } catch (err) {
       res.status(500).json({
          message: err.message
@@ -107,7 +98,6 @@ router.get('/:uuid', async (req, res) => {
 // Create first version of an asset
 router.post('/', async (req, res) => {
    try {
-
       const rack = await Rack.findById(req.body.rack);
 
       if (!rack) {
@@ -115,7 +105,6 @@ router.post('/', async (req, res) => {
             message: 'Rack not found'
          });
       }
-
 
       // Prevent creating a second "first version"
       const existing = await Asset.findOne({
@@ -129,7 +118,6 @@ router.post('/', async (req, res) => {
          });
       }
 
-
       const asset = new Asset({
          name: req.body.name,
          uuid: req.body.uuid,
@@ -139,11 +127,9 @@ router.post('/', async (req, res) => {
          notes: req.body.notes
       });
 
-
       const savedAsset = await asset.save();
 
       res.status(201).json(savedAsset);
-
    } catch (err) {
       res.status(400).json({
          message: err.message
@@ -151,24 +137,19 @@ router.post('/', async (req, res) => {
    }
 });
 
-
 // Create a new version
 router.put('/:uuid', async (req, res) => {
-
    const current = await Asset.findOne({
       uuid: req.params.uuid
-   })
-   .sort({
+   }).sort({
       version: -1
    });
-
 
    if (!current) {
       return res.status(404).json({
          message: 'Asset not found'
       });
    }
-
 
    const newVersion = new Asset({
       uuid: current.uuid,
@@ -180,7 +161,6 @@ router.put('/:uuid', async (req, res) => {
       notes: req.body.notes ?? current.notes
    });
 
-
    await newVersion.save();
 
    res.status(201).json(newVersion);
@@ -188,16 +168,13 @@ router.put('/:uuid', async (req, res) => {
 
 // Delete an asset and all its history
 router.delete('/:uuid', async (req, res) => {
-
    const result = await Asset.deleteMany({
       uuid: req.params.uuid
    });
-
 
    res.json({
       deleted: result.deletedCount
    });
 });
-
 
 module.exports = router;

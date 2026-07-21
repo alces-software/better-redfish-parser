@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/latest', async (req, res) => {
-    // For each uuid in the assets collection, get the latest asset based on the createdAt field and return it in an array.
+   // For each uuid in the assets collection, get the latest asset based on the createdAt field and return it in an array.
    try {
       const latestAssets = await Asset.aggregate([
          {
@@ -64,11 +64,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
    try {
-      const updatedRack = await Rack.findByIdAndUpdate(
-         req.params.id,
-         req.body,
-         { new: true }
-      );
+      const updatedRack = await Rack.findByIdAndUpdate(req.params.id, req.body, { new: true });
       if (!updatedRack) {
          return res.status(404).json({ message: 'Rack not found' });
       }
@@ -79,7 +75,7 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-    // Delete a rack by ID as well as all associated assets that are in that rack.
+   // Delete a rack by ID as well as all associated assets that are in that rack.
    try {
       const deletedRack = await Rack.findByIdAndDelete(req.params.id);
       if (!deletedRack) {
@@ -87,7 +83,7 @@ router.delete('/:id', async (req, res) => {
       }
       // Get all assets associated with the deleted rack and get their uuids
       const assets = await Asset.find({ rack: deletedRack._id });
-      const uuids = assets.map(asset => asset.uuid);
+      const uuids = assets.map((asset) => asset.uuid);
 
       // Delete all assets with the same uuids as the assets associated with the deleted rack
       await Asset.deleteMany({ uuid: { $in: uuids } });

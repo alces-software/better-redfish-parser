@@ -21,9 +21,9 @@ module.exports = {
          });
 
          if (!current) {
-            return res.status(404).json({ 
-               success: false, 
-               message: 'Asset not found' 
+            return res.status(404).json({
+               success: false,
+               message: 'Asset not found'
             });
          }
 
@@ -61,15 +61,14 @@ module.exports = {
 
          await newVersion.save();
 
-         return res.status(201).json({ 
-            success: true, 
-            body: newVersion 
+         return res.status(201).json({
+            success: true,
+            body: newVersion
          });
-
       } catch (err) {
-         return res.status(500).json({ 
-            success: false, 
-            message: err.message 
+         return res.status(500).json({
+            success: false,
+            message: err.message
          });
       }
    }

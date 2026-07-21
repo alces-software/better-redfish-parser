@@ -17,9 +17,9 @@ module.exports = {
          const rack = await Rack.findById(req.body.rack);
 
          if (!rack) {
-            return res.status(404).json({ 
-               success: false, 
-               message: 'Rack not found' 
+            return res.status(404).json({
+               success: false,
+               message: 'Rack not found'
             });
          }
 
@@ -30,9 +30,9 @@ module.exports = {
          });
 
          if (existing) {
-            return res.status(409).json({ 
-               success: false, 
-               message: 'Asset already exists' 
+            return res.status(409).json({
+               success: false,
+               message: 'Asset already exists'
             });
          }
 
@@ -58,15 +58,14 @@ module.exports = {
 
          const savedAsset = await asset.save();
 
-         return res.status(201).json({ 
-            success: true, 
-            body: savedAsset 
+         return res.status(201).json({
+            success: true,
+            body: savedAsset
          });
-
       } catch (err) {
-         return res.status(400).json({ 
-            success: false, 
-            message: err.message 
+         return res.status(400).json({
+            success: false,
+            message: err.message
          });
       }
    }

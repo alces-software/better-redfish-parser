@@ -2,11 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const rackRoutes = require('./routes/rack');
+const assetRoutes = require('./routes/asset');
 
 const app = express();
 
 app.use(express.json());
 app.use('/api/racks', rackRoutes);
+app.use('/api/assets', assetRoutes);
 
 mongoose
    .connect(process.env.MONGO_URI, {

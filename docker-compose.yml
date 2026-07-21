@@ -1,0 +1,22 @@
+services:
+  backend:
+    image: node:latest
+    container_name: backend
+    ports:
+      - 81:3000
+    working_dir: /srv/app
+    command: "./setup.sh"
+    volumes:
+      - ./backend:/srv/app
+    tty: true
+
+  database:
+    image: mongo:latest
+    container_name: database
+    ports:
+      - 27017:27017
+    volumes:
+      - dbdata6:/data/db
+
+volumes:
+  dbdata6:

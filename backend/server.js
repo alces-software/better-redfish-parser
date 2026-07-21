@@ -43,7 +43,7 @@ routes
       return score(b) - score(a);
    })
    .forEach(({ method, path, call }) => {
-      router[method](path, call);
+      router[method](`/api/${path}`, call);
    });
 
 // Connect to the database

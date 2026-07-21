@@ -32,12 +32,7 @@ module.exports = {
             });
          }
 
-         // Parse hardware JSON if provided
-         let extractHardwareData = {};
-
-         if (hardwareData) {
-            extractHardwareData = extractData(hardwareData);
-         }
+         const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
 
          const newVersion = new Asset({
             uuid: current.uuid,
@@ -47,8 +42,6 @@ module.exports = {
             uPosition: uPosition ?? current.uPosition,
             notes: notes ?? current.notes,
             imported_json: hardwareData ?? current.imported_json,
-
-            // Store extracted hardware fields
             cores: extractHardwareData.cores ?? current.cores,
             processor_name: extractHardwareData.processor_name ?? current.processor_name,
             processor_count: extractHardwareData.processor_count ?? current.processor_count,

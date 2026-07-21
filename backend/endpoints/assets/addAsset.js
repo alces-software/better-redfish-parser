@@ -32,7 +32,8 @@ module.exports = {
             });
          }
 
-         // Parse hardware JSON if provided
+         const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
+
          const asset = new Asset({
             name,
             uuid,
@@ -41,7 +42,7 @@ module.exports = {
             uPosition,
             notes,
             hardwareData: hardwareData || '',
-            ...extractData(req.body.hardwareData)
+            ...extractHardwareData
          });
 
          const savedAsset = await asset.save();

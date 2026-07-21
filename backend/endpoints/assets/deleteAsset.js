@@ -2,7 +2,8 @@ const Asset = require('../../models/Asset');
 
 module.exports = {
    info: {
-      method: 'DELETE'
+      method: 'DELETE',
+      endpoint: '/:uuid'
    },
    /**
     * @param {import('express').Request} req

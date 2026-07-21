@@ -2,8 +2,7 @@ const Asset = require('../../models/Asset');
 
 module.exports = {
    info: {
-      method: 'GET',
-      endpoint: '/latest'
+      method: 'GET'
    },
    /**
     * @param {import('express').Request} req
@@ -12,9 +11,22 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const assets = await Asset.find().populate('rack').sort({ uuid: 1, version: -1 });
+         const latestAssets = await Asset.aggregate([
+            {
+               $sort: { createdAt: -1 }
+            },
+            {
+               $group: {
+                  _id: '$uuid',
+                  doc: { $first: '$$ROOT' }
+               }
+            },
+            {
+               $replaceRoot: { newRoot: '$doc' }
+            }
+         ]);
 
-         return res.status(200).json({ success: true, body: assets });
+         return res.status(200).json({ success: true, body: latestAssets });
       } catch (err) {
          return res.status(500).json({ success: false, message: err.message });
       }

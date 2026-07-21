@@ -17,10 +17,9 @@ const routes = [];
 readdirSync(`${__dirname}/endpoints`).forEach((dir) => {
    readdirSync(`${__dirname}/endpoints/${dir}`).forEach((endpoint) => {
       const { info, call } = require(`./endpoints/${dir}/${endpoint}`);
-      const path = `/${dir}${info.endpoint || ''}`;
       routes.push({
          method: info.method.toLowerCase(),
-         path,
+         path: `/${dir}${info.endpoint || ''}`,
          call
       });
    });

@@ -7,10 +7,12 @@ const rackSchema = new mongoose.Schema({
    },
    size: {
       type: Number,
-      required: true
+      required: true,
+      default: 1
    },
    notes: {
-      type: String
+      type: String,
+      default: ''
    }
 });
 

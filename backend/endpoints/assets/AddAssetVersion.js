@@ -14,62 +14,47 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const current = await Asset.findOne({
-            uuid: req.params.uuid
-         }).sort({
-            version: -1
-         });
+         const { uuid } = req.params || {};
+         const { name, rack, uPosition, notes, hardwareData } = req.body || {};
+
+         if (!uuid) {
+            return res
+               .status(400)
+               .json({ success: false, message: 'Asset UUID missing from request' });
+         }
+
+         const current = await Asset.findOne({ uuid }).sort({ version: -1 });
 
          if (!current) {
-            return res.status(404).json({
-               success: false,
-               message: 'Asset not found'
-            });
+            return res.status(404).json({ success: false, message: 'Asset not found' });
          }
 
-         // Parse hardware JSON if provided
-         let hardwareData = {};
-
-         if (req.body.hardwareData) {
-            hardwareData = extractData(req.body.hardwareData);
-         }
+         const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
 
          const newVersion = new Asset({
             uuid: current.uuid,
             version: current.version + 1,
-
-            // Keep existing values unless overwritten
-            name: req.body.name ?? current.name,
-            rack: req.body.rack ?? current.rack,
-            uPosition: req.body.uPosition ?? current.uPosition,
-            notes: req.body.notes ?? current.notes,
-
-            // Store raw JSON
-            imported_json: req.body.hardwareData ?? current.imported_json,
-
-            // Store extracted hardware fields
-            cores: hardwareData.cores ?? current.cores,
-            processor_name: hardwareData.processor_name ?? current.processor_name,
-            processor_count: hardwareData.processor_count ?? current.processor_count,
-            memory: hardwareData.memory ?? current.memory,
-            model: hardwareData.model ?? current.model,
-            serial_number: hardwareData.serial_number ?? current.serial_number,
-            manufacturer: hardwareData.manufacturer ?? current.manufacturer,
-            led: hardwareData.led ?? current.led,
-            description: hardwareData.description ?? current.description
+            name: name ?? current.name,
+            rack: rack ?? current.rack,
+            uPosition: uPosition ?? current.uPosition,
+            notes: notes ?? current.notes,
+            imported_json: hardwareData ?? current.imported_json,
+            cores: extractHardwareData.cores ?? current.cores,
+            processor_name: extractHardwareData.processor_name ?? current.processor_name,
+            processor_count: extractHardwareData.processor_count ?? current.processor_count,
+            memory: extractHardwareData.memory ?? current.memory,
+            model: extractHardwareData.model ?? current.model,
+            serial_number: extractHardwareData.serial_number ?? current.serial_number,
+            manufacturer: extractHardwareData.manufacturer ?? current.manufacturer,
+            led: extractHardwareData.led ?? current.led,
+            description: extractHardwareData.description ?? current.description
          });
 
          await newVersion.save();
 
-         return res.status(201).json({
-            success: true,
-            body: newVersion
-         });
+         return res.status(201).json({ success: true, body: newVersion });
       } catch (err) {
-         return res.status(500).json({
-            success: false,
-            message: err.message
-         });
+         return res.status(500).json({ success: false, message: err.message });
       }
    }
 };

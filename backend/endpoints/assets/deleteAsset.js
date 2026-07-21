@@ -12,6 +12,14 @@ module.exports = {
     */
    async call(req, res) {
       try {
+         const { uuid } = req.params || {};
+
+         if (!uuid) {
+            return res
+               .status(400)
+               .json({ success: false, message: 'Asset UUID missing from request' });
+         }
+
          const result = await Asset.deleteMany({ uuid: req.params.uuid });
 
          return res.json({ success: true, deleted: result.deletedCount });

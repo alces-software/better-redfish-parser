@@ -27,7 +27,7 @@ readdirSync(`${__dirname}/endpoints`).forEach((dir) => {
 });
 
 routes
-   .map(route => ({
+   .map((route) => ({
       ...route,
       score: route.path
          .split('/')

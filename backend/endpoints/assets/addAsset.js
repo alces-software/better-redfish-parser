@@ -3,7 +3,7 @@ const Asset = require('../../models/Asset'),
 
 module.exports = {
    info: {
-      method: 'GET'
+      method: 'POST'
    },
    /**
     * @param {import('express').Request} req
@@ -15,9 +15,7 @@ module.exports = {
          const rack = await Rack.findById(req.body.rack);
 
          if (!rack) {
-            return res.status(404).json({
-               message: 'Rack not found'
-            });
+            return res.status(404).json({ success: false, message: 'Rack not found' });
          }
 
          // Prevent creating a second "first version"
@@ -27,9 +25,7 @@ module.exports = {
          });
 
          if (existing) {
-            return res.status(409).json({
-               message: 'Asset already exists'
-            });
+            return res.status(409).json({ success: false, message: 'Asset already exists' });
          }
 
          const asset = new Asset({
@@ -43,11 +39,9 @@ module.exports = {
 
          const savedAsset = await asset.save();
 
-         res.status(201).json(savedAsset);
+         return res.status(201).json({ success: true, body: savedAsset });
       } catch (err) {
-         res.status(400).json({
-            message: err.message
-         });
+         return res.status(400).json({ success: false, message: err.message });
       }
    }
-}
+};

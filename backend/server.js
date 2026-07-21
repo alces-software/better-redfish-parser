@@ -28,21 +28,23 @@ readdirSync(`${__dirname}/endpoints`).forEach((dir) => {
    });
 });
 
-routes.sort((a, b) => {
-   const score = (route) => {
-      const segments = route.path.split('/').filter(Boolean);
+routes
+   .sort((a, b) => {
+      const score = (route) => {
+         const segments = route.path.split('/').filter(Boolean);
 
-      return segments.reduce((total, segment) => {
-         if (segment.startsWith(':')) return total;
-         if (segment.includes('*')) return -10;
-         return total + 10;
-      }, 0);
-   };
+         return segments.reduce((total, segment) => {
+            if (segment.startsWith(':')) return total;
+            if (segment.includes('*')) return -10;
+            return total + 10;
+         }, 0);
+      };
 
-   return score(b) - score(a);
-}).forEach(({ method, path, call }) => {
-   router[method](path, call);
-});
+      return score(b) - score(a);
+   })
+   .forEach(({ method, path, call }) => {
+      router[method](path, call);
+   });
 
 // Connect to the database
 require('mongoose')

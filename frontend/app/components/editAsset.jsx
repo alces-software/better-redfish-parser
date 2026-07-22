@@ -128,8 +128,17 @@ export default function EditAsset() {
                <p className="p-1">Rack</p>
                <select
                   name="rack"
-                  defaultValue={asset?.rack?._id ?? asset?.rack ?? ''}
+                  value={asset?.rack?._id ?? ''}
                   className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+                  onChange={(e) =>
+                     setAsset({
+                        ...asset,
+                        rack: {
+                           ...asset.rack,
+                           _id: e.target.value
+                        }
+                     })
+                  }
                >
                   <option value="">Select a rack</option>
 

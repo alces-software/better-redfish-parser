@@ -7,8 +7,30 @@ function extractData(json) {
       data = {};
    }
 
-   // Use rawRedfish if exists if not just use original data
-   data = data.rawRedfish?.system || data;
+   let toAdd = {
+      fans: []
+   };
+
+   if (data.rawRedfish) {
+      if (data.fans) {
+         fans = data.fans.map((fan) => {
+            return {
+               name: fan['name'] || 'Not found',
+               health: fan['health'] || 'Not found',
+               speed: fan['speed'] || 'Not found',
+               units: fan['units'] || 'Not found',
+               state: fan['state'] || 'Not found',
+               hotPluggable: fan['hotPluggable'] || 'Not found'
+            };
+         });
+
+         console.log('Fans:', fans);
+      }
+
+      toAdd.fans = fans || [];
+
+      data = data.rawRedfish.system;
+   }
 
    const processorSummary = data['ProcessorSummary'] || {};
    const memorySummary = data['MemorySummary'] || {};
@@ -26,7 +48,8 @@ function extractData(json) {
       serial_number: data['SerialNumber'] || 'Not found',
       manufacturer: data['Manufacturer'] || 'Not found',
       led: data['IndicatorLED'] || 'Not found',
-      description: data['Description'] || 'Not found'
+      description: data['Description'] || 'Not found',
+      ...toAdd
    };
 }
 

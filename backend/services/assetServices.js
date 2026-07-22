@@ -29,7 +29,7 @@ function extractData(json) {
       }
 
       if (data.ethernetInterfaces) {
-         const ethernetInterfaces = data.ethernetInterfaces.map(interface => {
+         const ethernetInterfaces = data.ethernetInterfaces.map((interface) => {
             return {
                id: interface['id'] || 'Not found',
                description: interface['description'] || 'Not found',
@@ -39,13 +39,11 @@ function extractData(json) {
                state: interface['state'] || 'Not found',
                health: interface['health'] || 'Not found',
                linkStatus: interface['linkStatus'] || 'Not found',
-               enabled: interface['enabled'] || 'Not found',
+               enabled: interface['enabled'] || 'Not found'
             };
          });
          toAdd.ethernetInterfaces = ethernetInterfaces || [];
       }
-
-
 
       data = data.rawRedfish.system;
    }

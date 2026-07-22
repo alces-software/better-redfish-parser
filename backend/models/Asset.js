@@ -132,6 +132,19 @@ const assetSchema = new mongoose.Schema({
    description: {
       type: String,
       default: 'Not Found'
+   },
+   fans: {
+      type: [
+         {
+            name: { type: String, default: 'Not found' },
+            health: { type: String, default: 'Not found' },
+            speed: { type: String, default: 'Not found' },
+            units: { type: String, default: 'Not found' },
+            state: { type: String, default: 'Not found' },
+            hotPluggable: { type: String, default: 'Not found' }
+         }
+      ],
+      default: []
    }
 });
 

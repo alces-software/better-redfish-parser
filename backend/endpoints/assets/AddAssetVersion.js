@@ -83,7 +83,8 @@ module.exports = {
             serial_number: extractHardwareData.serial_number ?? current.serial_number,
             manufacturer: extractHardwareData.manufacturer ?? current.manufacturer,
             led: extractHardwareData.led ?? current.led,
-            description: extractHardwareData.description ?? current.description
+            description: extractHardwareData.description ?? current.description,
+            fans: extractHardwareData.fans ?? current.fans
          });
 
          await newVersion.save();

@@ -6,6 +6,16 @@ import { useRouter } from 'next/navigation';
 
 export default function NewAsset() {
    const router = useRouter();
+   const [racks, setRacks] = useState([]);
+
+   useEffect(() => {
+      async function getRacks() {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks`);
+         const data = await res.json();
+         setRacks(data.body);
+      }
+      getRacks();
+   }, []);
 
    async function handleSubmit(event) {
       event.preventDefault();
@@ -42,7 +52,7 @@ export default function NewAsset() {
    return (
       <div>
          <div className="flex items-center">
-            <h1 className="font-semibold text-4xl">New product</h1>
+            <h1 className="font-semibold text-4xl">New asset</h1>
             <Link
                href="/"
                className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
@@ -50,7 +60,6 @@ export default function NewAsset() {
                Cancel
             </Link>
          </div>
-
          <br />
          <hr />
          <br />
@@ -63,17 +72,37 @@ export default function NewAsset() {
 
             <div className="pl-2">
                <p className="p-1">Name</p>
-               <input name="name" type="text" className="m-1 rounded-lg border p-1 text-white" />
+               <input
+                  name="name"
+                  type="text"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="p-1">UUID</p>
-               <input name="uuid" type="text" className="m-1 rounded-lg border p-1 text-white" />
+               <input
+                  name="uuid"
+                  type="text"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="p-1">Rack</p>
-               <input name="rack" type="text" className="m-1 rounded-lg border p-1 text-white" />
+               <select
+                  name="rack"
+
+                  className="m-1 rounded-lg  h-9 w-58 border p-1 text-white"
+               >
+                  <option value="">Select a rack</option>
+
+                  {racks.map((rack) => (
+                     <option key={rack._id} value={rack._id}>
+                        {rack.name}
+                     </option>
+                  ))}
+               </select>
             </div>
 
             <div className="mt-2 pl-2">
@@ -81,13 +110,17 @@ export default function NewAsset() {
                <input
                   name="uPosition"
                   type="text"
-                  className="m-1 rounded-lg border p-1 text-white"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
                />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="p-1">Notes</p>
-               <input name="notes" type="text" className="m-1 rounded-lg border p-1 text-white" />
+               <input
+                  name="notes"
+                  type="text"
+                  className="m-1 rounded-lg h-9 w-58 border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">

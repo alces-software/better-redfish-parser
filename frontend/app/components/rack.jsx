@@ -92,8 +92,8 @@ export default function RacksPage() {
                      href={`/edit-rack?id=${rackId}`}
                      className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1 hover:bg-sky-700 shadow-lg"
                   >
-                     <MdModeEdit size={25} className="text-sky-200" />
                      <span>Edit</span>
+                     <MdModeEdit size={25} className="text-sky-200" />
                   </Link>
 
                   <button
@@ -101,8 +101,8 @@ export default function RacksPage() {
                      type="button"
                      className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1 hover:bg-red-700 shadow-lg"
                   >
-                     <MdDelete size={25} className="text-red-200" />
                      <span>Delete</span>
+                     <MdDelete size={25} className="text-red-200" />
                   </button>
                </div>
             </div>

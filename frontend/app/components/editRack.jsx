@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -87,22 +87,40 @@ export default function EditRack() {
          <hr />
          <br />
 
-         <form onSubmit={handleSubmit} className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
+         <form
+            onSubmit={handleSubmit}
+            className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl"
+         >
             <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Rack details</h2>
 
             <div className="pl-2">
                <p className="mx-4 p-1">Name</p>
-               <input name="name" type="text" defaultValue={rack.name ?? ''} className="mx-4 rounded-lg border p-1 text-white" />
+               <input
+                  name="name"
+                  type="text"
+                  defaultValue={rack.name ?? ''}
+                  className="mx-4 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="mx-4 p-1">Size</p>
-               <input name="size" type="text" defaultValue={rack.size ?? ''} className="mx-4 rounded-lg border p-1 text-white" />
+               <input
+                  name="size"
+                  type="text"
+                  defaultValue={rack.size ?? ''}
+                  className="mx-4 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="mx-4 p-1">Notes</p>
-               <input name="notes" type="text" defaultValue={rack.notes ?? ''} className="mx-4 rounded-lg border p-1 text-white" />
+               <input
+                  name="notes"
+                  type="text"
+                  defaultValue={rack.notes ?? ''}
+                  className="mx-4 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="my-4 flex justify-end px-4">

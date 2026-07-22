@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -55,7 +55,10 @@ export default function Json() {
          <section>
             <h1 className="font-semibold text-4xl">JSON import</h1>
             <p className="mt-4 text-slate-300">{error}</p>
-            <Link href={`/assets?id=${assetId}`} className="mt-6 inline-block rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1">
+            <Link
+               href={`/assets?id=${assetId}`}
+               className="mt-6 inline-block rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1"
+            >
                Back
             </Link>
          </section>
@@ -74,18 +77,16 @@ export default function Json() {
    return (
       <section>
          <div className="flex items-center">
-         <h1 className="font-semibold text-4xl">
-            JSON import for <em>{asset.name}</em>
-           
-         </h1>
-           <Link
+            <h1 className="font-semibold text-4xl">
+               JSON import for <em>{asset.name}</em>
+            </h1>
+            <Link
                href={`/assets?id=${assetId}`}
                className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
             >
                Back
             </Link>
          </div>
-           
 
          <div className="mt-15 rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
             <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">
@@ -95,8 +96,6 @@ export default function Json() {
                {asset.imported_json ? prettyPrintJson(asset.imported_json) : 'No Json'}
             </pre>
          </div>
-
-        
       </section>
    );
 }

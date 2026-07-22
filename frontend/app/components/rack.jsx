@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function RacksPage() {
-       const router = useRouter();
+   const router = useRouter();
    const searchParams = useSearchParams();
    const rackId = searchParams.get('id');
    const [rack, setRack] = useState(null);
@@ -52,10 +52,8 @@ export default function RacksPage() {
                      <tr>
                         <th className="rounded-tl-lg p-4 pl-12">Name</th>
                         <th className="p-4">Size</th>
-                      
+
                         <th className="p-4 rounded-tr-lg">Notes</th>
-                        
-                        
                      </tr>
                   </thead>
 
@@ -64,18 +62,13 @@ export default function RacksPage() {
                         <tr>
                            <td className="rounded-bl-lg p-4 pl-12">{rack.name}</td>
                            <td className="p-4">{rack.size}</td>
-                       
+
                            <td className="p-4 rounded-br-lg">{rack.notes}</td>
-                          
                         </tr>
                      )}
                   </tbody>
                </table>
             </div>
-
-          
-
-          
          </div>
 
          <div className="mt-25 grid grid-cols-3 gap-2">
@@ -99,7 +92,7 @@ export default function RacksPage() {
                   </Link>
 
                   <button
-                  onClick={handleDelete}
+                     onClick={handleDelete}
                      type="button"
                      className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1"
                   >

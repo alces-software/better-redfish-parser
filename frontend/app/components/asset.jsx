@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -15,7 +15,7 @@ function formatDate(value) {
 }
 
 export default function AssetsPage() {
-       const router = useRouter();
+   const router = useRouter();
    const searchParams = useSearchParams();
    const uuId = searchParams.get('id');
    const [asset, setAsset] = useState(null);
@@ -100,7 +100,9 @@ export default function AssetsPage() {
                            <td className="p-4 flex justify-center">{asset.version}</td>
                            <td className="p-4">{asset.notes}</td>
                            <td className="p-4">{formatDate(asset.createdAt)}</td>
-                           <td className="max-w-90 rounded-br-lg p-4">{formatDate(asset.updatedAt ?? asset.createdAt)}</td>
+                           <td className="max-w-90 rounded-br-lg p-4">
+                              {formatDate(asset.updatedAt ?? asset.createdAt)}
+                           </td>
                         </tr>
                      )}
                   </tbody>
@@ -133,7 +135,9 @@ export default function AssetsPage() {
                      View Json
                   </Link>
                ) : (
-                  <span className="rounded-full border border-slate-400 bg-slate-800 p-2 opacity-50">No Json</span>
+                  <span className="rounded-full border border-slate-400 bg-slate-800 p-2 opacity-50">
+                     No Json
+                  </span>
                )}
 
                {hasNext ? (
@@ -145,10 +149,7 @@ export default function AssetsPage() {
                      <GoChevronRight />
                   </button>
                ) : (
-                  <button
-                     type="button"
-                     className="pointer-events-none rounded-full p-2 opacity-0"
-                  >
+                  <button type="button" className="pointer-events-none rounded-full p-2 opacity-0">
                      <GoChevronRight />
                   </button>
                )}
@@ -157,7 +158,6 @@ export default function AssetsPage() {
             <p className="mt-1 text-xs text-slate-300">
                {history.length ? historyIndex + 1 : 0} / {history.length}
             </p>
-
          </div>
 
          <div className="mt-25 grid grid-cols-3 gap-2">
@@ -181,7 +181,7 @@ export default function AssetsPage() {
                   </Link>
 
                   <button
-                  onClick={handleDelete}
+                     onClick={handleDelete}
                      type="button"
                      className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1"
                   >

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import { MdDelete, MdModeEdit } from 'react-icons/md';
 
 export default function RacksPage() {
    const router = useRouter();
@@ -12,7 +12,7 @@ export default function RacksPage() {
    const [rack, setRack] = useState(null);
 
    async function handleDelete() {
-      if (!confirm("Are you sure you want to delete this rack?")) {
+      if (!confirm('Are you sure you want to delete this rack?')) {
          return;
       }
 

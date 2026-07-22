@@ -1,5 +1,10 @@
 import { Suspense } from 'react';
 import EditRack from '../components/editRack';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+   title: 'Edit Rack'
+};
 
 export default function EditRackPage() {
    return (

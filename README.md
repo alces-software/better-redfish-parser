@@ -30,6 +30,6 @@ The system will be running on http://\<hostname>
 
 If you would like to use the Redfish Helper CLI to collect Redfish data and generate JSON for this application, see the following repository:
 
-https://github.com/alces-software/redfish-helper-cli
+https://github.com/a04b04/redfish-cli
 
 Follow the installation instructions in that repository, then use the generated JSON with this parser.

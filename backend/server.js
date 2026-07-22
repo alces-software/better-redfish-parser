@@ -4,6 +4,8 @@ require('dotenv').config();
 // Import functions
 const express = require('express'),
    { readdirSync } = require('node:fs');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 
 const cors = require('cors');
 
@@ -11,7 +13,13 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 
+<<<<<<< HEAD
 app.use(cors());
+=======
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req, res) => res.json(swaggerSpec));
+>>>>>>> origin/main
 
 // Load Endpoints
 const router = express.Router();

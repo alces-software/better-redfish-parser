@@ -6,13 +6,55 @@ module.exports = {
       endpoint: '/:id'
    },
    /**
+    * @openapi
+    * /api/racks/{id}:
+    *   put:
+    *     summary: Update a rack by ID
+    *     tags:
+    *       - Racks
+    *     parameters:
+    *       - in: path
+    *         name: id
+    *         required: true
+    *         schema:
+    *           type: string
+    *     requestBody:
+    *       content:
+    *         application/json:
+    *           schema:
+    *             $ref: '#/components/schemas/RackInput'
+    *     responses:
+    *       '200':
+    *         description: OK
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 success:
+    *                   type: boolean
+    *                 body:
+    *                   $ref: '#/components/schemas/Rack'
+    *       '404':
+    *         description: Not found
+    */
+   /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res
     * @returns {Promise<void>}
     */
    async call(req, res) {
       try {
-         const updatedRack = await Rack.findByIdAndUpdate(req.params.id, req.body, { new: true });
+         const { id } = req.params || {};
+         const body = req.body || {};
+
+         if (!id) {
+            return res
+               .status(400)
+               .json({ success: false, message: 'Rack ID missing from request' });
+         }
+
+         const updatedRack = await Rack.findByIdAndUpdate(id, body, { new: true });
 
          if (!updatedRack) {
             return res.status(404).json({ success: false, message: 'Rack not found' });

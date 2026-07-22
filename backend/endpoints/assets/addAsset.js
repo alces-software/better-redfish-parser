@@ -1,10 +1,42 @@
-const Asset = require('../../models/Asset'),
-   Rack = require('../../models/Rack');
+const Asset = require('../../models/Asset');
+const Rack = require('../../models/Rack');
+const { extractData } = require('../../services/assetServices');
 
+/**
+ * @openapi
+ * /api/assets:
+ *   post:
+ *     summary: Create a new asset (initial version)
+ *     tags:
+ *       - Assets
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AssetInput'
+ *     responses:
+ *       '201':
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 body:
+ *                   $ref: '#/components/schemas/Asset'
+ *       '400':
+ *         description: Bad request
+ *       '409':
+ *         description: Conflict - asset exists
+ */
 module.exports = {
    info: {
       method: 'POST'
    },
+
    /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res
@@ -12,29 +44,35 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const rack = await Rack.findById(req.body.rack);
+         const { rack, name, uuid, uPosition, notes, hardwareData } = req.body || {};
 
-         if (!rack) {
+         const targetRack = await Rack.findById(rack);
+
+         if (!targetRack) {
             return res.status(404).json({ success: false, message: 'Rack not found' });
          }
 
          // Prevent creating a second "first version"
-         const existing = await Asset.findOne({
-            uuid: req.body.uuid,
-            version: 1
-         });
+         const existing = await Asset.findOne({ uuid, version: 1 });
 
          if (existing) {
-            return res.status(409).json({ success: false, message: 'Asset already exists' });
+            return res.status(409).json({
+               success: false,
+               message: 'Asset already exists'
+            });
          }
 
+         const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
+
          const asset = new Asset({
-            name: req.body.name,
-            uuid: req.body.uuid,
+            name,
+            uuid,
             version: 1,
-            rack: rack._id,
-            uPosition: req.body.uPosition,
-            notes: req.body.notes
+            rack: targetRack._id,
+            uPosition,
+            notes,
+            hardwareData: hardwareData || '',
+            ...extractHardwareData
          });
 
          const savedAsset = await asset.save();

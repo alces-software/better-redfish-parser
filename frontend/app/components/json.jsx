@@ -82,7 +82,7 @@ export default function Json() {
             </h1>
             <Link
                href={`/assets?id=${assetId}`}
-               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
+               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
             >
                Back
             </Link>

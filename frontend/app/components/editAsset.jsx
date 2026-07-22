@@ -94,16 +94,15 @@ export default function EditAsset() {
                Edit <em>{asset?.name ?? assetId}</em>
             </h1>
             <Link
-               href="/"
+               href={`/assets?id=${asset.uuid}`}
                className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
             >
                Cancel
             </Link>
          </div>
+
          <br />
          <hr />
-         <br />
-
          <br />
 
          <form

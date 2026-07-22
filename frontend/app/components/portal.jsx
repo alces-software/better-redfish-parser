@@ -12,13 +12,13 @@ export default function Portal() {
    const [racks, setRacks] = useState([]);
 
    useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlMode = params.get("mode");
+      const params = new URLSearchParams(window.location.search);
+      const urlMode = params.get('mode');
 
-    if (urlMode === "assets" || urlMode === "racks") {
-      setMode(urlMode);
-    }
-  }, []);
+      if (urlMode === 'assets' || urlMode === 'racks') {
+         setMode(urlMode);
+      }
+   }, []);
 
    useEffect(() => {
       async function getAssets() {

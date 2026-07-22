@@ -24,12 +24,14 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-         <body className="min-h-screen bg-gradient-to-r from-slate-900 via-sky-900
-               to-sky-800  mt-28 text-white">
-              <main className="mx-auto  px-5 ">
+         <body className="min-h-screen bg-slate-950 pt-28 text-white">
+            <div
+               aria-hidden="true"
+               className="fixed inset-0 z-0 bg-[linear-gradient(135deg,#0f172b_0%,#024a70_52%,#005986_100%)]"
+            />
+            <main className="relative z-10 mx-auto px-5">
                {children}
-
-    </main>
+            </main>
          </body>
       </html>
    );

@@ -5,9 +5,13 @@ require('dotenv').config();
 const express = require('express'),
    { readdirSync } = require('node:fs');
 
+const cors = require('cors');
+
 // Setup express
 const app = express();
 app.use(express.json());
+
+app.use(cors());
 
 // Load Endpoints
 const router = express.Router();

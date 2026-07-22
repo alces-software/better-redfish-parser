@@ -1,12 +1,30 @@
 'use client'
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
-export default function NewAsset() {
+export default function EditAsset() {
    const router = useRouter();
+   const searchParams = useSearchParams();
+   const assetId = searchParams.get('id');
+
+   const [asset, setAsset] = useState(null)
+
+
+      useEffect(() => {
+      async function getAsset() {
+         if (!assetId) return;
+
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${assetId}`);
+         const data = await res.json();
+         setAsset(data.body);
+      }
+      getAsset();
+   }, [assetId]);
+
    
+
    async function handleSubmit(event) {
       event.preventDefault();
 
@@ -14,7 +32,7 @@ export default function NewAsset() {
       const hardwareFile = formData.get('hardwareData');
       const hardwareData = hardwareFile?.size ? await hardwareFile.text() : '';
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${assetId}`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
@@ -36,16 +54,33 @@ export default function NewAsset() {
          return;
       }
 
+      setAsset(data.body);
       router.push(`/assets?id=${data.body.uuid}`);
       
    }
 
+   if (!assetId) {
+      return (
+         <div>
+            <h1 className="font-semibold text-4xl">Edit asset</h1>
+            <p className="mt-4 text-slate-300">No asset id was provided.</p>
+         </div>
+      );
+   }
 
+   if (!asset) {
+      return (
+         <div>
+            <h1 className="font-semibold text-4xl">Edit asset</h1>
+            <p className="mt-4 text-slate-300">Loading asset...</p>
+         </div>
+      );
+   }
 
    return (
     <div>
       <div className="flex items-center">
-         <h1 className="font-semibold text-4xl">New product</h1>
+         <h1 className="font-semibold text-4xl">Edit <em>{asset?.name ?? assetId}</em></h1>
          <Link
             href="/"
             className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
@@ -62,27 +97,27 @@ export default function NewAsset() {
 
    <div className="pl-2">
       <p className="p-1">Name</p>
-      <input name="name" type="text" className="m-1 rounded-lg border p-1 text-white" />
+      <input name="name" type="text" defaultValue={asset?.name ?? ''} className="m-1 rounded-lg border p-1 text-white" />
    </div>
 
    <div className="mt-2 pl-2">
       <p className="p-1">UUID</p>
-      <input name="uuid" type="text" className="m-1 rounded-lg border p-1 text-white" />
+      <input name="uuid" type="text" defaultValue={asset?.uuid ?? ''} className="m-1 rounded-lg border p-1 text-white" />
    </div>
 
    <div className="mt-2 pl-2">
       <p className="p-1">Rack</p>
-      <input name="rack" type="text" className="m-1 rounded-lg border p-1 text-white" />
+      <input name="rack" type="text" defaultValue={asset?.rack?._id ?? asset?.rack ?? ''} className="m-1 rounded-lg border p-1 text-white" />
    </div>
 
    <div className="mt-2 pl-2">
       <p className="p-1">U position</p>
-      <input name="uPosition" type="text" className="m-1 rounded-lg border p-1 text-white" />
+      <input name="uPosition" type="text" defaultValue={asset?.uPosition ?? ''} className="m-1 rounded-lg border p-1 text-white" />
    </div>
 
    <div className="mt-2 pl-2">
       <p className="p-1">Notes</p>
-      <input name="notes" type="text" className="m-1 rounded-lg border p-1 text-white" />
+      <input name="notes" type="text" defaultValue={asset?.notes ?? ''} className="m-1 rounded-lg border p-1 text-white" />
    </div>
 
    <div className="mt-2 pl-2">

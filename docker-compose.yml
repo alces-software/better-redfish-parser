@@ -1,4 +1,18 @@
 services:
+  frontend:
+    image: node:latest
+    container_name: frontend
+    ports:
+      - 3000:3000
+    working_dir: /srv/app
+    command: sh -c "npm install && npm run dev -- --hostname 0.0.0.0"
+    volumes:
+      - ./frontend:/srv/app
+      - frontend_node_modules:/srv/app/node_modules
+    depends_on:
+      - backend
+    tty: true
+
   backend:
     image: node:latest
     container_name: backend
@@ -20,3 +34,4 @@ services:
 
 volumes:
   dbdata6:
+  frontend_node_modules:

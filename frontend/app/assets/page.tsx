@@ -1,7 +1,5 @@
-import Asset from '../components/asset'
+import Asset from '../components/asset';
 
-export default function CreateAsset() {
-   return (
-      <Asset />
-   );
+export default function AssetsIndex() {
+   return <Asset />;
 }

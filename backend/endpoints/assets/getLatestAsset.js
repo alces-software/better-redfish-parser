@@ -1,4 +1,5 @@
-const Asset = require('../../models/Asset');
+const mongoose = require('mongoose'),
+   Asset = require('../../models/Asset');
 
 module.exports = {
    info: {
@@ -12,11 +13,13 @@ module.exports = {
     */
    async call(req, res) {
       try {
-         const asset = await Asset.findOne({
-            uuid: req.params.uuid
-         })
-            .sort({ version: -1 })
-            .populate('rack');
+         const asset = mongoose.Types.ObjectId.isValid(req.params.uuid)
+            ? await Asset.findById(req.params.uuid).populate('rack')
+            : await Asset.findOne({
+                 uuid: req.params.uuid
+              })
+                 .sort({ version: -1 })
+                 .populate('rack');
 
          if (!asset) {
             return res.status(404).json({ success: false, message: 'Asset not found' });

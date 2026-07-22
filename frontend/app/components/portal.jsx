@@ -1,16 +1,35 @@
 'use client'
 
+import Link from 'next/link';
 import { GoChevronDown } from "react-icons/go";
 import { FaPlus } from "react-icons/fa6";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const assets = ["System1", "Mars", "Cognition"]
 
-const racks = ["AB", "CD", "EF"]
 
 export default function Portal() {
       const [mode, setMode] = useState('assets');
+      const [assets, setAssets] = useState([])
+      const [racks, setRacks] = useState([])
+
+         useEffect(() => {
+      async function getAssets() {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`);
+         const data = await res.json();
+         setAssets(data.body);
+      }
+      getAssets();
+   }, []);
+
+       useEffect(() => {
+      async function getRacks() {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks`);
+         const data = await res.json();
+         setRacks(data.body);
+      }
+      getRacks();
+   }, []);
 
         function handleModeChange(nextMode) {
       if (nextMode === mode) return;
@@ -73,10 +92,8 @@ export default function Portal() {
                <div className="hidden bg-slate-800 border border-slate-800 rounded-lg group-hover:block">
 
                 {assets.map(asset => 
-                 <a key={asset} className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm" href="/sysinfos/<%= i.id%>">{asset} </a>
-
-
-                )}
+                 <Link key={asset._id} className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm" href={`/assets?id=${asset.uuid}`}>{asset.name} </Link>
+                 )}
 
 
 
@@ -107,7 +124,7 @@ export default function Portal() {
 
                 {racks.map(r => 
 
-                  <a key={r} className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm" href="/sysinfos/<%= i.id%>">{r}</a>
+                   <Link key={r._id} className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm" href={`/racks?id=${r._id}`}>{r.name} </Link>
                 )}
 
 
@@ -117,7 +134,7 @@ export default function Portal() {
             </div>
             <div className="relative">
 
-               <a href="<%= new_sysinfo_path %>" className="gap-2 inline-flex items-center justify-center w-44 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800">
+               <a href="/new-rack" className="gap-2 inline-flex items-center justify-center w-44 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800">
                   Create new rack <FaPlus/>
 
                </a>

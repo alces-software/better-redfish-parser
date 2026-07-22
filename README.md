@@ -25,3 +25,11 @@ PORT=3000
 run `docker compose up` in the root directory
 
 The system will be running on http://\<hostname>
+
+## Redfish Helper CLI
+
+If you would like to use the Redfish Helper CLI to collect Redfish data and generate JSON for this application, see the following repository:
+
+https://github.com/alces-software/redfish-helper-cli
+
+Follow the installation instructions in that repository, then use the generated JSON with this parser.

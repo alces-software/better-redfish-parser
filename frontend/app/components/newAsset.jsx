@@ -50,6 +50,7 @@ export default function NewAsset() {
                Cancel
             </Link>
          </div>
+
          <br />
          <hr />
          <br />
@@ -104,7 +105,7 @@ export default function NewAsset() {
                   type="submit"
                   className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1"
                >
-                  Edit Asset
+                  Create Asset
                </button>
             </div>
          </form>

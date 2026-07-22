@@ -50,7 +50,7 @@ export default function Portal() {
             <p className="mt-4">View, edit, or delete existing assets, or create a new one.</p>
          </div>
 
-         <div className="mb-8 flex justify-center">
+         <div className="mb-8 flex mt-6 justify-center">
             <div className="inline-flex items-center gap-5 rounded-2xl px-4 py-3 backdrop-blur-sm  sm:px-8 sm:py-4">
                <button
                   onClick={() => handleModeChange('assets')}

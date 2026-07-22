@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
+import { MdDelete, MdModeEdit } from 'react-icons/md';
 
 function formatDate(value) {
    if (!value) return '';
@@ -23,6 +24,10 @@ export default function AssetsPage() {
    const [historyIndex, setHistoryIndex] = useState(0);
 
    async function handleDelete() {
+      if (!confirm('Are you sure you want to delete this asset?')) {
+         return;
+      }
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${uuId}`, {
          method: 'DELETE',
          headers: {
@@ -85,7 +90,7 @@ export default function AssetsPage() {
                      <tr>
                         <th className="rounded-tl-lg p-4 pl-12">Asset Name</th>
                         <th className="p-4">Rack Position</th>
-                        <th className="p-4">Nuber of Slots</th>
+                        <th className="p-4">Number of Slots</th>
                         <th className="p-4">Notes</th>
                         <th className="p-4">Created on</th>
                         <th className="rounded-tr-lg p-4">Last Updated</th>
@@ -130,7 +135,7 @@ export default function AssetsPage() {
                {hardwareData ? (
                   <Link
                      href={`/json?id=${uuId}&version=${asset.version}`}
-                     className="cursor-pointer rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:bg-slate-900"
+                     className="cursor-pointer rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:bg-slate-900 hover:-translate-y-1"
                   >
                      View Json
                   </Link>
@@ -155,7 +160,7 @@ export default function AssetsPage() {
                )}
             </div>
 
-            <p className="mt-1 text-xs text-slate-300">
+            <p className="mt-3 text-xs text-slate-300">
                {history.length ? historyIndex + 1 : 0} / {history.length}
             </p>
          </div>
@@ -164,7 +169,7 @@ export default function AssetsPage() {
             <div className="col-start-1">
                <Link
                   href="/"
-                  className="inline-block rounded-full border border-slate-400 bg-slate-800 p-2 text-white transition hover:-translate-y-1"
+                  className="inline-block rounded-full border border-slate-400 bg-slate-800 p-2 text-white transition hover:-translate-y-1 hover:bg-slate-900 shadow-lg"
                >
                   Back
                </Link>
@@ -173,20 +178,20 @@ export default function AssetsPage() {
             <div className="col-start-3">
                <div className="flex justify-end gap-2">
                   <Link
-                     href={`/edit-asset?id=${uuId}`}
-                     className="inline-flex items-center gap-1 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1"
+                     href={`/edit-rack?id=${uuId}`}
+                     className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1 hover:bg-sky-700 shadow-lg"
                   >
+                     <MdModeEdit size={25} className="text-sky-200" />
                      <span>Edit</span>
-                     <span>✎</span>
                   </Link>
 
                   <button
                      onClick={handleDelete}
                      type="button"
-                     className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1"
+                     className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1 hover:bg-red-700 shadow-lg"
                   >
+                     <MdDelete size={25} className="text-red-200" />
                      <span>Delete</span>
-                     <span>🗑</span>
                   </button>
                </div>
             </div>

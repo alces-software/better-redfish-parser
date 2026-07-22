@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { MdDelete, MdModeEdit } from 'react-icons/md';
 
 export default function RacksPage() {
    const router = useRouter();
@@ -11,6 +12,10 @@ export default function RacksPage() {
    const [rack, setRack] = useState(null);
 
    async function handleDelete() {
+      if (!confirm('Are you sure you want to delete this rack?')) {
+         return;
+      }
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks/${rackId}`, {
          method: 'DELETE',
          headers: {
@@ -75,7 +80,7 @@ export default function RacksPage() {
             <div className="col-start-1">
                <Link
                   href="/"
-                  className="inline-block rounded-full border border-slate-400 bg-slate-800 p-2 text-white transition hover:-translate-y-1"
+                  className="inline-block rounded-full border border-slate-400 bg-slate-800 p-2 text-white transition hover:-translate-y-1 hover:bg-slate-900 shadow-lg"
                >
                   Back
                </Link>
@@ -85,19 +90,19 @@ export default function RacksPage() {
                <div className="flex justify-end gap-2">
                   <Link
                      href={`/edit-rack?id=${rackId}`}
-                     className="inline-flex items-center gap-1 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1"
+                     className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1 hover:bg-sky-700 shadow-lg"
                   >
+                     <MdModeEdit size={25} className="text-sky-200" />
                      <span>Edit</span>
-                     <span>✎</span>
                   </Link>
 
                   <button
                      onClick={handleDelete}
                      type="button"
-                     className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1"
+                     className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1 hover:bg-red-700 shadow-lg"
                   >
+                     <MdDelete size={25} className="text-red-200" />
                      <span>Delete</span>
-                     <span>🗑</span>
                   </button>
                </div>
             </div>

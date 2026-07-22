@@ -1,5 +1,69 @@
 const mongoose = require('mongoose');
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     AssetInput:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         uuid:
+ *           type: string
+ *         rack:
+ *           type: string
+ *         uPosition:
+ *           type: integer
+ *         notes:
+ *           type: string
+ *         hardwareData:
+ *           type: object
+ *     Asset:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         uuid:
+ *           type: string
+ *         version:
+ *           type: integer
+ *         rack:
+ *           $ref: '#/components/schemas/Rack'
+ *         uPosition:
+ *           type: integer
+ *         notes:
+ *           type: string
+ *         imported_json:
+ *           type: string
+ *         cores:
+ *           type: string
+ *         processor_name:
+ *           type: string
+ *         processor_count:
+ *           type: string
+ *         memory:
+ *           type: string
+ *         model:
+ *           type: string
+ *         serial_number:
+ *           type: string
+ *         manufacturer:
+ *           type: string
+ *         led:
+ *           type: string
+ *         description:
+ *           type: string
+ *       required:
+ *         - name
+ *         - uuid
+ *         - version
+ *         - rack
+ *         - uPosition
+ */
+
 const assetSchema = new mongoose.Schema({
    name: {
       type: String,

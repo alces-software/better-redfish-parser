@@ -6,6 +6,34 @@ module.exports = {
       endpoint: '/:uuid'
    },
    /**
+    * @openapi
+    * /api/assets/{uuid}:
+    *   get:
+    *     summary: Get the latest version of an asset by UUID
+    *     tags:
+    *       - Assets
+    *     parameters:
+    *       - in: path
+    *         name: uuid
+    *         required: true
+    *         schema:
+    *           type: string
+    *     responses:
+    *       '200':
+    *         description: OK
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 success:
+    *                   type: boolean
+    *                 body:
+    *                   $ref: '#/components/schemas/Asset'
+    *       '404':
+    *         description: Asset not found
+    */
+   /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res
     * @returns {Promise<void>}

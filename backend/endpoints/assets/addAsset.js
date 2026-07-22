@@ -2,6 +2,36 @@ const Asset = require('../../models/Asset');
 const Rack = require('../../models/Rack');
 const { extractData } = require('../../services/assetServices');
 
+/**
+ * @openapi
+ * /api/assets:
+ *   post:
+ *     summary: Create a new asset (initial version)
+ *     tags:
+ *       - Assets
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AssetInput'
+ *     responses:
+ *       '201':
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 body:
+ *                   $ref: '#/components/schemas/Asset'
+ *       '400':
+ *         description: Bad request
+ *       '409':
+ *         description: Conflict - asset exists
+ */
 module.exports = {
    info: {
       method: 'POST'

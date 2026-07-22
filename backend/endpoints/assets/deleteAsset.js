@@ -6,6 +6,34 @@ module.exports = {
       endpoint: '/:uuid'
    },
    /**
+    * @openapi
+    * /api/assets/{uuid}:
+    *   delete:
+    *     summary: Delete all versions of an asset by UUID
+    *     tags:
+    *       - Assets
+    *     parameters:
+    *       - in: path
+    *         name: uuid
+    *         required: true
+    *         schema:
+    *           type: string
+    *     responses:
+    *       '200':
+    *         description: Deleted
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 success:
+    *                   type: boolean
+    *                 deleted:
+    *                   type: integer
+    *       '400':
+    *         description: Bad request
+    */
+   /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res
     * @returns {Promise<void>}

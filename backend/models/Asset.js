@@ -145,7 +145,7 @@ const assetSchema = new mongoose.Schema({
          }
       ],
       default: []
-   },
+   }
 });
 
 assetSchema.index({ uuid: 1, version: 1 }, { unique: true });

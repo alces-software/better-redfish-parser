@@ -12,8 +12,8 @@ function extractData(json) {
    };
 
    if (data.rawRedfish) {
-      if (data.fans){
-         fans = data.fans.map(fan => {
+      if (data.fans) {
+         fans = data.fans.map((fan) => {
             return {
                name: fan['name'] || 'Not found',
                health: fan['health'] || 'Not found',
@@ -29,8 +29,7 @@ function extractData(json) {
 
       toAdd.fans = fans || [];
 
-
-      data = data.rawRedfish.system
+      data = data.rawRedfish.system;
    }
 
    const processorSummary = data['ProcessorSummary'] || {};

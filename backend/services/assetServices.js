@@ -8,7 +8,8 @@ function extractData(json) {
    }
 
    let toAdd = {
-      fans: []
+      fans: [],
+      ethernetInterfaces: []
    };
 
    if (data.rawRedfish) {
@@ -24,10 +25,25 @@ function extractData(json) {
             };
          });
 
-         console.log('Fans:', fans);
+         toAdd.fans = fans || [];
       }
 
-      toAdd.fans = fans || [];
+      if (data.ethernetInterfaces) {
+         const ethernetInterfaces = data.ethernetInterfaces.map((interface) => {
+            return {
+               id: interface['id'] || 'Not found',
+               description: interface['description'] || 'Not found',
+               macAddress: interface['macAddress'] || 'Not found',
+               permanentMacAddress: interface['permanentMacaddress'] || 'Not found',
+               speedMbps: interface['speedMbps'] || 'Not found',
+               state: interface['state'] || 'Not found',
+               health: interface['health'] || 'Not found',
+               linkStatus: interface['linkStatus'] || 'Not found',
+               enabled: interface['enabled'] || 'Not found'
+            };
+         });
+         toAdd.ethernetInterfaces = ethernetInterfaces || [];
+      }
 
       data = data.rawRedfish.system;
    }

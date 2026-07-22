@@ -145,6 +145,22 @@ const assetSchema = new mongoose.Schema({
          }
       ],
       default: []
+   },
+   ethernetInterfaces: {
+      type: [
+         {
+            name: { type: String, default: 'Not found' },
+            description: { type: String, default: 'Not found' },
+            macAddress: { type: String, default: 'Not found' },
+            permanentMacAddress: { type: String, default: 'Not found' },
+            speedMbps: { type: String, default: 'Not found' },
+            state: { type: String, default: 'Not found' },
+            health: { type: String, default: 'Not found' },
+            linkStatus: { type: String, default: 'Not found' },
+            enabled: { type: String, default: 'Not found' }
+         }
+      ],
+      default: []
    }
 });
 

@@ -29,7 +29,7 @@ export default function RootLayout({
                aria-hidden="true"
                className="fixed inset-0 z-0 bg-[linear-gradient(135deg,#0f172b_0%,#024a70_52%,#005986_100%)]"
             />
-            <main className="relative z-10 mx-auto px-5">{children}</main>
+            <main className="relative z-10 mx-auto px-5 max-w-250">{children}</main>
          </body>
       </html>
    );

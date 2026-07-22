@@ -125,7 +125,7 @@ export default function EditAsset() {
                <p className="p-1">Rack</p>
                <select
                   name="rack"
-                  defaultValue={asset?.rack?._id ?? asset?.rack ?? ''}
+                  defaultValue={asset?.rack?._id ?? ''}
                   className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
                >
                   <option value="">Select a rack</option>

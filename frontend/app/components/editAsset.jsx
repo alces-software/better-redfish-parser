@@ -10,6 +10,16 @@ export default function EditAsset() {
    const assetId = searchParams.get('id');
 
    const [asset, setAsset] = useState(null);
+   const [racks, setRacks] = useState([]);
+
+   useEffect(() => {
+      async function getRacks() {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks`);
+         const data = await res.json();
+         setRacks(data.body);
+      }
+      getRacks();
+   }, []);
 
    useEffect(() => {
       async function getAsset() {
@@ -94,6 +104,8 @@ export default function EditAsset() {
          <hr />
          <br />
 
+         <br />
+
          <form
             onSubmit={handleSubmit}
             className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl"
@@ -106,28 +118,25 @@ export default function EditAsset() {
                   name="name"
                   type="text"
                   defaultValue={asset?.name ?? ''}
-                  className="m-1 rounded-lg border p-1 text-white"
-               />
-            </div>
-
-            <div className="mt-2 pl-2">
-               <p className="p-1">UUID</p>
-               <input
-                  name="uuid"
-                  type="text"
-                  defaultValue={asset?.uuid ?? ''}
-                  className="m-1 rounded-lg border p-1 text-white"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
                />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="p-1">Rack</p>
-               <input
+               <select
                   name="rack"
-                  type="text"
                   defaultValue={asset?.rack?._id ?? asset?.rack ?? ''}
-                  className="m-1 rounded-lg border p-1 text-white"
-               />
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               >
+                  <option value="">Select a rack</option>
+
+                  {racks.map((rack) => (
+                     <option key={rack._id} value={rack._id}>
+                        {rack.name}
+                     </option>
+                  ))}
+               </select>
             </div>
 
             <div className="mt-2 pl-2">
@@ -136,7 +145,7 @@ export default function EditAsset() {
                   name="uPosition"
                   type="text"
                   defaultValue={asset?.uPosition ?? ''}
-                  className="m-1 rounded-lg border p-1 text-white"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
                />
             </div>
 
@@ -146,7 +155,7 @@ export default function EditAsset() {
                   name="notes"
                   type="text"
                   defaultValue={asset?.notes ?? ''}
-                  className="m-1 rounded-lg border p-1 text-white"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
                />
             </div>
 

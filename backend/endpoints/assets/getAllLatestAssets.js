@@ -1,31 +1,34 @@
 const Asset = require('../../models/Asset');
 
+/**
+ * @openapi
+ * /api/assets:
+ *   get:
+ *     summary: Get latest version of all assets
+ *     tags:
+ *       - Assets
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 body:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Asset'
+ *       '500':
+ *         description: Server error
+ */
 module.exports = {
    info: {
       method: 'GET'
    },
-   /**
-    * @openapi
-    * /api/assets:
-    *   get:
-    *     summary: Get latest version of all assets
-    *     tags:
-    *       - Assets
-    *     responses:
-    *       '200':
-    *         description: OK
-    *         content:
-    *           application/json:
-    *             schema:
-    *               type: object
-    *               properties:
-    *                 success:
-    *                   type: boolean
-    *                 body:
-    *                   type: array
-    *                   items:
-    *                     $ref: '#/components/schemas/Asset'
-    */
+
    /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res

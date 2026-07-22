@@ -29,8 +29,12 @@ const { extractData } = require('../../services/assetServices');
  *                   $ref: '#/components/schemas/Asset'
  *       '400':
  *         description: Bad request
+ *       '404':
+ *         description: Rack not found
  *       '409':
- *         description: Conflict - asset exists
+ *         description: Asset already exists
+ *       '500':
+ *         description: Server error
  */
 module.exports = {
    info: {

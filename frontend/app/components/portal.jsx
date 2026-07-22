@@ -7,18 +7,16 @@ import { FaPlus } from 'react-icons/fa6';
 import { useState, useEffect } from 'react';
 
 export default function Portal() {
-   const [mode, setMode] = useState('assets');
-   const [assets, setAssets] = useState([]);
-   const [racks, setRacks] = useState([]);
+   const [mode, setMode] = useState(() => {
+      if (typeof window === 'undefined') return 'assets';
 
-   useEffect(() => {
       const params = new URLSearchParams(window.location.search);
       const urlMode = params.get('mode');
 
-      if (urlMode === 'assets' || urlMode === 'racks') {
-         setMode(urlMode);
-      }
-   }, []);
+      return urlMode === 'assets' || urlMode === 'racks' ? urlMode : 'assets';
+   });
+   const [assets, setAssets] = useState([]);
+   const [racks, setRacks] = useState([]);
 
    useEffect(() => {
       async function getAssets() {

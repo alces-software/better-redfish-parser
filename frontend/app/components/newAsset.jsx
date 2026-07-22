@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -48,10 +48,7 @@ export default function NewAsset
       }
 
       router.push(`/assets?id=${data.body.uuid}`);
-
    }
-
-
 
    return (
       <div>
@@ -120,7 +117,6 @@ export default function NewAsset
 
             <div className="my-4 flex justify-end px-4">
                <button
-
                   type="submit"
                   className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1"
                >

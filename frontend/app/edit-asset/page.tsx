@@ -1,7 +1,10 @@
+import { Suspense } from 'react';
 import EditAsset from '../components/editAsset';
 
 export default function CreateAsset() {
    return (
-      <EditAsset />
+      <Suspense fallback={<div>Loading...</div>}>
+         <EditAsset />
+      </Suspense>
    );
 }

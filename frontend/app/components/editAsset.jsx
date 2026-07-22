@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -21,8 +21,7 @@ export default function EditAsset() {
       getRacks();
    }, []);
 
-
-      useEffect(() => {
+   useEffect(() => {
       async function getAsset() {
          if (!assetId) return;
 
@@ -32,8 +31,6 @@ export default function EditAsset() {
       }
       getAsset();
    }, [assetId]);
-
-   
 
    async function handleSubmit(event) {
       event.preventDefault();
@@ -66,7 +63,6 @@ export default function EditAsset() {
 
       setAsset(data.body);
       router.push(`/assets?id=${data.body.uuid}`);
-      
    }
 
    if (!assetId) {
@@ -88,18 +84,24 @@ export default function EditAsset() {
    }
 
    return (
-    <div>
-      <div className="flex items-center">
-         <h1 className="font-semibold text-4xl">Edit <em>{asset?.name ?? assetId}</em></h1>
-         <Link
-            href="/"
-            className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
-         >
-            Cancel
-         </Link>
-      </div>
-        <br/>
-  <hr/>
+      <div>
+         <div className="flex items-center">
+            <h1 className="font-semibold text-4xl">
+               Edit <em>{asset?.name ?? assetId}</em>
+            </h1>
+            <Link
+               href="/"
+               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
+            >
+               Cancel
+            </Link>
+         </div>
+         <br />
+         <hr />
+         <br />
+
+       
+
   <br/>
 
   <form onSubmit={handleSubmit} className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">

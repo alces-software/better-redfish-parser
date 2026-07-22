@@ -1,16 +1,21 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { MdDelete, MdModeEdit } from 'react-icons/md';
 
 export default function RacksPage() {
-       const router = useRouter();
+   const router = useRouter();
    const searchParams = useSearchParams();
    const rackId = searchParams.get('id');
    const [rack, setRack] = useState(null);
 
    async function handleDelete() {
+      if (!confirm('Are you sure you want to delete this rack?')) {
+         return;
+      }
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks/${rackId}`, {
          method: 'DELETE',
          headers: {
@@ -52,10 +57,8 @@ export default function RacksPage() {
                      <tr>
                         <th className="rounded-tl-lg p-4 pl-12">Name</th>
                         <th className="p-4">Size</th>
-                      
+
                         <th className="p-4 rounded-tr-lg">Notes</th>
-                        
-                        
                      </tr>
                   </thead>
 
@@ -64,25 +67,20 @@ export default function RacksPage() {
                         <tr>
                            <td className="rounded-bl-lg p-4 pl-12">{rack.name}</td>
                            <td className="p-4">{rack.size}</td>
-                       
+
                            <td className="p-4 rounded-br-lg">{rack.notes}</td>
-                          
                         </tr>
                      )}
                   </tbody>
                </table>
             </div>
-
-          
-
-          
          </div>
 
          <div className="mt-25 grid grid-cols-3 gap-2">
             <div className="col-start-1">
                <Link
                   href="/"
-                  className="inline-block rounded-full border border-slate-400 bg-slate-800 p-2 text-white transition hover:-translate-y-1"
+                  className="inline-block rounded-full border border-slate-400 bg-slate-800 p-2 text-white transition hover:-translate-y-1 hover:bg-slate-900 shadow-lg"
                >
                   Back
                </Link>
@@ -92,19 +90,21 @@ export default function RacksPage() {
                <div className="flex justify-end gap-2">
                   <Link
                      href={`/edit-rack?id=${rackId}`}
-                     className="inline-flex items-center gap-1 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1"
+                     className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1 hover:bg-sky-700 shadow-lg"
                   >
+                   
                      <span>Edit</span>
-                     <span>✎</span>
+                       <MdModeEdit size={25} className="text-sky-200" />
                   </Link>
 
                   <button
-                  onClick={handleDelete}
+                     onClick={handleDelete}
                      type="button"
-                     className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1"
+                     className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1 hover:bg-red-700 shadow-lg"
                   >
+                   
                      <span>Delete</span>
-                     <span>🗑</span>
+                       <MdDelete size={25} className="text-red-200" />
                   </button>
                </div>
             </div>

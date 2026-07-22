@@ -1,4 +1,5 @@
-const Asset = require('../../models/Asset');
+const mongoose = require('mongoose'),
+   Asset = require('../../models/Asset');
 
 /**
  * @openapi

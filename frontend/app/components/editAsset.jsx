@@ -9,8 +9,8 @@ export default function EditAsset() {
    const searchParams = useSearchParams();
    const assetId = searchParams.get('id');
 
-   const [asset, setAsset] = useState(null)
-   const [racks, setRacks] = useState([])
+   const [asset, setAsset] = useState(null);
+   const [racks, setRacks] = useState([]);
 
    useEffect(() => {
       async function getRacks() {
@@ -100,71 +100,80 @@ export default function EditAsset() {
          <hr />
          <br />
 
-       
+         <br />
 
-  <br/>
+         <form
+            onSubmit={handleSubmit}
+            className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl"
+         >
+            <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Asset details</h2>
 
-  <form onSubmit={handleSubmit} className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
-   <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Asset details</h2>
+            <div className="pl-2">
+               <p className="p-1">Name</p>
+               <input
+                  name="name"
+                  type="text"
+                  defaultValue={asset?.name ?? ''}
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
+            </div>
 
-   <div className="pl-2">
-      <p className="p-1">Name</p>
-      <input name="name" type="text" defaultValue={asset?.name ?? ''} className="m-1 h-9 w-58 rounded-lg border p-1 text-white" />
-   </div>
+            <div className="mt-2 pl-2">
+               <p className="p-1">Rack</p>
+               <select
+                  name="rack"
+                  defaultValue={asset?.rack?._id ?? asset?.rack ?? ''}
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               >
+                  <option value="">Select a rack</option>
 
-  
+                  {racks.map((rack) => (
+                     <option key={rack._id} value={rack._id}>
+                        {rack.name}
+                     </option>
+                  ))}
+               </select>
+            </div>
 
-   <div className="mt-2 pl-2">
-      <p className="p-1">Rack</p>
-      <select
-   name="rack"
-   defaultValue={asset?.rack?._id ?? asset?.rack ?? ''}
-   className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
->
-   <option value="">Select a rack</option>
+            <div className="mt-2 pl-2">
+               <p className="p-1">U position</p>
+               <input
+                  name="uPosition"
+                  type="text"
+                  defaultValue={asset?.uPosition ?? ''}
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
+            </div>
 
-   {racks.map((rack) => (
-      <option key={rack._id} value={rack._id}>
-         {rack.name}
-      </option>
-   ))}
-</select>
-   </div>
+            <div className="mt-2 pl-2">
+               <p className="p-1">Notes</p>
+               <input
+                  name="notes"
+                  type="text"
+                  defaultValue={asset?.notes ?? ''}
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
+            </div>
 
-   <div className="mt-2 pl-2">
-      <p className="p-1">U position</p>
-      <input name="uPosition" type="text" defaultValue={asset?.uPosition ?? ''} className="m-1 h-9 w-58 rounded-lg border p-1 text-white" />
-   </div>
+            <div className="mt-2 pl-2">
+               <p className="p-1">Hardware Data</p>
+               <input
+                  name="hardwareData"
+                  type="file"
+                  accept="application/json,.json,.txt"
+                  className="m-1 cursor-pointer rounded-full border border-gray-600 bg-gray-600 p-2"
+               />
+            </div>
 
-   <div className="mt-2 pl-2">
-      <p className="p-1">Notes</p>
-      <input name="notes" type="text" defaultValue={asset?.notes ?? ''} className="m-1 h-9 w-58 rounded-lg border p-1 text-white" />
-   </div>
-
-   <div className="mt-2 pl-2">
-      <p className="p-1">Hardware Data</p>
-      <input
-         name="hardwareData"
-         type="file"
-         accept="application/json,.json,.txt"
-         className="m-1 cursor-pointer rounded-full border border-gray-600 bg-gray-600 p-2"
-      />
-   </div>
-
-   <div className="my-4 flex justify-end px-4">
-      <button
-    
-         type="submit"
-         className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1"
-      >
-         Edit Asset
-      </button>
-      
-
-   </div>
-</form>
-
+            <div className="my-4 flex justify-end px-4">
+               <button
+                  type="submit"
+                  className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1"
+               >
+                  Edit Asset
+               </button>
+            </div>
+         </form>
       </div>
-      
    );
 }

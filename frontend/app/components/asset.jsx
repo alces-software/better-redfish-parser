@@ -181,7 +181,6 @@ export default function AssetsPage() {
                      href={`/edit-asset?id=${uuId}`}
                      className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1 hover:bg-sky-700 shadow-lg"
                   >
-                     
                      <span>Edit</span>
                      <MdModeEdit size={25} className="text-sky-200" />
                   </Link>
@@ -191,7 +190,6 @@ export default function AssetsPage() {
                      type="button"
                      className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-400 bg-red-900 p-2 transition hover:-translate-y-1 hover:bg-red-700 shadow-lg"
                   >
-                     
                      <span>Delete</span>
                      <MdDelete size={25} className="text-red-200" />
                   </button>

@@ -4,10 +4,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function NewAsset
-() {
+export default function NewAsset() {
    const router = useRouter();
-   const [racks, setRacks] = useState([])
+   const [racks, setRacks] = useState([]);
 
    useEffect(() => {
       async function getRacks() {
@@ -65,24 +64,35 @@ export default function NewAsset
          <hr />
          <br />
 
-         <form onSubmit={handleSubmit} className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
+         <form
+            onSubmit={handleSubmit}
+            className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl"
+         >
             <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Asset details</h2>
 
             <div className="pl-2">
                <p className="p-1">Name</p>
-               <input name="name" type="text" className="m-1 h-9 w-58 rounded-lg border p-1 text-white" />
+               <input
+                  name="name"
+                  type="text"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="p-1">UUID</p>
-               <input name="uuid" type="text" className="m-1 h-9 w-58 rounded-lg border p-1 text-white" />
+               <input
+                  name="uuid"
+                  type="text"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="p-1">Rack</p>
                <select
                   name="rack"
-                
+
                   className="m-1 rounded-lg  h-9 w-58 border p-1 text-white"
                >
                   <option value="">Select a rack</option>
@@ -97,12 +107,20 @@ export default function NewAsset
 
             <div className="mt-2 pl-2">
                <p className="p-1">U position</p>
-               <input name="uPosition" type="text" className="m-1 h-9 w-58 rounded-lg border p-1 text-white" />
+               <input
+                  name="uPosition"
+                  type="text"
+                  className="m-1 h-9 w-58 rounded-lg border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
                <p className="p-1">Notes</p>
-               <input name="notes" type="text" className="m-1 rounded-lg h-9 w-58 border p-1 text-white" />
+               <input
+                  name="notes"
+                  type="text"
+                  className="m-1 rounded-lg h-9 w-58 border p-1 text-white"
+               />
             </div>
 
             <div className="mt-2 pl-2">
@@ -122,12 +140,8 @@ export default function NewAsset
                >
                   Create Asset
                </button>
-
-
             </div>
          </form>
-
       </div>
-
    );
 }

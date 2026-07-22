@@ -7,6 +7,9 @@ function extractData(json) {
       data = {};
    }
 
+   // Use rawRedfish if exists if not just use original data
+   data = data.rawRedfish?.system || data;
+
    const processorSummary = data['ProcessorSummary'] || {};
    const memorySummary = data['MemorySummary'] || {};
 

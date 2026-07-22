@@ -45,6 +45,19 @@ function extractData(json) {
          toAdd.ethernetInterfaces = ethernetInterfaces || [];
       }
 
+      if (data.bootOptions) {
+         const bootOptions = data.bootOptions.map((option) => {
+            return {
+               position: option['position'] || 'Not found',
+               id: option['id'] || 'Not found',
+               displayName: option['displayName'] || 'Not found',
+               enabled: option['enabled'] || 'Not found',
+               devicePath: option['devicePath'] || 'Not found'
+            };
+         });
+         toAdd.bootOptions = bootOptions || [];
+      }
+
       data = data.rawRedfish.system;
    }
 

@@ -9,7 +9,13 @@ export const metadata: Metadata = {
 
 export default function CreateRack() {
    return (
-      <Suspense fallback={<div><Loading/></div>}>
+      <Suspense
+         fallback={
+            <div>
+               <Loading />
+            </div>
+         }
+      >
          <NewRack />
       </Suspense>
    );

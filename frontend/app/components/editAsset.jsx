@@ -73,7 +73,7 @@ export default function EditAsset() {
    if (!assetId) {
       return (
          <div>
-            <Loading/>
+            <Loading />
          </div>
       );
    }

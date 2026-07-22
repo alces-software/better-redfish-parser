@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Loading from "../components/loading"
+import Loading from '../components/loading';
 
 function prettyPrintJson(value) {
    if (!value) return '';
@@ -45,7 +45,7 @@ export default function Json() {
    if (!assetId) {
       return (
          <section>
-           <Loading/>
+            <Loading />
          </section>
       );
    }

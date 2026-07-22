@@ -69,7 +69,7 @@ export default function EditRack() {
       return (
          <div>
             <h1 className="font-semibold text-4xl">Edit rack</h1>
-             <Loading/>
+            <Loading />
          </div>
       );
    }

@@ -71,7 +71,7 @@ module.exports = {
             rack: targetRack._id,
             uPosition,
             notes,
-            hardwareData: hardwareData || '',
+            imported_json: hardwareData || '',
             ...extractHardwareData
          });
 

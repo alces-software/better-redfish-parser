@@ -79,7 +79,7 @@ export default function AssetsPage() {
 
    return (
       <div>
-         <h1 className="font-semibold text-4xl">
+         <h1 className="font-semibold text-center md:text-left text-4xl">
             System information for <em>{asset?.name ?? uuId}</em>
          </h1>
 

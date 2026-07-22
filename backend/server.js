@@ -25,12 +25,16 @@ app.use(router);
 const routes = [];
 readdirSync(`${__dirname}/endpoints`).forEach((dir) => {
    readdirSync(`${__dirname}/endpoints/${dir}`).forEach((endpoint) => {
-      const { info, call } = require(`./endpoints/${dir}/${endpoint}`);
-      routes.push({
-         method: info.method.toLowerCase(),
-         path: `/${dir}${info.endpoint || ''}`,
-         call
-      });
+      if (endpoint.endsWith('.js')) {
+         const { info, call } = require(`./endpoints/${dir}/${endpoint}`);
+         if (info && call) {
+            routes.push({
+               method: info.method.toLowerCase(),
+               path: `/${dir}${info.endpoint || ''}`,
+               call
+            });
+         }
+      }
    });
 });
 

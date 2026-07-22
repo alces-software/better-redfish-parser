@@ -1,39 +1,42 @@
 const Rack = require('../../models/Rack'),
    Asset = require('../../models/Asset');
 
+/**
+ * @openapi
+ * /api/racks/{id}:
+ *   delete:
+ *     summary: Delete a rack and its assets
+ *     tags:
+ *       - Racks
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Server error
+ */
 module.exports = {
    info: {
       method: 'DELETE',
       endpoint: '/:id'
    },
-   /**
-    * @openapi
-    * /api/racks/{id}:
-    *   delete:
-    *     summary: Delete a rack and its assets
-    *     tags:
-    *       - Racks
-    *     parameters:
-    *       - in: path
-    *         name: id
-    *         required: true
-    *         schema:
-    *           type: string
-    *     responses:
-    *       '200':
-    *         description: Deleted
-    *         content:
-    *           application/json:
-    *             schema:
-    *               type: object
-    *               properties:
-    *                 success:
-    *                   type: boolean
-    *                 message:
-    *                   type: string
-    *       '404':
-    *         description: Not found
-    */
+
    /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res

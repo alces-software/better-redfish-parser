@@ -1,5 +1,10 @@
 import { Suspense } from 'react';
 import Asset from '../components/asset';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+   title: 'Asset'
+};
 
 export default function AssetsIndex() {
    return (

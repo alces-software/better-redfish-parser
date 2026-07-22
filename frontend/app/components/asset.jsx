@@ -206,7 +206,7 @@ export default function AssetsPage() {
             </p>
          </div>
 
-         <div className="mt-25 grid grid-cols-3 gap-2">
+         <div className="mt-7 grid grid-cols-3 gap-2">
             <div className="col-start-1">
                <Link
                   href="/?mode=assets"

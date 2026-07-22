@@ -1,24 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { GoChevronDown } from 'react-icons/go';
 import { FaPlus } from 'react-icons/fa6';
 
 import { useState, useEffect } from 'react';
 
 export default function Portal() {
-   const [mode, setMode] = useState('assets');
+   const searchParams = useSearchParams();
+   const urlMode = searchParams.get('mode');
+   const initialMode = urlMode === 'assets' || urlMode === 'racks' ? urlMode : 'assets';
+   const [mode, setMode] = useState(initialMode);
    const [assets, setAssets] = useState([]);
    const [racks, setRacks] = useState([]);
-
-   useEffect(() => {
-      const params = new URLSearchParams(window.location.search);
-      const urlMode = params.get('mode');
-
-      if (urlMode === 'assets' || urlMode === 'racks') {
-         setMode(urlMode);
-      }
-   }, []);
 
    useEffect(() => {
       async function getAssets() {

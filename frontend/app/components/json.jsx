@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Loading from '../components/loading';
 
 function prettyPrintJson(value) {
    if (!value) return '';
@@ -44,8 +45,7 @@ export default function Json() {
    if (!assetId) {
       return (
          <section>
-            <h1 className="font-semibold text-4xl">JSON import</h1>
-            <p className="mt-4 text-slate-300">No asset id was provided.</p>
+            <Loading />
          </section>
       );
    }

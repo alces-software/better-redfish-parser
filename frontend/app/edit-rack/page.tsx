@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import EditRack from '../components/editRack';
+import Loading from '../components/loading';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,7 +9,13 @@ export const metadata: Metadata = {
 
 export default function EditRackPage() {
    return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+         fallback={
+            <div>
+               <Loading />
+            </div>
+         }
+      >
          <EditRack />
       </Suspense>
    );

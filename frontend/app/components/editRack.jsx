@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Loading from './loading';
 
 export default function EditRack() {
    const router = useRouter();
@@ -68,7 +69,7 @@ export default function EditRack() {
       return (
          <div>
             <h1 className="font-semibold text-4xl">Edit rack</h1>
-            <p className="mt-4 text-slate-300">Loading rack...</p>
+            <Loading />
          </div>
       );
    }

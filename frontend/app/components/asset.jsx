@@ -84,76 +84,76 @@ export default function AssetsPage() {
          </h1>
 
          <div className="mt-15 flex flex-col items-center justify-center">
-         <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6">
-            {asset && (
-               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
-                  <div>
-                     <span className="text-slate-500 text-sm">Asset Name</span>
-                     <p>{asset.name}</p>
-                  </div>
+            <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6">
+               {asset && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
+                     <div>
+                        <span className="text-slate-500 text-sm">Asset Name</span>
+                        <p>{asset.name}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Rack Position</span>
-                     <p>{asset.uPosition}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Rack Position</span>
+                        <p>{asset.uPosition}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Number of Slots</span>
-                     <p>{asset.version}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Number of Slots</span>
+                        <p>{asset.version}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Manufacturer</span>
-                     <p>{asset.manufacturer}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Manufacturer</span>
+                        <p>{asset.manufacturer}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Model</span>
-                     <p>{asset.model}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Model</span>
+                        <p>{asset.model}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Serial Number</span>
-                     <p>{asset.serial_number}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Serial Number</span>
+                        <p>{asset.serial_number}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Processor</span>
-                     <p>{asset.processor_name}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Processor</span>
+                        <p>{asset.processor_name}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Processor Count</span>
-                     <p>{asset.processor_count}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Processor Count</span>
+                        <p>{asset.processor_count}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Cores</span>
-                     <p>{asset.cores}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Cores</span>
+                        <p>{asset.cores}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Memory</span>
-                     <p>{asset.memory}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Memory</span>
+                        <p>{asset.memory}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">LED Status</span>
-                     <p>{asset.led}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">LED Status</span>
+                        <p>{asset.led}</p>
+                     </div>
 
-                  <div>
-                     <span className="text-slate-500 text-sm">Notes</span>
-                     <p>{asset.notes}</p>
-                  </div>
+                     <div>
+                        <span className="text-slate-500 text-sm">Notes</span>
+                        <p>{asset.notes}</p>
+                     </div>
 
-                  <div className="col-span-full">
-                     <span className="text-slate-500 text-sm">Description</span>
-                     <p>{asset.description}</p>
+                     <div className="col-span-full">
+                        <span className="text-slate-500 text-sm">Description</span>
+                        <p>{asset.description}</p>
+                     </div>
                   </div>
-               </div>
-            )}
-         </div>
+               )}
+            </div>
 
             <div className="mt-4 flex items-center justify-center gap-1">
                {hasPrevious ? (

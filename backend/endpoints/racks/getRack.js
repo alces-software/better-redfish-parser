@@ -1,38 +1,41 @@
 const Rack = require('../../models/Rack');
 
+/**
+ * @openapi
+ * /api/racks/{id}:
+ *   get:
+ *     summary: Get a rack by ID
+ *     tags:
+ *       - Racks
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 body:
+ *                   $ref: '#/components/schemas/Rack'
+ *       '404':
+ *         description: Not found
+ *       '500':
+ *         description: Server error
+ */
 module.exports = {
    info: {
       method: 'GET',
       endpoint: '/:id'
    },
-   /**
-    * @openapi
-    * /api/racks/{id}:
-    *   get:
-    *     summary: Get a rack by ID
-    *     tags:
-    *       - Racks
-    *     parameters:
-    *       - in: path
-    *         name: id
-    *         required: true
-    *         schema:
-    *           type: string
-    *     responses:
-    *       '200':
-    *         description: OK
-    *         content:
-    *           application/json:
-    *             schema:
-    *               type: object
-    *               properties:
-    *                 success:
-    *                   type: boolean
-    *                 body:
-    *                   $ref: '#/components/schemas/Rack'
-    *       '404':
-    *         description: Not found
-    */
+
    /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res

@@ -44,6 +44,7 @@ export default function NewRack() {
                Cancel
             </Link>
          </div>
+
          <br />
          <hr />
          <br />

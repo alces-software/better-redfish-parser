@@ -168,7 +168,7 @@ export default function AssetsPage() {
          <div className="mt-25 grid grid-cols-3 gap-2">
             <div className="col-start-1">
                <Link
-                  href="/"
+                  href="/?mode=assets"
                   className="inline-block rounded-full border border-slate-400 bg-slate-800 p-2 text-white transition hover:-translate-y-1 hover:bg-slate-900 shadow-lg"
                >
                   Back

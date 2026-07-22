@@ -8,6 +8,41 @@ module.exports = {
    },
 
    /**
+    * @openapi
+    * /api/assets/{uuid}:
+    *   post:
+    *     summary: Create a new version for an existing asset
+    *     tags:
+    *       - Assets
+    *     parameters:
+    *       - in: path
+    *         name: uuid
+    *         required: true
+    *         schema:
+    *           type: string
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             $ref: '#/components/schemas/AssetInput'
+    *     responses:
+    *       '201':
+    *         description: Created
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 success:
+    *                   type: boolean
+    *                 body:
+    *                   $ref: '#/components/schemas/Asset'
+    *       '404':
+    *         description: Asset not found
+    */
+
+   /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res
     * @returns {Promise<void>}

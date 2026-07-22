@@ -5,6 +5,32 @@ module.exports = {
       method: 'POST'
    },
    /**
+    * @openapi
+    * /api/racks:
+    *   post:
+    *     summary: Create a new rack
+    *     tags:
+    *       - Racks
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             $ref: '#/components/schemas/RackInput'
+    *     responses:
+    *       '201':
+    *         description: Created
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: object
+    *               properties:
+    *                 success:
+    *                   type: boolean
+    *                 body:
+    *                   $ref: '#/components/schemas/Rack'
+    */
+   /**
     * @param {import('express').Request} req
     * @param {import('express').Response} res
     * @returns {Promise<void>}

@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-         <body className="min-h-screen bg-slate-950 pt-28 text-white">
+         <body className="min-h-screen bg-slate-950 p-28 text-white">
             <div
                aria-hidden="true"
                className="fixed inset-0 z-0 bg-[linear-gradient(135deg,#0f172b_0%,#024a70_52%,#005986_100%)]"

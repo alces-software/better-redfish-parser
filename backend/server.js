@@ -52,7 +52,7 @@ routes
    }))
    .sort((a, b) => b.score - a.score)
    .forEach(({ method, path, call }) => {
-      router[method](`/api${path.startsWith('/') ? path : `/${path}`}`, call);
+      router[method](`${path.startsWith('/') ? path : `/${path}`}`, call);
    });
 
 // Connect to the database

@@ -12,7 +12,7 @@ Create `.env` files in the frontend and backend folders
 
 In `frontend/.env`:
 ```
-NEXT_PUBLIC_API_URL=http://<hostname>:81
+NEXT_PUBLIC_API_URL=http://<hostname>/api
 ```
 
 In `backend/.env`:
@@ -23,3 +23,5 @@ PORT=3000
 ```
 
 run `docker compose up` in the root directory
+
+The system will be running on http://\<hostname>

@@ -85,7 +85,8 @@ module.exports = {
             led: extractHardwareData.led ?? current.led,
             description: extractHardwareData.description ?? current.description,
             fans: extractHardwareData.fans ?? current.fans,
-            ethernetInterfaces: extractHardwareData.ethernetInterfaces ?? current.ethernetInterfaces,
+            ethernetInterfaces:
+               extractHardwareData.ethernetInterfaces ?? current.ethernetInterfaces,
             bootOptions: extractHardwareData.bootOptions ?? current.bootOptions
          });
 

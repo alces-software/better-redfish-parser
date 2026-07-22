@@ -12,6 +12,15 @@ export default function Portal() {
    const [racks, setRacks] = useState([]);
 
    useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const urlMode = params.get('mode');
+
+      if (urlMode === 'assets' || urlMode === 'racks') {
+         setMode(urlMode);
+      }
+   }, []);
+
+   useEffect(() => {
       async function getAssets() {
          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`);
          const data = await res.json();

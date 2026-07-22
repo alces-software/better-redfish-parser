@@ -26,6 +26,10 @@ export default function EditRack() {
    async function handleSubmit(event) {
       event.preventDefault();
 
+      if (!confirm('Are you sure you want to save these changes?')) {
+         return;
+      }
+
       const formData = new FormData(event.currentTarget);
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks/${rackId}`, {
@@ -77,7 +81,7 @@ export default function EditRack() {
             </h1>
             <Link
                href={`/racks?id=${rackId}`}
-               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
+               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
             >
                Cancel
             </Link>
@@ -126,9 +130,9 @@ export default function EditRack() {
             <div className="my-4 flex justify-end px-4">
                <button
                   type="submit"
-                  className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1"
+                  className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1 hover:bg-blue-900"
                >
-                  Edit Rack
+                  Save Changes
                </button>
             </div>
          </form>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import { MdDelete, MdModeEdit } from 'react-icons/md';
 
 function formatDate(value) {
    if (!value) return '';
@@ -24,7 +24,7 @@ export default function AssetsPage() {
    const [historyIndex, setHistoryIndex] = useState(0);
 
    async function handleDelete() {
-      if (!confirm("Are you sure you want to delete this asset?")) {
+      if (!confirm('Are you sure you want to delete this asset?')) {
          return;
       }
 

@@ -25,6 +25,10 @@ export default function EditAsset() {
    async function handleSubmit(event) {
       event.preventDefault();
 
+      if (!confirm('Are you sure you want to save these changes?')) {
+         return;
+      }
+
       const formData = new FormData(event.currentTarget);
       const hardwareFile = formData.get('hardwareData');
       const hardwareData = hardwareFile?.size ? await hardwareFile.text() : '';
@@ -81,7 +85,7 @@ export default function EditAsset() {
             </h1>
             <Link
                href="/"
-               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
+               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
             >
                Cancel
             </Link>
@@ -159,9 +163,9 @@ export default function EditAsset() {
             <div className="my-4 flex justify-end px-4">
                <button
                   type="submit"
-                  className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1"
+                  className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1 hover:bg-blue-900"
                >
-                  Edit Asset
+                  Save Changes
                </button>
             </div>
          </form>

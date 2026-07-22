@@ -16,7 +16,7 @@ export const metadata: Metadata = {
    title: {
       default: 'Portal',
       template: '%s'
-   },
+   }
 };
 
 export default function RootLayout({

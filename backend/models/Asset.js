@@ -161,6 +161,18 @@ const assetSchema = new mongoose.Schema({
          }
       ],
       default: []
+   },
+   bootOptions: {
+      type: [
+         {
+            position: { type: String, default: 'Not found' },
+            id: { type: String, default: 'Not found' },
+            displayName: { type: String, default: 'Not found' },
+            enabled: { type: String, default: 'Not found' },
+            devicePath: { type: String, default: 'Not found' }
+         }
+      ],
+      default: []
    }
 });
 

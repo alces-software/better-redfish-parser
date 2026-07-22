@@ -41,15 +41,6 @@ module.exports = {
     */
    async call(req, res) {
       try {
-<<<<<<< HEAD
-         const asset = mongoose.Types.ObjectId.isValid(req.params.uuid)
-            ? await Asset.findById(req.params.uuid).populate('rack')
-            : await Asset.findOne({
-                 uuid: req.params.uuid
-              })
-                 .sort({ version: -1 })
-                 .populate('rack');
-=======
          const { uuid } = req.params || {};
 
          if (!uuid) {
@@ -59,7 +50,6 @@ module.exports = {
          }
 
          const asset = await Asset.findOne({ uuid }).sort({ version: -1 }).populate('rack');
->>>>>>> origin/main
 
          if (!asset) {
             return res.status(404).json({ success: false, message: 'Asset not found' });

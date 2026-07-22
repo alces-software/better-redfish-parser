@@ -21,7 +21,6 @@ export default function AssetsPage() {
    const [asset, setAsset] = useState(null);
    const [history, setHistory] = useState([]);
    const [historyIndex, setHistoryIndex] = useState(0);
-   const [showJson, setShowJson] = useState(false);
 
    async function handleDelete() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${uuId}`, {
@@ -55,7 +54,6 @@ export default function AssetsPage() {
          setHistory(data.body);
          setAsset(data.body[0]);
          setHistoryIndex(0);
-         setShowJson(false);
       }
 
       getAssetHistory();
@@ -68,12 +66,11 @@ export default function AssetsPage() {
 
       setHistoryIndex(nextIndex);
       setAsset(nextAsset);
-      setShowJson(false);
    }
 
    const hasPrevious = historyIndex > 0;
    const hasNext = historyIndex < history.length - 1;
-   const hardwareData = asset?.hardwareData;
+   const hardwareData = asset?.imported_json;
 
    return (
       <div>
@@ -129,13 +126,12 @@ export default function AssetsPage() {
                )}
 
                {hardwareData ? (
-                  <button
-                     type="button"
-                     onClick={() => setShowJson((current) => !current)}
+                  <Link
+                     href={`/json?id=${uuId}&version=${asset.version}`}
                      className="cursor-pointer rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:bg-slate-900"
                   >
                      View Json
-                  </button>
+                  </Link>
                ) : (
                   <span className="rounded-full border border-slate-400 bg-slate-800 p-2 opacity-50">No Json</span>
                )}
@@ -162,11 +158,6 @@ export default function AssetsPage() {
                {history.length ? historyIndex + 1 : 0} / {history.length}
             </p>
 
-            {showJson && (
-               <pre className="mt-4 max-w-4xl overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-4 text-sm text-slate-300 shadow-2xl drop-shadow-2xl">
-                  {hardwareData}
-               </pre>
-            )}
          </div>
 
          <div className="mt-25 grid grid-cols-3 gap-2">

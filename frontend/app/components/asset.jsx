@@ -178,7 +178,7 @@ export default function AssetsPage() {
             <div className="col-start-3">
                <div className="flex justify-end gap-2">
                   <Link
-                     href={`/edit-rack?id=${uuId}`}
+                     href={`/edit-asset?id=${uuId}`}
                      className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-sky-900 p-2 transition hover:-translate-y-1 hover:bg-sky-700 shadow-lg"
                   >
                      <MdModeEdit size={25} className="text-sky-200" />

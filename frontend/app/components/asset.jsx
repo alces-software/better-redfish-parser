@@ -100,12 +100,12 @@ export default function AssetsPage() {
                   <tbody className="bg-slate-900">
                      {asset && (
                         <tr>
-                           <td className="rounded-bl-lg p-4 pl-12">{asset.name}</td>
-                           <td className="p-4">{asset.uPosition}</td>
-                           <td className="p-4 flex justify-center">{asset.version}</td>
-                           <td className="p-4">{asset.notes}</td>
-                           <td className="p-4">{formatDate(asset.createdAt)}</td>
-                           <td className="max-w-90 rounded-br-lg p-4">
+                           <td className="text-center rounded-bl-lg p-4 pl-12">{asset.name}</td>
+                           <td className="p-4 text-center">{asset.uPosition}</td>
+                           <td className="p-4 text-center">{asset.version}</td>
+                           <td className="p-4 text-center">{asset.notes}</td>
+                           <td className="p-4 text-center">{formatDate(asset.createdAt)}</td>
+                           <td className="max-w-90 rounded-br-lg p-4 text-center">
                               {formatDate(asset.updatedAt ?? asset.createdAt)}
                            </td>
                         </tr>

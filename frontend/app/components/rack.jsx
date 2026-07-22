@@ -55,20 +55,20 @@ export default function RacksPage() {
                <table className="text-slate-300">
                   <thead className="bg-slate-800">
                      <tr>
-                        <th className="rounded-tl-lg p-4 pl-12">Name</th>
-                        <th className="p-4">Size</th>
+                        <th className="rounded-tl-lg text-center p-4 pl-12">Name</th>
+                        <th className="p-4 text-center">Size</th>
 
-                        <th className="p-4 rounded-tr-lg">Notes</th>
+                        <th className="p-4 text-center rounded-tr-lg pr-12">Notes</th>
                      </tr>
                   </thead>
 
                   <tbody className="bg-slate-900">
                      {rack && (
                         <tr>
-                           <td className="rounded-bl-lg p-4 pl-12">{rack.name}</td>
-                           <td className="p-4">{rack.size}</td>
+                           <td className="rounded-bl-lg p-4 text-center pl-12">{rack.name}</td>
+                           <td className="p-4 text-center">{rack.size}</td>
 
-                           <td className="p-4 rounded-br-lg">{rack.notes}</td>
+                           <td className="p-4 text-center rounded-br-lg pr-12">{rack.notes}</td>
                         </tr>
                      )}
                   </tbody>

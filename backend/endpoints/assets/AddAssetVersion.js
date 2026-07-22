@@ -84,7 +84,8 @@ module.exports = {
             manufacturer: extractHardwareData.manufacturer ?? current.manufacturer,
             led: extractHardwareData.led ?? current.led,
             description: extractHardwareData.description ?? current.description,
-            fans: extractHardwareData.fans ?? current.fans
+            fans: extractHardwareData.fans ?? current.fans,
+            ethernetInterfaces: extractHardwareData.ethernetInterfaces ?? current.ethernetInterfaces
          });
 
          await newVersion.save();

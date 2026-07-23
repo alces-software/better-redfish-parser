@@ -17,7 +17,7 @@ const mongoose = require('mongoose'),
  *         uPosition:
  *           type: integer
  *         systemType:
- *           type: string
+ *           type: number
  *         notes:
  *           type: string
  *         dataFields:

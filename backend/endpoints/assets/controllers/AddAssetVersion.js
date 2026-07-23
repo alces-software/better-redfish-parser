@@ -1,5 +1,4 @@
-const Asset = require('../../../models/Asset'),
-   { extractData } = require('../../../services/assetServices');
+const Asset = require('../../../models/Asset');
 
 /**
  * @openapi
@@ -60,8 +59,6 @@ module.exports = async (req, res) => {
          return res.status(404).json({ success: false, message: 'Asset not found' });
       }
 
-      // const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
-
       const newVersion = new Asset({
          uuid: current.uuid,
          version: current.version + 1,
@@ -70,10 +67,8 @@ module.exports = async (req, res) => {
          uPosition: uPosition ?? current.uPosition,
          notes: notes ?? current.notes,
          dataFields: dataFields ?? current.dataFields,
-         rawJson: rawJson ?? current.rawJson
-         // fans: extractHardwareData.fans ?? current.fans,
-         // ethernetInterfaces: extractHardwareData.ethernetInterfaces ?? current.ethernetInterfaces,
-         // bootOptions: extractHardwareData.bootOptions ?? current.bootOptions
+         rawJson: rawJson ?? current.rawJson,
+         systemType: current.systemType
       });
 
       await newVersion.save();

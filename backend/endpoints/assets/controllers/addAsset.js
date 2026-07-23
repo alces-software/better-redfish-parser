@@ -1,6 +1,6 @@
-const Asset = require('../../../models/Asset'),
-   Rack = require('../../../models/Rack'),
-   { extractData } = require('../../../services/assetServices');
+const { systemTypes } = require('../../../enums/enums'),
+   Asset = require('../../../models/Asset'),
+   Rack = require('../../../models/Rack');
 
 /**
  * @openapi
@@ -44,7 +44,8 @@ const Asset = require('../../../models/Asset'),
  */
 module.exports = async (req, res) => {
    try {
-      const { rack, name, uuid, uPosition, notes, dataFields, rawJson } = req.body || {};
+      const { rack, name, uuid, uPosition, systemType, notes, dataFields, rawJson } =
+         req.body || {};
 
       const targetRack = await Rack.findById(rack);
 
@@ -64,6 +65,7 @@ module.exports = async (req, res) => {
          version: 1,
          rack: targetRack._id,
          uPosition,
+         systemType: Object.keys(systemTypes).find((v) => v === systemType),
          notes,
          dataFields,
          rawJson: rawJson || ''

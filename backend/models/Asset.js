@@ -167,8 +167,6 @@ const assetSchema = new mongoose.Schema({
       type: String,
       default: ''
    }
-});
-
-assetSchema.index({ uuid: 1, version: 1 }, { unique: true });
+}).index({ uuid: 1, version: 1 }, { unique: true });
 
 module.exports = mongoose.model('Asset', assetSchema);

@@ -95,6 +95,8 @@ export default function HardwareFieldsDemo() {
    const [editingFieldId, setEditingFieldId] = useState(null);
    const [racks, setRacks] = useState([]);
    const [selectedRack, setSelectedRack] = useState('');
+   const [manufactures, setManufactures] = useState([]);
+   const [selectedManufacture, setSelectedManufacture] = useState(0);
    const [notes, setNotes] = useState('');
    const editInputRef = useRef(null);
 
@@ -120,8 +122,8 @@ export default function HardwareFieldsDemo() {
    const sectionData = parsedJson ? getValueByPath(parsedJson, selectedSection?.path ?? '') : null;
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-           .filter((match) => isSearchableValue(match.value))
-           .slice(0, 12)
+         .filter((match) => isSearchableValue(match.value))
+         .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);
 
@@ -133,6 +135,16 @@ export default function HardwareFieldsDemo() {
       }
 
       getRacks();
+   }, []);
+
+   useEffect(() => {
+      async function getManufactures() {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enums/Manufacturers`);
+         const data = await res.json();
+         setManufactures(data.body);
+      }
+
+      getManufactures();
    }, []);
 
    useEffect(() => {
@@ -217,7 +229,7 @@ export default function HardwareFieldsDemo() {
       setEditingFieldId(null);
    }
 
-   function handleCreateAsset() {
+   async function handleCreateAsset() {
       const assetNameField = fields.find((f) => f.name === 'Asset name');
       const uuidField = fields.find((f) => f.name === 'UUID');
       const uPosField = fields.find((f) => f.name === 'U position');
@@ -232,7 +244,7 @@ export default function HardwareFieldsDemo() {
                field.name !== 'Asset name' && field.name !== 'UUID' && field.name !== 'U position'
          )
          .map((field) => ({
-            name: field.name,
+            title: field.name,
             value: getFieldValue(field),
             path: field.path
          }));
@@ -242,9 +254,32 @@ export default function HardwareFieldsDemo() {
          uuid: uuID,
          uPosition: uPos,
          rack: selectedRack,
+         manufacture: selectedManufacture,
          notes,
-         fields: collectedFields
+         dataFields: collectedFields,
+         rawJson: parsedJson
       };
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            name: assetName,
+            uuid: uuID,
+            uPosition: uPos,
+            rack: selectedRack,
+            manufacture: selectedManufacture,
+            notes,
+            dataFields: collectedFields,
+            rawJson: JSON.stringify(parsedJson, null, 2)
+         })
+      });
+
+      const data = await res.json();
+
+      console.log(data);
 
       console.log(assetDetails);
       // console.log(collectedFields);
@@ -461,6 +496,25 @@ export default function HardwareFieldsDemo() {
                      </label>
 
                      <label className="block">
+                        <span className="block p-1 text-slate-300">Manufacture</span>
+                        <select
+                           name="Manufacture"
+                           value={selectedManufacture}
+                           onChange={(event) => setSelectedManufacture(event.target.value)}
+                           className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                           required
+                        >
+                           <option value="">Select a manufacture</option>
+
+                           {manufactures.map((manufacture) => (
+                              <option key={manufacture.value} value={manufacture.value}>
+                                 {manufacture.name}
+                              </option>
+                           ))}
+                        </select>
+                     </label>
+
+                     <label className="block">
                         <span className="block p-1 text-slate-300">Notes</span>
                         <input
                            name="notes"
@@ -565,6 +619,25 @@ export default function HardwareFieldsDemo() {
                      </label>
 
                      <label className="block">
+                        <span className="block p-1 text-slate-300">Manufacture</span>
+                        <select
+                           name="Manufacture"
+                           value={selectedManufacture}
+                           onChange={(event) => setSelectedManufacture(event.target.value)}
+                           className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                           required
+                        >
+                           <option value="">Select a manufacture</option>
+
+                           {manufactures.map((manufacture) => (
+                              <option key={manufacture.value} value={manufacture.value}>
+                                 {manufacture.name}
+                              </option>
+                           ))}
+                        </select>
+                     </label>
+
+                     <label className="block">
                         <span className="block p-1 text-slate-300">Notes</span>
                         <input
                            name="notes"
@@ -576,6 +649,7 @@ export default function HardwareFieldsDemo() {
                      </label>
                   </div>
                </div>
+
 
                <div className="flex justify-end mt-4 ">
                   <button

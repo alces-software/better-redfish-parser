@@ -1,4 +1,4 @@
-const { systemTypes } = require('../../../enums/enums');
+const { Manufacturers } = require('../../../enums/enums');
 
 /**
  * @openapi
@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
    try {
       return res.status(200).json({
          success: true,
-         body: Object.entries(systemTypes).map(([name, value]) => ({
+         body: Object.entries(Manufacturers).map(([name, value]) => ({
             name,
             value
          }))

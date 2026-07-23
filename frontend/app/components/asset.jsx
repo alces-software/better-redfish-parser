@@ -97,46 +97,6 @@ export default function AssetsPage() {
                      </div>
 
                      <div>
-                        <span className="text-slate-500 text-sm">Number of Slots</span>
-                        <p>{asset.version}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Model</span>
-                        <p>{asset.model}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Serial Number</span>
-                        <p>{asset.serial_number}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Processor</span>
-                        <p>{asset.processor_name}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Processor Count</span>
-                        <p>{asset.processor_count}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Cores</span>
-                        <p>{asset.cores}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Memory</span>
-                        <p>{asset.memory}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">LED Status</span>
-                        <p>{asset.led}</p>
-                     </div>
-
-                     <div>
                         <span className="text-slate-500 text-sm">Fan Count</span>
                         <p>{asset?.fans.length != 0 ? asset.fans.length : 'Unknown'}</p>
                      </div>
@@ -161,11 +121,19 @@ export default function AssetsPage() {
                         <span className="text-slate-500 text-sm">Notes</span>
                         <p>{asset.notes}</p>
                      </div>
+                  </div>
+               )}
+            </div>
 
-                     <div className="col-span-full">
-                        <span className="text-slate-500 text-sm">Description</span>
-                        <p>{asset.description}</p>
-                     </div>
+            <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6 mt-5">
+               {asset && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
+                     {asset.dataFields.map(field => (
+                        <div key={field._id}>
+                           <span className="text-slate-500 text-sm">{field.title}</span>
+                           <p>{field.value}</p>
+                        </div>
+                     ))}
                   </div>
                )}
             </div>
@@ -269,11 +237,10 @@ export default function AssetsPage() {
                            <h3 className="truncate text-lg font-semibold text-white">{fan.name}</h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                                 fan.state === 'Enabled'
-                                    ? 'bg-green-500/20 text-green-400'
-                                    : 'bg-red-500/20 text-red-400'
-                              }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${fan.state === 'Enabled'
+                                 ? 'bg-green-500/20 text-green-400'
+                                 : 'bg-red-500/20 text-red-400'
+                                 }`}
                            >
                               {fan.state === 'Enabled' ? 'Active' : 'Inactive'}
                            </span>
@@ -329,11 +296,10 @@ export default function AssetsPage() {
                            </h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                                 iface.health === 'OK'
-                                    ? 'bg-green-500/20 text-green-400'
-                                    : 'bg-red-500/20 text-red-400'
-                              }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${iface.health === 'OK'
+                                 ? 'bg-green-500/20 text-green-400'
+                                 : 'bg-red-500/20 text-red-400'
+                                 }`}
                            >
                               {iface.health}
                            </span>
@@ -370,11 +336,10 @@ export default function AssetsPage() {
                                  Link Status
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${
-                                    iface.linkStatus === 'LinkUp'
-                                       ? 'text-green-400'
-                                       : 'text-yellow-400'
-                                 }`}
+                                 className={`mt-1 text-sm font-medium ${iface.linkStatus === 'LinkUp'
+                                    ? 'text-green-400'
+                                    : 'text-yellow-400'
+                                    }`}
                               >
                                  {iface.linkStatus}
                               </p>
@@ -385,9 +350,8 @@ export default function AssetsPage() {
                                  Enabled
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${
-                                    iface.enabled === 'true' ? 'text-green-400' : 'text-red-400'
-                                 }`}
+                                 className={`mt-1 text-sm font-medium ${iface.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                    }`}
                               >
                                  {iface.enabled === 'true' ? 'Yes' : 'No'}
                               </p>
@@ -423,11 +387,10 @@ export default function AssetsPage() {
                            </div>
 
                            <span
-                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
-                                 option.enabled === 'true'
-                                    ? 'bg-green-500/20 text-green-400'
-                                    : 'bg-red-500/20 text-red-400'
-                              }`}
+                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${option.enabled === 'true'
+                                 ? 'bg-green-500/20 text-green-400'
+                                 : 'bg-red-500/20 text-red-400'
+                                 }`}
                            >
                               {option.enabled === 'true' ? <FaCheckCircle /> : <FaTimesCircle />}
 
@@ -472,9 +435,8 @@ export default function AssetsPage() {
                               </p>
 
                               <p
-                                 className={`mt-1 text-sm font-medium ${
-                                    option.enabled === 'true' ? 'text-green-400' : 'text-red-400'
-                                 }`}
+                                 className={`mt-1 text-sm font-medium ${option.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                    }`}
                               >
                                  {option.enabled === 'true' ? 'Available' : 'Disabled'}
                               </p>

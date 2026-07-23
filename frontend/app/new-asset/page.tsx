@@ -12,7 +12,6 @@ export default function CreateAsset() {
       <Suspense
          fallback={
             <div>
-               {' '}
                <Loading />
             </div>
          }

@@ -143,6 +143,16 @@ export default function AssetsPage() {
                      </div>
 
                      <div>
+                        <span className="text-slate-500 text-sm">Fan Count</span>
+                        <p>{asset?.fans.length != 0 ? asset.fans.length : 'Unknown'}</p>
+                     </div>
+
+                     <div>
+                        <span className="text-slate-500 text-sm">Ethernet Interface Count</span>
+                        <p>{asset?.ethernetInterfaces.length != 0 ? asset.ethernetInterfaces.length : 'Unknown'}</p>
+                     </div>
+
+                     <div>
                         <span className="text-slate-500 text-sm">Notes</span>
                         <p>{asset.notes}</p>
                      </div>
@@ -237,6 +247,150 @@ export default function AssetsPage() {
                </div>
             </div>
          </div>
+
+         {asset?.fans.length > 0 && (
+            <details className="mt-5 rounded-lg border border-slate-400 bg-slate-900 shadow-2xl">
+               <summary className="cursor-pointer select-none p-6 text-xl font-semibold text-white">
+                  Fans
+               </summary>
+
+               <div className="border-t border-slate-700 p-6">
+                  <div className="grid gap-4 md:grid-cols-3">
+                     {asset?.fans.map((fan) => (
+                        <div
+                           key={fan.name}
+                           className="rounded-lg border border-slate-700 bg-slate-800 p-4"
+                        >
+                           <div className="flex items-center justify-between">
+                              <h3 className="text-lg font-semibold text-white">
+                                 {fan.name}
+                              </h3>
+
+                              <span
+                                 className={`rounded-full px-3 py-1 text-xs font-semibold ${fan.state === "Enabled"
+                                    ? "bg-green-500/20 text-green-400"
+                                    : "bg-red-500/20 text-red-400"
+                                    }`}
+                              >
+                                 {fan.state === "Enabled" ? "Active" : "Inactive"}
+                              </span>
+                           </div>
+
+                           <div className="mt-4 space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                 <span className="text-slate-400">Health</span>
+                                 <span
+                                    className={`font-medium ${fan.health === "OK"
+                                       ? "text-green-400"
+                                       : "text-yellow-400"
+                                       }`}
+                                 >
+                                    {fan.health}
+                                 </span>
+                              </div>
+
+                              <div className="flex justify-between">
+                                 <span className="text-slate-400">Speed</span>
+                                 <span className="text-white">
+                                    {fan.speed} {fan.units}
+                                 </span>
+                              </div>
+
+                              <div className="flex justify-between">
+                                 <span className="text-slate-400">Hot Swappable</span>
+                                 <span className="text-white">
+                                    {fan.hotPluggable === "true" ? "Yes" : "No"}
+                                 </span>
+                              </div>
+                           </div>
+                        </div>
+                     ))}
+                  </div>
+               </div>
+            </details>
+         )}
+
+         {asset?.ethernetInterfaces.length > 0 && (
+            <details className="mt-5 rounded-lg border border-slate-400 bg-slate-900 shadow-2xl">
+               <summary className="cursor-pointer select-none p-6 text-xl font-semibold text-white">
+                  Ethernet Interfaces
+               </summary>
+
+               <div className="border-t border-slate-700 divide-y divide-slate-700">
+                  {asset.ethernetInterfaces.map((iface) => (
+                     <div key={iface.id} className="p-6">
+                        <h3 className="mb-4 text-lg font-semibold text-white">
+                           {iface.description}
+                        </h3>
+
+                        <div className="grid grid-cols-1 gap-3 text-sm md:grid-cols-2 lg:grid-cols-3">
+                           <div>
+                              <span className="font-medium text-slate-400">Name:</span>
+                              <p className="text-white">{iface.id}</p>
+                           </div>
+
+                           <div>
+                              <span className="font-medium text-slate-400">MAC Address:</span>
+                              <p className="font-mono text-white">{iface.macAddress}</p>
+                           </div>
+
+                           <div>
+                              <span className="font-medium text-slate-400">Permanent MAC:</span>
+                              <p className="font-mono text-white">
+                                 {iface.permanentMacAddress}
+                              </p>
+                           </div>
+
+                           <div>
+                              <span className="font-medium text-slate-400">Speed:</span>
+                              <p className="text-white">
+                                 {iface.speedMbps === "Not found"
+                                    ? "Unknown"
+                                    : `${iface.speedMbps} Mbps`}
+                              </p>
+                           </div>
+
+                           <div>
+                              <span className="font-medium text-slate-400">State:</span>
+                              <p className="text-white">{iface.state}</p>
+                           </div>
+
+                           <div>
+                              <span className="font-medium text-slate-400">Enabled:</span>
+                              <p className={iface.enabled === "true" ? "text-green-400" : "text-red-400"}>
+                                 {iface.enabled === "true" ? "Yes" : "No"}
+                              </p>
+                           </div>
+
+                           <div>
+                              <span className="font-medium text-slate-400 me-1">Health:</span>
+                              <span
+                                 className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${iface.health === "OK"
+                                    ? "bg-green-500/20 text-green-400"
+                                    : "bg-red-500/20 text-red-400"
+                                    }`}
+                              >
+                                 {iface.health}
+                              </span>
+                           </div>
+
+                           <div>
+                              <span className="font-medium text-slate-400 me-1">Link Status:</span>
+                              <span
+                                 className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${iface.linkStatus === "LinkUp"
+                                    ? "bg-green-500/20 text-green-400"
+                                    : "bg-yellow-500/20 text-yellow-400"
+                                    }`}
+                              >
+                                 {iface.linkStatus}
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+            </details>
+         )}
       </div>
    );
 }

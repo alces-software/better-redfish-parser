@@ -1,4 +1,4 @@
-const Rack = require('../../models/Rack');
+const Rack = require('../../../models/Rack');
 
 /**
  * @openapi
@@ -24,23 +24,18 @@ const Rack = require('../../models/Rack');
  *       '500':
  *         description: Server error
  */
-module.exports = {
-   info: {
-      method: 'GET'
-   },
 
-   /**
-    * @param {import('express').Request} req
-    * @param {import('express').Response} res
-    * @returns {Promise<void>}
-    */
-   async call(req, res) {
-      try {
-         const racks = await Rack.find();
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>}
+ */
+module.exports = async (req, res) => {
+   try {
+      const racks = await Rack.find();
 
-         return res.status(200).json({ success: true, body: racks });
-      } catch (err) {
-         return res.status(500).json({ success: false, message: err.message });
-      }
+      return res.status(200).json({ success: true, body: racks });
+   } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
    }
 };

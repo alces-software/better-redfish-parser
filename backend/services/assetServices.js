@@ -4,6 +4,7 @@ function extractData(json) {
    try {
       data = JSON.parse(json);
    } catch (e) {
+      e;
       data = {};
    }
 
@@ -14,7 +15,7 @@ function extractData(json) {
 
    if (data.rawRedfish) {
       if (data.fans) {
-         fans = data.fans.map((fan) => {
+         const fans = data.fans.map((fan) => {
             return {
                name: fan['name'] || 'Not found',
                health: fan['health'] || 'Not found',
@@ -29,17 +30,17 @@ function extractData(json) {
       }
 
       if (data.ethernetInterfaces) {
-         const ethernetInterfaces = data.ethernetInterfaces.map((interface) => {
+         const ethernetInterfaces = data.ethernetInterfaces.map((iface) => {
             return {
-               id: interface['id'] || 'Not found',
-               description: interface['description'] || 'Not found',
-               macAddress: interface['macAddress'] || 'Not found',
-               permanentMacAddress: interface['permanentMacaddress'] || 'Not found',
-               speedMbps: interface['speedMbps'] || 'Not found',
-               state: interface['state'] || 'Not found',
-               health: interface['health'] || 'Not found',
-               linkStatus: interface['linkStatus'] || 'Not found',
-               enabled: interface['enabled'] || 'Not found'
+               id: iface['id'] || 'Not found',
+               description: iface['description'] || 'Not found',
+               macAddress: iface['macAddress'] || 'Not found',
+               permanentMacAddress: iface['permanentMacAddress'] || 'Not found',
+               speedMbps: iface['speedMbps'] || 'Not found',
+               state: iface['state'] || 'Not found',
+               health: iface['health'] || 'Not found',
+               linkStatus: iface['linkStatus'] || 'Not found',
+               enabled: iface['enabled'] || 'Not found'
             };
          });
          toAdd.ethernetInterfaces = ethernetInterfaces || [];

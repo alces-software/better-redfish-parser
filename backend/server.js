@@ -3,57 +3,17 @@ require('dotenv').config();
 
 // Import functions
 const express = require('express'),
-   { readdirSync } = require('node:fs');
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./swagger');
-
-const cors = require('cors');
+   swaggerUi = require('swagger-ui-express'),
+   swaggerSpec = require('./swagger'),
+   cors = require('cors');
 
 // Setup express
 const app = express();
 app.use(express.json());
-
 app.use(cors());
-// Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.get('/api-docs.json', (req, res) => res.json(swaggerSpec));
 
 // Load Endpoints
-const router = express.Router();
-app.use(router);
-
-const routes = [];
-readdirSync(`${__dirname}/endpoints`).forEach((dir) => {
-   readdirSync(`${__dirname}/endpoints/${dir}`).forEach((endpoint) => {
-      if (endpoint.endsWith('.js')) {
-         const { info, call } = require(`./endpoints/${dir}/${endpoint}`);
-         if (info && call) {
-            routes.push({
-               method: info.method.toLowerCase(),
-               path: `/${dir}${info.endpoint || ''}`,
-               call
-            });
-         }
-      }
-   });
-});
-
-routes
-   .map((route) => ({
-      ...route,
-      score: route.path
-         .split('/')
-         .filter(Boolean)
-         .reduce((total, segment) => {
-            if (segment.startsWith(':')) return total;
-            if (segment.includes('*')) return -10;
-            return total + 10;
-         }, 0)
-   }))
-   .sort((a, b) => b.score - a.score)
-   .forEach(({ method, path, call }) => {
-      router[method](`${path.startsWith('/') ? path : `/${path}`}`, call);
-   });
+app.use('/api', require('./endpoints'));
 
 // Connect to the database
 require('mongoose')
@@ -70,3 +30,7 @@ require('mongoose')
    .catch((err) => {
       console.error('Database connection failed:', err);
    });
+
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req, res) => res.json(swaggerSpec));

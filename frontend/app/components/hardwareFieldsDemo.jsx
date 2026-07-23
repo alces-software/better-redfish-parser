@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { LuUpload } from "react-icons/lu";
 import { FaFileAlt } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
@@ -10,12 +10,12 @@ import { IoSend } from "react-icons/io5";
 const defaultFields = [
    { id: 1, name: 'Asset name', value: '', path: 'Name' },
    { id: 2, name: 'UUID', value: '', path: 'UUID' },
-   { id: 3, name: 'Model', value: '', path: 'Model' },
-   { id: 4, name: 'Serial number', value: '', path: 'SerialNumber' },
-   { id: 5, name: 'CPU cores', value: '', path: 'ProcessorSummary.CoreCount' },
-   { id: 6, name: 'Memory GiB', value: '', path: 'MemorySummary.TotalSystemMemoryGiB' },
-   { id: 7, name: 'NIC count', value: '', path: 'NetworkInterfaces.Members.length' },
-   { id: 8, name: 'U position', value: 0, path: 'Uposition' }
+   { id: 3, name: 'U position', value: 0, path: 'Uposition' },
+   { id: 4, name: 'Model', value: '', path: 'Model' },
+   { id: 5, name: 'Serial number', value: '', path: 'SerialNumber' },
+   { id: 6, name: 'CPU cores', value: '', path: 'ProcessorSummary.CoreCount' },
+   { id: 7, name: 'Memory GiB', value: '', path: 'MemorySummary.TotalSystemMemoryGiB' },
+   { id: 8, name: 'NIC count', value: '', path: 'NetworkInterfaces.Members.length' }
 ];
 
 const sections = [
@@ -97,6 +97,7 @@ export default function HardwareFieldsDemo() {
    const [racks, setRacks] = useState([]);
    const [selectedRack, setSelectedRack] = useState('');
    const [notes, setNotes] = useState('');
+   const editInputRef = useRef(null);
 
    const { parsedJson, parseError } = useMemo(() => {
       try {
@@ -134,6 +135,12 @@ export default function HardwareFieldsDemo() {
 
       getRacks();
    }, []);
+
+   useEffect(() => {
+      if (editingFieldId !== null) {
+         editInputRef.current?.focus();
+      }
+   }, [editingFieldId]);
 
    async function handleFileChange(event) {
       const file = event.target.files?.[0];
@@ -270,39 +277,7 @@ export default function HardwareFieldsDemo() {
             {fileName && <span className="text-md flex items-center gap-1 text-slate-300">{fileName}<FaFileAlt /></span>}
          </div>
 
-         <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
-            <div className="grid gap-4 md:grid-cols-2">
-               <label className="block">
-                  <span className="block p-1 text-slate-300">Rack</span>
-                  <select
-                     name="rack"
-                     value={selectedRack}
-                     onChange={(event) => setSelectedRack(event.target.value)}
-                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
-                     required
-                  >
-                     <option value="">Select a rack</option>
-
-                     {racks.map((rack) => (
-                        <option key={rack._id} value={rack._id}>
-                           {rack.name}
-                        </option>
-                     ))}
-                  </select>
-               </label>
-
-               <label className="block">
-                  <span className="block p-1 text-slate-300">Notes</span>
-                  <input
-                     name="notes"
-                     type="text"
-                     value={notes}
-                     onChange={(event) => setNotes(event.target.value)}
-                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
-                  />
-               </label>
-            </div>
-         </div>
+         
 
          {uploadedFile ? (
 
@@ -312,7 +287,7 @@ export default function HardwareFieldsDemo() {
 
                <div className="mt-4 grid gap-4 md:grid-cols-[2fr_1fr]">
 
-                  <div className="min-w-0 max-w-3xl overflow-hidden rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
+                  <div className="min-w-0 w-fit-content overflow-hidden rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
 
 
 
@@ -343,7 +318,7 @@ export default function HardwareFieldsDemo() {
                      {parseError ? (
                         <p className="p-4 text-slate-300">{parseError}</p>
                      ) : (
-                        <pre className="max-h-[60vh] max-w-full overflow-auto whitespace-pre-wrap break-words p-4 text-sm text-slate-300">
+                        <pre className="max-h-screen border rounded-sm overflow-auto bg-slate-800 whitespace-pre-wrap break-words p-4 text-sm text-slate-300">
                            {sectionData === undefined ? 'Not found' : prettyPrint(sectionData)}
                         </pre>
                      )}
@@ -434,17 +409,27 @@ export default function HardwareFieldsDemo() {
                                     >
                                        {editingFieldId === field.id ? 'Save' : 'Edit'}
                                     </button>
-                                    <button
+
+                                    {field.name !== "Asset name" && field.name != "UUID" && field.name != "U position" && (
+
+                                       <button
                                        type="button"
                                        onClick={() => handleRemoveField(field.id)}
                                        className="rounded-full border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-red-900"
                                     >
                                        Remove
                                     </button>
+
+
+                                    )}
+
+                                    
+
                                  </div>
                               </div>
                               {editingFieldId === field.id ? (
                                  <input
+                                    ref={editInputRef}
                                     value={getFieldValue(field)}
                                     onChange={(event) =>
                                        handleFieldValueChange(field.id, event.target.value)
@@ -461,6 +446,41 @@ export default function HardwareFieldsDemo() {
                      </div>
                   </div>
                </div>
+
+                <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
+            <div className="grid gap-4 md:grid-cols-2">
+               <label className="block">
+                  <span className="block p-1 text-slate-300">Rack</span>
+                  <select
+                     name="rack"
+                     value={selectedRack}
+                     onChange={(event) => setSelectedRack(event.target.value)}
+                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                     required
+                  >
+                     <option value="">Select a rack</option>
+
+                     {racks.map((rack) => (
+                        <option key={rack._id} value={rack._id}>
+                           {rack.name}
+                        </option>
+                     ))}
+                  </select>
+               </label>
+
+               <label className="block">
+                  <span className="block p-1 text-slate-300">Notes</span>
+                  <input
+                     name="notes"
+                     type="text"
+                     value={notes}
+                     onChange={(event) => setNotes(event.target.value)}
+                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                  />
+               </label>
+            </div>
+         </div>
+
                <div className='flex justify-end mt-4 '>
 
                   <button
@@ -552,6 +572,40 @@ export default function HardwareFieldsDemo() {
                   </div>
 
                </div>
+
+                <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
+            <div className="grid gap-4 md:grid-cols-2">
+               <label className="block">
+                  <span className="block p-1 text-slate-300">Rack</span>
+                  <select
+                     name="rack"
+                     value={selectedRack}
+                     onChange={(event) => setSelectedRack(event.target.value)}
+                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                     required
+                  >
+                     <option value="">Select a rack</option>
+
+                     {racks.map((rack) => (
+                        <option key={rack._id} value={rack._id}>
+                           {rack.name}
+                        </option>
+                     ))}
+                  </select>
+               </label>
+
+               <label className="block">
+                  <span className="block p-1 text-slate-300">Notes</span>
+                  <input
+                     name="notes"
+                     type="text"
+                     value={notes}
+                     onChange={(event) => setNotes(event.target.value)}
+                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                  />
+               </label>
+            </div>
+         </div>
 
                <div className='flex justify-end mt-4 '>
 

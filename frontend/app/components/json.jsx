@@ -9,7 +9,7 @@ function prettyPrintJson(value) {
    if (!value) return '';
 
    try {
-      return JSON.stringify(JSON.parse(value), null, 2);
+      return JSON.parse(value);
    } catch {
       return value;
    }
@@ -93,7 +93,7 @@ export default function Json() {
                Version {asset.version}
             </h2>
             <pre className="max-h-[60vh] w-full overflow-auto whitespace-pre-wrap p-4 text-sm text-slate-300">
-               {asset.RawJson ? prettyPrintJson(asset.rawJson) : 'No Json'}
+               {asset.rawJson ? prettyPrintJson(asset.rawJson) : 'No Json'}
             </pre>
          </div>
       </section>

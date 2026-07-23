@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
          notes: notes ?? currentAsset.notes,
          dataFields: dataFields ?? currentAsset.dataFields,
          rawJson: rawJson ?? currentAsset.rawJson,
-         systemType: currentAsset.systemType
+         manufacturer: currentAsset.manufacturer
       }).save();
 
       return res.status(201).json({ success: true, body: newVersion });

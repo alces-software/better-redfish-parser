@@ -1,4 +1,4 @@
-const { systemTypes } = require('../../../enums/enums'),
+const { Manufacturers } = require('../../../enums/enums'),
    Asset = require('../../../models/Asset'),
    Rack = require('../../../models/Rack'),
    { isValidObjectId } = require('mongoose');
@@ -45,7 +45,7 @@ const { systemTypes } = require('../../../enums/enums'),
  */
 module.exports = async (req, res) => {
    try {
-      const { rack, name, uuid, uPosition, systemType, notes, dataFields, rawJson } =
+      const { rack, name, uuid, uPosition, manufacturer, notes, dataFields, rawJson } =
          req.body || {};
 
       // Check rack
@@ -79,6 +79,15 @@ module.exports = async (req, res) => {
             .json({ success: false, message: 'Asset UUID is missing from the request' });
       }
 
+      // Check manufacture
+      // if (!manufacturer) {
+      //    return res.status(400).json({ success: false, message: 'Asset manufacture is missing from the request' });
+      // }
+
+      // if (!Object.keys(Manufacturers).find((v) => v === manufacturer)) {
+      //    return res.status(400).json({ success: false, message: 'Asset manufacture is not recognised' });
+      // }
+
       // Check if asset exists already
       const existing = await Asset.findOne({ uuid, version: 1 });
 
@@ -86,18 +95,16 @@ module.exports = async (req, res) => {
          return res.status(409).json({ success: false, message: 'Asset already exists' });
       }
 
-      console.log(req.body);
-
       const asset = await new Asset({
          name,
          uuid,
          version: 1,
          rack: targetRack._id,
          uPosition,
-         systemType: Object.keys(systemTypes).find((v) => v === systemType) || 'HP',
+         manufacturer: Object.keys(Manufacturers).find((v) => v === manufacturer) || 'HP',
          notes,
          dataFields,
-         rawJson: JSON.stringify(rawJson) || ''
+         rawJson: JSON.stringify(rawJson, null, 2) || ''
       }).save();
 
       return res.status(201).json({ success: true, body: asset });

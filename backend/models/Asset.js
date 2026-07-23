@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'),
-   { systemTypes } = require('../enums/enums');
+   { Manufacturers } = require('../enums/enums');
 
 /**
  * @openapi
@@ -16,7 +16,7 @@ const mongoose = require('mongoose'),
  *           type: string
  *         uPosition:
  *           type: integer
- *         systemType:
+ *         manufacturer:
  *           type: number
  *         notes:
  *           type: string
@@ -48,7 +48,7 @@ const mongoose = require('mongoose'),
  *           $ref: '#/components/schemas/Rack'
  *         uPosition:
  *           type: integer
- *         systemType:
+ *         manufacturer:
  *           type: string
  *         notes:
  *           type: string
@@ -103,9 +103,9 @@ const assetSchema = new mongoose.Schema({
       type: Number,
       required: true
    },
-   systemType: {
+   manufacturer: {
       type: String,
-      enum: Object.keys(systemTypes),
+      enum: Object.keys(Manufacturers),
       required: true
    },
    notes: {

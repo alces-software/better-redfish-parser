@@ -51,8 +51,8 @@ export default function NewAsset() {
 
    return (
       <div>
-         <div className="flex items-center">
-            <h1 className="font-semibold text-4xl">New asset</h1>
+         <div className="flex relative justify-center md:justify-start items-center">
+            <h1 className="font-semibold text-center  text-4xl">New asset</h1>
             <Link
                href="/"
                className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
@@ -130,7 +130,7 @@ export default function NewAsset() {
                   name="hardwareData"
                   type="file"
                   accept="application/json,.json,.txt"
-                  className="m-1 cursor-pointer rounded-full border border-gray-600 bg-gray-600 p-2"
+                  className="m-1 cursor-pointer rounded-full w-80  border border-gray-600 bg-gray-600 p-2"
                />
             </div>
 

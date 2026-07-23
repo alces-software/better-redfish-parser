@@ -46,7 +46,7 @@ export default function RacksPage() {
 
    return (
       <div>
-         <h1 className="font-semibold text-4xl">
+         <h1 className="font-semibold text-center md:text-left text-4xl">
             System information for <em>{rack?.name ?? rackId}</em>
          </h1>
 

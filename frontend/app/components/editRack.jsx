@@ -59,7 +59,7 @@ export default function EditRack() {
    if (!rackId) {
       return (
          <div>
-            <h1 className="font-semibold text-4xl">Edit rack</h1>
+            <h1 className="font-semibold text-center text-4xl">Edit rack</h1>
             <p className="mt-4 text-slate-300">No rack id was provided.</p>
          </div>
       );
@@ -76,8 +76,8 @@ export default function EditRack() {
 
    return (
       <div>
-         <div className="flex items-center">
-            <h1 className="font-semibold text-4xl">
+         <div className=" relative justify-center md:justify-start flex items-center">
+            <h1 className="font-semibold text-center md:text-left  text-4xl">
                Edit <em>{rack.name}</em>
             </h1>
             <Link
@@ -87,6 +87,8 @@ export default function EditRack() {
                Cancel
             </Link>
          </div>
+
+      
 
          <br />
          <hr />

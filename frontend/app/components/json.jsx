@@ -69,7 +69,7 @@ export default function Json() {
       return (
          <section>
             <h1 className="font-semibold text-4xl">JSON import</h1>
-            <p className="mt-4 text-slate-300">Loading JSON import...</p>
+            <Loading/>
          </section>
       );
    }
@@ -77,7 +77,7 @@ export default function Json() {
    return (
       <section>
          <div className="flex items-center">
-            <h1 className="font-semibold text-4xl">
+            <h1 className="font-semibold text-center md:text-left text-4xl">
                JSON import for <em>{asset.name}</em>
             </h1>
             <Link
@@ -87,6 +87,50 @@ export default function Json() {
                Back
             </Link>
          </div>
+
+         {/* <div className='flex mt-15 mr-4 justify-end gap-2'>
+              <Link
+               href={`/assets?id=${assetId}`}
+               className=" h-min whitespace-nowrap rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
+            >
+               Raw JSON
+            </Link>
+             <Link
+               href={`/assets?id=${assetId}`}
+               className=" h-min whitespace-nowrap rounded-full border border-slate-400 bg-slate-800/30 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
+            >
+               System
+            </Link>
+               <Link
+               href={`/assets?id=${assetId}`}
+               className=" h-min whitespace-nowrap rounded-full border border-slate-400 bg-slate-800/30 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
+            >
+            Processors
+            </Link>
+               <Link
+               href={`/assets?id=${assetId}`}
+               className=" h-min w-min rounded-full border border-slate-400 bg-slate-800/30 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
+            >
+               Memory
+            </Link>
+              <Link
+               href={`/assets?id=${assetId}`}
+               className=" h-min w-min rounded-full border border-slate-400 bg-slate-800/30 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
+            >
+               Network
+            </Link>
+              <Link
+               href={`/assets?id=${assetId}`}
+               className=" h-min w-min rounded-full border border-slate-400 bg-slate-800/30 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
+            >
+               Storage
+            </Link>
+            
+            
+            
+
+
+         </div> */}
 
          <div className="mt-15 rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
             <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">

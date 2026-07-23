@@ -89,8 +89,8 @@ export default function EditAsset() {
 
    return (
       <div>
-         <div className="flex items-center">
-            <h1 className="font-semibold text-4xl">
+         <div className="flex relative justify-center md:justify-start items-center">
+            <h1 className="font-semibold  text-4xl">
                Edit <em>{asset?.name ?? assetId}</em>
             </h1>
             <Link
@@ -100,6 +100,9 @@ export default function EditAsset() {
                Cancel
             </Link>
          </div>
+
+        
+
 
          <br />
          <hr />
@@ -173,7 +176,7 @@ export default function EditAsset() {
                   name="hardwareData"
                   type="file"
                   accept="application/json,.json,.txt"
-                  className="m-1 cursor-pointer rounded-full border border-gray-600 bg-gray-600 p-2"
+                  className="m-1 cursor-pointer w-80 mr-2 rounded-full border border-gray-600 bg-gray-600 p-2"
                />
             </div>
 

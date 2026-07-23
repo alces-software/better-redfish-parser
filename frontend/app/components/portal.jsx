@@ -40,8 +40,8 @@ export default function Portal() {
    }
    return (
       <section>
-         <div>
-            <h1 className="font-semibold text-4xl">System Information Portal</h1>
+         <div className='text-center md:text-left'>
+            <h1 className="font-semibold  text-4xl">System Information Portal</h1>
             <p className="mt-4">View, edit, or delete existing assets, or create a new one.</p>
          </div>
 
@@ -76,11 +76,11 @@ export default function Portal() {
          </div>
 
          {mode == 'assets' ? (
-            <div className="flex items-start gap-2 mt-4">
-               <div className="relative inline-block group">
+            <div className="flex flex-wrap items-start justify-center md:justify-start gap-2 mt-4">
+               <div className="relative inline-block  group">
                   <button
                      className="bg-slate-900 font-medium  overflow-auto inline-flex items-center justify-center whitespace-nowrap
-                border border-slate-400 gap-2 w-44 h-10 rounded-full"
+                border border-slate-400 gap-2  w-44 h-10 rounded-full"
                   >
                      Select an asset{' '}
                      <GoChevronDown className="h-6 w-6 group-hover:rotate-180 transition duration-350 ease-in-out" />
@@ -107,7 +107,7 @@ export default function Portal() {
                </div>
             </div>
          ) : (
-            <div className="flex items-start gap-2 mt-4">
+            <div className="flex items-start justify-center md:justify-start gap-2 mt-4">
                <div className="relative inline-block group">
                   <button
                      className="bg-slate-900 font-medium  overflow-auto inline-flex items-center justify-center whitespace-nowrap

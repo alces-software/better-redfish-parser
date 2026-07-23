@@ -16,8 +16,14 @@ export const metadata: Metadata = {
    title: {
       default: 'Portal',
       template: '%s'
+   },
+   icons: {
+      icon: [{ url: '/favicon.ico' }, { url: '/images/alces_logo.png', type: 'image/png' }],
+      shortcut: '/favicon.ico',
+      apple: '/favicon.png'
    }
 };
+
 
 export default function RootLayout({
    children
@@ -31,7 +37,7 @@ export default function RootLayout({
                aria-hidden="true"
                className="fixed inset-0 z-0 bg-[linear-gradient(135deg,#0f172b_0%,#024a70_52%,#005986_100%)]"
             />
-            <main className="relative z-10 mx-auto px-5 max-w-250">{children}</main>
+            <main className="relative z-10 mx-auto px-5 max-w-6xl">{children}</main>
          </body>
       </html>
    );

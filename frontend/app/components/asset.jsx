@@ -149,6 +149,13 @@ export default function AssetsPage() {
                      </div>
 
                      <div>
+                        <span className="text-slate-500 text-sm">Boot Options Count</span>
+                        <p>
+                           {asset?.bootOptions.length != 0 ? asset.bootOptions.length : 'Unknown'}
+                        </p>
+                     </div>
+
+                     <div>
                         <span className="text-slate-500 text-sm">Notes</span>
                         <p>{asset.notes}</p>
                      </div>
@@ -245,7 +252,7 @@ export default function AssetsPage() {
          </div>
 
          {asset?.fans.length > 0 && (
-            <details className="mt-5 overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl">
+            <details className="mt-5 overflow-hidden rounded-xl border border-slate-400 bg-slate-900 shadow-2xl">
                <summary className="cursor-pointer select-none p-6 text-xl font-bold text-white transition hover:bg-slate-800">
                   Fans
                </summary>
@@ -254,7 +261,7 @@ export default function AssetsPage() {
                   {asset.fans.map((fan) => (
                      <div
                         key={fan.name}
-                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300 hover:border-slate-500"
+                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300"
                      >
                         <div className="mb-4 flex items-center justify-between">
                            <h3 className="truncate text-lg font-semibold text-white">{fan.name}</h3>
@@ -303,7 +310,7 @@ export default function AssetsPage() {
          )}
 
          {asset?.ethernetInterfaces.length > 0 && (
-            <details className="mt-5 overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl">
+            <details className="mt-5 overflow-hidden rounded-xl border border-slate-400 bg-slate-900 shadow-2xl">
                <summary className="cursor-pointer select-none p-6 text-xl font-bold text-white transition hover:bg-slate-800">
                   Ethernet Interfaces
                </summary>
@@ -312,7 +319,7 @@ export default function AssetsPage() {
                   {asset.ethernetInterfaces.map((iface) => (
                      <div
                         key={iface.id}
-                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300 hover:border-slate-500"
+                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300"
                      >
                         <div className="mb-4 flex items-start justify-between gap-4">
                            <h3 className="truncate text-lg font-semibold text-white">
@@ -391,7 +398,7 @@ export default function AssetsPage() {
          )}
 
          {asset?.bootOptions.length > 0 && (
-            <details className="mt-5 overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl">
+            <details className="mt-5 overflow-hidden rounded-xl border border-slate-400 bg-slate-900 shadow-2xl">
                <summary className="cursor-pointer select-none p-6 text-xl font-bold text-white transition hover:bg-slate-800">
                   Boot Options
                </summary>
@@ -400,7 +407,7 @@ export default function AssetsPage() {
                   {asset.bootOptions.map((option) => (
                      <div
                         key={option._id}
-                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300 hover:border-slate-500"
+                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300"
                      >
                         <div className="mb-4 flex items-start justify-between gap-4">
                            <div className="min-w-0">

@@ -5,15 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
-
-function formatDate(value) {
-   if (!value) return '';
-   return new Date(value).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-   });
-}
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 export default function AssetsPage() {
    const router = useRouter();
@@ -249,101 +241,117 @@ export default function AssetsPage() {
          </div>
 
          {asset?.fans.length > 0 && (
-            <details className="mt-5 rounded-lg border border-slate-400 bg-slate-900 shadow-2xl">
-               <summary className="cursor-pointer select-none p-6 text-xl font-semibold text-white">
+            <details className="mt-5 overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl">
+               <summary className="cursor-pointer select-none p-6 text-xl font-bold text-white transition hover:bg-slate-800">
                   Fans
                </summary>
 
-               <div className="border-t border-slate-700 p-6">
-                  <div className="grid gap-4 md:grid-cols-3">
-                     {asset?.fans.map((fan) => (
-                        <div
-                           key={fan.name}
-                           className="rounded-lg border border-slate-700 bg-slate-800 p-4"
-                        >
-                           <div className="flex items-center justify-between">
-                              <h3 className="text-lg font-semibold text-white">
-                                 {fan.name}
-                              </h3>
+               <div className="grid gap-4 border-t border-slate-700 p-6 md:grid-cols-3">
+                  {asset.fans.map((fan) => (
+                     <div
+                        key={fan.name}
+                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300 hover:border-slate-500"
+                     >
+                        <div className="mb-4 flex items-center justify-between">
+                           <h3 className="truncate text-lg font-semibold text-white">
+                              {fan.name}
+                           </h3>
 
-                              <span
-                                 className={`rounded-full px-3 py-1 text-xs font-semibold ${fan.state === "Enabled"
-                                    ? "bg-green-500/20 text-green-400"
-                                    : "bg-red-500/20 text-red-400"
-                                    }`}
-                              >
-                                 {fan.state === "Enabled" ? "Active" : "Inactive"}
-                              </span>
+                           <span
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${fan.state === "Enabled"
+                                 ? "bg-green-500/20 text-green-400"
+                                 : "bg-red-500/20 text-red-400"
+                                 }`}
+                           >
+                              {fan.state === "Enabled" ? "Active" : "Inactive"}
+                           </span>
+                        </div>
+
+                        <div className="space-y-3">
+                           <div>
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Health
+                              </p>
+                              <p className="mt-1 font-medium text-green-400">
+                                 {fan.health}
+                              </p>
                            </div>
 
-                           <div className="mt-4 space-y-2 text-sm">
-                              <div className="flex justify-between">
-                                 <span className="text-slate-400">Health</span>
-                                 <span
-                                    className={`font-medium ${fan.health === "OK"
-                                       ? "text-green-400"
-                                       : "text-yellow-400"
-                                       }`}
-                                 >
-                                    {fan.health}
-                                 </span>
-                              </div>
+                           <div>
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Speed
+                              </p>
+                              <p className="mt-1 text-sm font-medium text-white">
+                                 {fan.speed} {fan.units}
+                              </p>
+                           </div>
 
-                              <div className="flex justify-between">
-                                 <span className="text-slate-400">Speed</span>
-                                 <span className="text-white">
-                                    {fan.speed} {fan.units}
-                                 </span>
-                              </div>
-
-                              <div className="flex justify-between">
-                                 <span className="text-slate-400">Hot Swappable</span>
-                                 <span className="text-white">
-                                    {fan.hotPluggable === "true" ? "Yes" : "No"}
-                                 </span>
-                              </div>
+                           <div>
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Hot Swappable
+                              </p>
+                              <p className="mt-1 text-sm font-medium text-white">
+                                 {fan.hotPluggable === "true" ? "Yes" : "No"}
+                              </p>
                            </div>
                         </div>
-                     ))}
-                  </div>
+                     </div>
+                  ))}
                </div>
             </details>
          )}
 
          {asset?.ethernetInterfaces.length > 0 && (
-            <details className="mt-5 rounded-lg border border-slate-400 bg-slate-900 shadow-2xl">
-               <summary className="cursor-pointer select-none p-6 text-xl font-semibold text-white">
+            <details className="mt-5 overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl">
+               <summary className="cursor-pointer select-none p-6 text-xl font-bold text-white transition hover:bg-slate-800">
                   Ethernet Interfaces
                </summary>
 
-               <div className="border-t border-slate-700 divide-y divide-slate-700">
+               <div className="grid gap-4 border-t border-slate-700 p-6 md:grid-cols-2">
                   {asset.ethernetInterfaces.map((iface) => (
-                     <div key={iface.id} className="p-6">
-                        <h3 className="mb-4 text-lg font-semibold text-white">
-                           {iface.description}
-                        </h3>
+                     <div
+                        key={iface.id}
+                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300 hover:border-slate-500"
+                     >
+                        <div className="mb-4 flex items-start justify-between gap-4">
+                           <h3 className="truncate text-lg font-semibold text-white">
+                              {iface.description}
+                           </h3>
 
-                        <div className="grid grid-cols-1 gap-3 text-sm md:grid-cols-2 lg:grid-cols-3">
-                           <div>
-                              <span className="font-medium text-slate-400">Name:</span>
-                              <p className="text-white">{iface.id}</p>
-                           </div>
+                           <span
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${iface.health === "OK"
+                                 ? "bg-green-500/20 text-green-400"
+                                 : "bg-red-500/20 text-red-400"
+                                 }`}
+                           >
+                              {iface.health}
+                           </span>
+                        </div>
 
+                        <div className="grid gap-3 md:grid-cols-2">
                            <div>
-                              <span className="font-medium text-slate-400">MAC Address:</span>
-                              <p className="font-mono text-white">{iface.macAddress}</p>
-                           </div>
-
-                           <div>
-                              <span className="font-medium text-slate-400">Permanent MAC:</span>
-                              <p className="font-mono text-white">
-                                 {iface.permanentMacAddress}
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Name
+                              </p>
+                              <p className="mt-1 text-sm font-medium text-white">
+                                 {iface.id}
                               </p>
                            </div>
 
                            <div>
-                              <span className="font-medium text-slate-400">Speed:</span>
-                              <p className="text-white">
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 MAC Address
+                              </p>
+                              <p className="mt-1 font-mono text-sm text-white">
+                                 {iface.macAddress}
+                              </p>
+                           </div>
+
+                           <div>
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Speed
+                              </p>
+                              <p className="mt-1 text-sm font-medium text-white">
                                  {iface.speedMbps === "Not found"
                                     ? "Unknown"
                                     : `${iface.speedMbps} Mbps`}
@@ -351,39 +359,122 @@ export default function AssetsPage() {
                            </div>
 
                            <div>
-                              <span className="font-medium text-slate-400">State:</span>
-                              <p className="text-white">{iface.state}</p>
-                           </div>
-
-                           <div>
-                              <span className="font-medium text-slate-400">Enabled:</span>
-                              <p className={iface.enabled === "true" ? "text-green-400" : "text-red-400"}>
-                                 {iface.enabled === "true" ? "Yes" : "No"}
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Link Status
+                              </p>
+                              <p
+                                 className={`mt-1 text-sm font-medium ${iface.linkStatus === "LinkUp"
+                                    ? "text-green-400"
+                                    : "text-yellow-400"
+                                    }`}
+                              >
+                                 {iface.linkStatus}
                               </p>
                            </div>
 
                            <div>
-                              <span className="font-medium text-slate-400 me-1">Health:</span>
-                              <span
-                                 className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${iface.health === "OK"
-                                    ? "bg-green-500/20 text-green-400"
-                                    : "bg-red-500/20 text-red-400"
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Enabled
+                              </p>
+                              <p
+                                 className={`mt-1 text-sm font-medium ${iface.enabled === "true"
+                                    ? "text-green-400"
+                                    : "text-red-400"
                                     }`}
                               >
-                                 {iface.health}
-                              </span>
+                                 {iface.enabled === "true" ? "Yes" : "No"}
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+            </details>
+         )}
+
+         {asset?.bootOptions.length > 0 && (
+            <details className="mt-5 overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl">
+               <summary className="cursor-pointer select-none p-6 text-xl font-bold text-white transition hover:bg-slate-800">
+                  Boot Options
+               </summary>
+
+               <div className="grid gap-4 border-t border-slate-700 p-6 md:grid-cols-2">
+                  {asset.bootOptions.map((option) => (
+                     <div
+                        key={option._id}
+                        className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300 hover:border-slate-500"
+                     >
+                        <div className="mb-4 flex items-start justify-between gap-4">
+                           <div className="min-w-0">
+                              <h3 className="truncate text-lg font-semibold text-white">
+                                 {option.displayName}
+                              </h3>
+
+                              <p className="mt-1 truncate text-sm text-slate-400">
+                                 {option.devicePath}
+                              </p>
                            </div>
 
-                           <div>
-                              <span className="font-medium text-slate-400 me-1">Link Status:</span>
-                              <span
-                                 className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${iface.linkStatus === "LinkUp"
+                           <span
+                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${option.enabled === "true"
                                     ? "bg-green-500/20 text-green-400"
-                                    : "bg-yellow-500/20 text-yellow-400"
+                                    : "bg-red-500/20 text-red-400"
+                                 }`}
+                           >
+                              {option.enabled === "true" ? (
+                                 <FaCheckCircle />
+                              ) : (
+                                 <FaTimesCircle />
+                              )}
+
+                              {option.enabled === "true" ? "Enabled" : "Disabled"}
+                           </span>
+                        </div>
+
+                        <div className="grid gap-3 md:grid-cols-2">
+                           <div className="rounded-lg border border-slate-700 bg-slate-800/70 p-3">
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Boot ID
+                              </p>
+
+                              <p className="mt-1 truncate text-sm font-medium text-white">
+                                 {option.id}
+                              </p>
+                           </div>
+
+                           <div className="rounded-lg border border-slate-700 bg-slate-800/70 p-3">
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Position
+                              </p>
+
+                              <p className="mt-1 text-sm font-medium text-white">
+                                 #{option.position}
+                              </p>
+                           </div>
+
+                           <div className="rounded-lg border border-slate-700 bg-slate-800/70 p-3">
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Device Path
+                              </p>
+
+                              <p className="mt-1 truncate text-sm font-medium text-white">
+                                 {option.devicePath}
+                              </p>
+                           </div>
+
+                           <div className="rounded-lg border border-slate-700 bg-slate-800/70 p-3">
+                              <p className="text-xs uppercase tracking-wide text-slate-400">
+                                 Status
+                              </p>
+
+                              <p
+                                 className={`mt-1 text-sm font-medium ${option.enabled === "true"
+                                       ? "text-green-400"
+                                       : "text-red-400"
                                     }`}
                               >
-                                 {iface.linkStatus}
-                              </span>
+                                 {option.enabled === "true" ? "Available" : "Disabled"}
+                              </p>
                            </div>
                         </div>
                      </div>

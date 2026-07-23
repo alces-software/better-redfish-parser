@@ -21,7 +21,16 @@ const mongoose = require('mongoose'),
  *         notes:
  *           type: string
  *         dataFields:
- *           type: object
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               value:
+ *                 type: string
+ *               path:
+ *                 type: string
  *         rawJson:
  *           type: string
  *     Asset:
@@ -44,7 +53,16 @@ const mongoose = require('mongoose'),
  *         notes:
  *           type: string
  *         dataFields:
- *           type: object
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               value:
+ *                 type: string
+ *               path:
+ *                 type: string
  *         fans:
  *           type: object
  *         ethernetInterfaces:
@@ -94,7 +112,6 @@ const assetSchema = new mongoose.Schema({
       type: String,
       default: ''
    },
-
    dataFields: {
       type: [
          {

@@ -246,8 +246,8 @@ export default function HardwareFieldsDemo() {
       };
 
       console.log(assetDetails);
-      // console.log(collectedFields);
-      // console.log(fields);
+      console.log(collectedFields);
+      console.log(fields);
    }
 
    return (
@@ -285,9 +285,9 @@ export default function HardwareFieldsDemo() {
 
 
 
-               <div className="mt-4 grid gap-4 md:grid-cols-[2fr_1fr]">
+               <div className="mt-4 items-start grid gap-4 md:grid-cols-[2fr_1fr]">
 
-                  <div className="min-w-0 w-fit-content overflow-hidden rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
+                  <div className="min-w-0  w-fit-content overflow-hidden rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
 
 
 
@@ -318,9 +318,11 @@ export default function HardwareFieldsDemo() {
                      {parseError ? (
                         <p className="p-4 text-slate-300">{parseError}</p>
                      ) : (
-                        <pre className="max-h-screen border rounded-sm overflow-auto bg-slate-800 whitespace-pre-wrap break-words p-4 text-sm text-slate-300">
+                       
+                        <pre className="max-h-screen overflow-auto bg-black/20 whitespace-pre-wrap break-words p-4 text-sm text-slate-300">
                            {sectionData === undefined ? 'Not found' : prettyPrint(sectionData)}
                         </pre>
+                       
                      )}
                   </div>
 
@@ -399,7 +401,7 @@ export default function HardwareFieldsDemo() {
                               <div className="flex items-start justify-between gap-3">
                                  <div>
                                     <p className="font-medium text-slate-300">{field.name}</p>
-                                    <p className="mt-1 text-xs text-slate-500">{field.path}</p>
+                                    {/* <p className="mt-1 text-xs text-slate-500">{field.path}</p> */}
                                  </div>
                                  <div className="flex gap-2">
                                     <button

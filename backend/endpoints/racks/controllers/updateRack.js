@@ -1,4 +1,5 @@
-const Rack = require('../../../models/Rack');
+const Rack = require('../../../models/Rack'),
+   { isValidObjectId } = require('mongoose');
 
 /**
  * @openapi
@@ -30,6 +31,8 @@ const Rack = require('../../../models/Rack');
  *                   type: boolean
  *                 body:
  *                   $ref: '#/components/schemas/Rack'
+ *       '400':
+ *         description: Bad request
  *       '404':
  *         description: Not found
  *       '500':
@@ -46,10 +49,18 @@ module.exports = async (req, res) => {
       const { id } = req.params || {};
       const body = req.body || {};
 
+      // Check id
       if (!id) {
-         return res.status(400).json({ success: false, message: 'Rack ID missing from request' });
+         return res
+            .status(400)
+            .json({ success: false, message: 'Rack ID is missing from the request' });
       }
 
+      if (!isValidObjectId(id)) {
+         return res.status(400).json({ success: false, message: 'Rack ID is invalid' });
+      }
+
+      // Update the database
       const updatedRack = await Rack.findByIdAndUpdate(id, body, { new: true });
 
       if (!updatedRack) {

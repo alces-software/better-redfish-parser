@@ -1,6 +1,7 @@
 const Asset = require('../../../models/Asset'),
    Rack = require('../../../models/Rack'),
-   { extractData } = require('../../../services/assetServices');
+   { extractData } = require('../../../services/assetServices'),
+   { isValidObjectId } = require('mongoose');
 
 /**
  * @openapi
@@ -46,21 +47,48 @@ module.exports = async (req, res) => {
    try {
       const { rack, name, uuid, uPosition, notes, hardwareData } = req.body || {};
 
+      // Check rack
+      if (!rack) {
+         return res
+            .json(400)
+            .json({ success: false, message: 'Asset rack ID is missing from the request' });
+      }
+
+      if (!isValidObjectId(rack)) {
+         return res.status(400).json({ success: false, message: 'Rack ID is invalid' });
+      }
+
       const targetRack = await Rack.findById(rack);
 
-      if (!targetRack) {
+      if (!rack) {
          return res.status(404).json({ success: false, message: 'Rack not found' });
       }
 
+      // Check name
+      if (!name) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset name is missing from the request' });
+      }
+
+      // Check uuid
+      if (!uuid) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset UUID is missing from the request' });
+      }
+
+      // Check if asset exists already
       const existing = await Asset.findOne({ uuid, version: 1 });
 
       if (existing) {
          return res.status(409).json({ success: false, message: 'Asset already exists' });
       }
 
+      // Extract hardware data and create Asset
       const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
 
-      const asset = new Asset({
+      const asset = await new Asset({
          name,
          uuid,
          version: 1,
@@ -69,11 +97,9 @@ module.exports = async (req, res) => {
          notes,
          imported_json: hardwareData || '',
          ...extractHardwareData
-      });
+      }).save();
 
-      const savedAsset = await asset.save();
-
-      return res.status(201).json({ success: true, body: savedAsset });
+      return res.status(201).json({ success: true, body: asset });
    } catch (err) {
       return res.status(400).json({ success: false, message: err.message });
    }

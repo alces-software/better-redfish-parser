@@ -1,5 +1,7 @@
 const Asset = require('../../../models/Asset'),
-   { extractData } = require('../../../services/assetServices');
+   Rack = require('../../../models/Rack'),
+   { extractData } = require('../../../services/assetServices'),
+   { isValidObjectId } = require('mongoose');
 
 /**
  * @openapi
@@ -32,8 +34,10 @@ const Asset = require('../../../models/Asset'),
  *                   type: boolean
  *                 body:
  *                   $ref: '#/components/schemas/Asset'
+ *       '400':
+ *         description: Bad request
  *       '404':
- *         description: Asset not found
+ *         description: Not found
  *       '500':
  *         description: Server error
  */
@@ -48,43 +52,69 @@ module.exports = async (req, res) => {
       const { uuid } = req.params || {};
       const { name, rack, uPosition, notes, hardwareData } = req.body || {};
 
+      // Check uuid
       if (!uuid) {
          return res
             .status(400)
-            .json({ success: false, message: 'Asset UUID missing from request' });
+            .json({ success: false, message: 'Asset UUID is missing from the request' });
       }
 
-      const current = await Asset.findOne({ uuid }).sort({ version: -1 });
+      // Check name
+      if (!name) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset name is missing from the request' });
+      }
 
-      if (!current) {
+      // Check rack
+      if (!rack) {
+         return res
+            .json(400)
+            .json({ success: false, message: 'Asset rack ID is missing from the request' });
+      }
+
+      if (!isValidObjectId(rack)) {
+         return res.status(400).json({ success: false, message: 'Rack ID is invalid' });
+      }
+
+      const newRack = await Rack.findById(rack);
+
+      if (!newRack) {
+         return res.status(404).json({ success: false, message: 'Rack not found' });
+      }
+
+      // Check for current version
+      const currentAsset = await Asset.findOne({ uuid }).sort({ version: -1 });
+
+      if (!currentAsset) {
          return res.status(404).json({ success: false, message: 'Asset not found' });
       }
 
+      // Extract data and create a new asset
       const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
 
-      const newVersion = new Asset({
-         uuid: current.uuid,
-         version: current.version + 1,
-         name: name ?? current.name,
-         rack: rack ?? current.rack,
-         uPosition: uPosition ?? current.uPosition,
-         notes: notes ?? current.notes,
-         imported_json: hardwareData ?? current.imported_json,
-         cores: extractHardwareData.cores ?? current.cores,
-         processor_name: extractHardwareData.processor_name ?? current.processor_name,
-         processor_count: extractHardwareData.processor_count ?? current.processor_count,
-         memory: extractHardwareData.memory ?? current.memory,
-         model: extractHardwareData.model ?? current.model,
-         serial_number: extractHardwareData.serial_number ?? current.serial_number,
-         manufacturer: extractHardwareData.manufacturer ?? current.manufacturer,
-         led: extractHardwareData.led ?? current.led,
-         description: extractHardwareData.description ?? current.description,
-         fans: extractHardwareData.fans ?? current.fans,
-         ethernetInterfaces: extractHardwareData.ethernetInterfaces ?? current.ethernetInterfaces,
-         bootOptions: extractHardwareData.bootOptions ?? current.bootOptions
-      });
-
-      await newVersion.save();
+      const newVersion = await new Asset({
+         uuid: currentAsset.uuid,
+         version: currentAsset.version + 1,
+         name: name ?? currentAsset.name,
+         rack: newRack._id ?? currentAsset.rack,
+         uPosition: uPosition ?? currentAsset.uPosition,
+         notes: notes ?? currentAsset.notes,
+         imported_json: hardwareData ?? currentAsset.imported_json,
+         cores: extractHardwareData.cores ?? currentAsset.cores,
+         processor_name: extractHardwareData.processor_name ?? currentAsset.processor_name,
+         processor_count: extractHardwareData.processor_count ?? currentAsset.processor_count,
+         memory: extractHardwareData.memory ?? currentAsset.memory,
+         model: extractHardwareData.model ?? currentAsset.model,
+         serial_number: extractHardwareData.serial_number ?? currentAsset.serial_number,
+         manufacturer: extractHardwareData.manufacturer ?? currentAsset.manufacturer,
+         led: extractHardwareData.led ?? currentAsset.led,
+         description: extractHardwareData.description ?? currentAsset.description,
+         fans: extractHardwareData.fans ?? currentAsset.fans,
+         ethernetInterfaces:
+            extractHardwareData.ethernetInterfaces ?? currentAsset.ethernetInterfaces,
+         bootOptions: extractHardwareData.bootOptions ?? currentAsset.bootOptions
+      }).save();
 
       return res.status(201).json({ success: true, body: newVersion });
    } catch (err) {

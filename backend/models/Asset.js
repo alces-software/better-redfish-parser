@@ -96,6 +96,21 @@ const assetSchema = new mongoose.Schema({
       default: ''
    },
 
+   // Concept for how to store the dynamic data
+   hardware_data: {
+      type: [
+         {
+            area: { type: String, default: 'Unset' },
+            value: { type: String, default: 'Unset' }
+         }
+      ],
+      default: []
+   },
+   hardware_data_paths: {
+      type: [String],
+      default: []
+   },
+
    // Extracted hardware data
    cores: {
       type: mongoose.Schema.Types.Mixed,

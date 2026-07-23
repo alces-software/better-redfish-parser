@@ -27,6 +27,8 @@ const Asset = require('../../../models/Asset');
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Asset'
+ *       '400':
+ *         description: Bad request
  *       '404':
  *         description: Asset not found
  *       '500':
@@ -42,16 +44,18 @@ module.exports = async (req, res) => {
    try {
       const { uuid } = req.params || {};
 
+      // Check uuid
       if (!uuid) {
          return res
             .status(400)
-            .json({ success: false, message: 'Asset UUID missing from request' });
+            .json({ success: false, message: 'Asset UUID is missing from the request' });
       }
 
+      // Get all the assets from the database with that uuid that aren't the current version
       const assets = await Asset.find({ uuid }).populate('rack').sort({ version: -1 });
 
       if (!assets.length) {
-         return res.status(404).json({ success: false, message: 'Asset not found' });
+         return res.status(404).json({ success: false, message: 'N asset history found' });
       }
 
       return res.status(200).json({ success: true, body: assets });

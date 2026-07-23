@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 export default function AssetsPage() {
    const router = useRouter();
@@ -141,7 +141,11 @@ export default function AssetsPage() {
 
                      <div>
                         <span className="text-slate-500 text-sm">Ethernet Interface Count</span>
-                        <p>{asset?.ethernetInterfaces.length != 0 ? asset.ethernetInterfaces.length : 'Unknown'}</p>
+                        <p>
+                           {asset?.ethernetInterfaces.length != 0
+                              ? asset.ethernetInterfaces.length
+                              : 'Unknown'}
+                        </p>
                      </div>
 
                      <div>
@@ -253,17 +257,16 @@ export default function AssetsPage() {
                         className="rounded-xl border border-slate-700 bg-slate-900/80 p-5 shadow-lg transition-all duration-300 hover:border-slate-500"
                      >
                         <div className="mb-4 flex items-center justify-between">
-                           <h3 className="truncate text-lg font-semibold text-white">
-                              {fan.name}
-                           </h3>
+                           <h3 className="truncate text-lg font-semibold text-white">{fan.name}</h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${fan.state === "Enabled"
-                                 ? "bg-green-500/20 text-green-400"
-                                 : "bg-red-500/20 text-red-400"
-                                 }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                                 fan.state === 'Enabled'
+                                    ? 'bg-green-500/20 text-green-400'
+                                    : 'bg-red-500/20 text-red-400'
+                              }`}
                            >
-                              {fan.state === "Enabled" ? "Active" : "Inactive"}
+                              {fan.state === 'Enabled' ? 'Active' : 'Inactive'}
                            </span>
                         </div>
 
@@ -272,9 +275,7 @@ export default function AssetsPage() {
                               <p className="text-xs uppercase tracking-wide text-slate-400">
                                  Health
                               </p>
-                              <p className="mt-1 font-medium text-green-400">
-                                 {fan.health}
-                              </p>
+                              <p className="mt-1 font-medium text-green-400">{fan.health}</p>
                            </div>
 
                            <div>
@@ -291,7 +292,7 @@ export default function AssetsPage() {
                                  Hot Swappable
                               </p>
                               <p className="mt-1 text-sm font-medium text-white">
-                                 {fan.hotPluggable === "true" ? "Yes" : "No"}
+                                 {fan.hotPluggable === 'true' ? 'Yes' : 'No'}
                               </p>
                            </div>
                         </div>
@@ -319,10 +320,11 @@ export default function AssetsPage() {
                            </h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${iface.health === "OK"
-                                 ? "bg-green-500/20 text-green-400"
-                                 : "bg-red-500/20 text-red-400"
-                                 }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                                 iface.health === 'OK'
+                                    ? 'bg-green-500/20 text-green-400'
+                                    : 'bg-red-500/20 text-red-400'
+                              }`}
                            >
                               {iface.health}
                            </span>
@@ -330,12 +332,8 @@ export default function AssetsPage() {
 
                         <div className="grid gap-3 md:grid-cols-2">
                            <div>
-                              <p className="text-xs uppercase tracking-wide text-slate-400">
-                                 Name
-                              </p>
-                              <p className="mt-1 text-sm font-medium text-white">
-                                 {iface.id}
-                              </p>
+                              <p className="text-xs uppercase tracking-wide text-slate-400">Name</p>
+                              <p className="mt-1 text-sm font-medium text-white">{iface.id}</p>
                            </div>
 
                            <div>
@@ -352,8 +350,8 @@ export default function AssetsPage() {
                                  Speed
                               </p>
                               <p className="mt-1 text-sm font-medium text-white">
-                                 {iface.speedMbps === "Not found"
-                                    ? "Unknown"
+                                 {iface.speedMbps === 'Not found'
+                                    ? 'Unknown'
                                     : `${iface.speedMbps} Mbps`}
                               </p>
                            </div>
@@ -363,10 +361,11 @@ export default function AssetsPage() {
                                  Link Status
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${iface.linkStatus === "LinkUp"
-                                    ? "text-green-400"
-                                    : "text-yellow-400"
-                                    }`}
+                                 className={`mt-1 text-sm font-medium ${
+                                    iface.linkStatus === 'LinkUp'
+                                       ? 'text-green-400'
+                                       : 'text-yellow-400'
+                                 }`}
                               >
                                  {iface.linkStatus}
                               </p>
@@ -377,12 +376,11 @@ export default function AssetsPage() {
                                  Enabled
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${iface.enabled === "true"
-                                    ? "text-green-400"
-                                    : "text-red-400"
-                                    }`}
+                                 className={`mt-1 text-sm font-medium ${
+                                    iface.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                 }`}
                               >
-                                 {iface.enabled === "true" ? "Yes" : "No"}
+                                 {iface.enabled === 'true' ? 'Yes' : 'No'}
                               </p>
                            </div>
                         </div>
@@ -416,18 +414,15 @@ export default function AssetsPage() {
                            </div>
 
                            <span
-                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${option.enabled === "true"
-                                    ? "bg-green-500/20 text-green-400"
-                                    : "bg-red-500/20 text-red-400"
-                                 }`}
+                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
+                                 option.enabled === 'true'
+                                    ? 'bg-green-500/20 text-green-400'
+                                    : 'bg-red-500/20 text-red-400'
+                              }`}
                            >
-                              {option.enabled === "true" ? (
-                                 <FaCheckCircle />
-                              ) : (
-                                 <FaTimesCircle />
-                              )}
+                              {option.enabled === 'true' ? <FaCheckCircle /> : <FaTimesCircle />}
 
-                              {option.enabled === "true" ? "Enabled" : "Disabled"}
+                              {option.enabled === 'true' ? 'Enabled' : 'Disabled'}
                            </span>
                         </div>
 
@@ -468,12 +463,11 @@ export default function AssetsPage() {
                               </p>
 
                               <p
-                                 className={`mt-1 text-sm font-medium ${option.enabled === "true"
-                                       ? "text-green-400"
-                                       : "text-red-400"
-                                    }`}
+                                 className={`mt-1 text-sm font-medium ${
+                                    option.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                 }`}
                               >
-                                 {option.enabled === "true" ? "Available" : "Disabled"}
+                                 {option.enabled === 'true' ? 'Available' : 'Disabled'}
                               </p>
                            </div>
                         </div>

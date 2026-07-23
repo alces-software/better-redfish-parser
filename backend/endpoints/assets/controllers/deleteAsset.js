@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
       }
 
       // Remove all the assets from the database with that uuid
-      const result = await Asset.deleteMany({ uuid: req.params.uuid });
+      const result = await Asset.deleteMany({ uuid: uuid });
 
       return res.json({ success: true, deleted: result.deletedCount });
    } catch (err) {

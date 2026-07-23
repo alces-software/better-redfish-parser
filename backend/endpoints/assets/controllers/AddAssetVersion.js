@@ -74,10 +74,12 @@ module.exports = async (req, res) => {
       }
 
       if (!isValidObjectId(rack)) {
-         return res.status(400).json({ success: false, message: 'Rack object ID was invalid' });
+         return res.status(400).json({ success: false, message: 'Rack ID is invalid' });
       }
 
-      if (!(await Rack.findById(rack))) {
+      const newRack = await Rack.findById(rack);
+
+      if (!newRack) {
          return res.status(404).json({ success: false, message: 'Rack not found' });
       }
 
@@ -91,11 +93,11 @@ module.exports = async (req, res) => {
       // Extract data and create a new asset
       const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
 
-      const newVersion = new Asset({
+      const newVersion = await new Asset({
          uuid: currentAsset.uuid,
          version: currentAsset.version + 1,
          name: name ?? currentAsset.name,
-         rack: rack ?? currentAsset.rack,
+         rack: newRack._id ?? currentAsset.rack,
          uPosition: uPosition ?? currentAsset.uPosition,
          notes: notes ?? currentAsset.notes,
          imported_json: hardwareData ?? currentAsset.imported_json,
@@ -112,9 +114,7 @@ module.exports = async (req, res) => {
          ethernetInterfaces:
             extractHardwareData.ethernetInterfaces ?? currentAsset.ethernetInterfaces,
          bootOptions: extractHardwareData.bootOptions ?? currentAsset.bootOptions
-      });
-
-      await newVersion.save();
+      }).save();
 
       return res.status(201).json({ success: true, body: newVersion });
    } catch (err) {

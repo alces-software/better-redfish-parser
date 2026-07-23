@@ -1,6 +1,7 @@
 const { systemTypes } = require('../../../enums/enums'),
    Asset = require('../../../models/Asset'),
-   Rack = require('../../../models/Rack');
+   Rack = require('../../../models/Rack'),
+   { isValidObjectId } = require('mongoose');
 
 /**
  * @openapi
@@ -47,12 +48,38 @@ module.exports = async (req, res) => {
       const { rack, name, uuid, uPosition, systemType, notes, dataFields, rawJson } =
          req.body || {};
 
+      // Check rack
+      if (!rack) {
+         return res
+            .json(400)
+            .json({ success: false, message: 'Asset rack ID is missing from the request' });
+      }
+
+      if (!isValidObjectId(rack)) {
+         return res.status(400).json({ success: false, message: 'Rack ID is invalid' });
+      }
+
       const targetRack = await Rack.findById(rack);
 
-      if (!targetRack) {
+      if (!rack) {
          return res.status(404).json({ success: false, message: 'Rack not found' });
       }
 
+      // Check name
+      if (!name) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset name is missing from the request' });
+      }
+
+      // Check uuid
+      if (!uuid) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset UUID is missing from the request' });
+      }
+
+      // Check if asset exists already
       const existing = await Asset.findOne({ uuid, version: 1 });
 
       if (existing) {
@@ -71,9 +98,7 @@ module.exports = async (req, res) => {
          rawJson: rawJson || ''
       });
 
-      const savedAsset = await asset.save();
-
-      return res.status(201).json({ success: true, body: savedAsset });
+      return res.status(201).json({ success: true, body: asset });
    } catch (err) {
       return res.status(400).json({ success: false, message: err.message });
    }

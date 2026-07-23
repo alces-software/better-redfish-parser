@@ -25,6 +25,8 @@ const Rack = require('../../../models/Rack');
  *                   type: boolean
  *                 body:
  *                   $ref: '#/components/schemas/Rack'
+ *       '400':
+ *         description: Bad request
  *       '500':
  *         description: Server error
  */
@@ -37,9 +39,18 @@ const Rack = require('../../../models/Rack');
 module.exports = async (req, res) => {
    try {
       const { name, size, notes } = req.body || {};
-      const rack = new Rack({ name, size, notes });
-      const newRack = await rack.save();
-      return res.status(201).json({ success: true, body: newRack });
+
+      // Check name
+      if (!name) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Rack name is missing from the request' });
+      }
+
+      // Create rack
+      const rack = await new Rack({ name, size, notes }).save();
+
+      return res.status(201).json({ success: true, body: rack });
    } catch (err) {
       return res.status(500).json({ success: false, message: err.message });
    }

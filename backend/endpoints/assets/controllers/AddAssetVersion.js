@@ -1,4 +1,6 @@
-const Asset = require('../../../models/Asset');
+const Asset = require('../../../models/Asset'),
+   Rack = require('../../../models/Rack'),
+   { isValidObjectId } = require('mongoose');
 
 /**
  * @openapi
@@ -31,8 +33,10 @@ const Asset = require('../../../models/Asset');
  *                   type: boolean
  *                 body:
  *                   $ref: '#/components/schemas/Asset'
+ *       '400':
+ *         description: Bad request
  *       '404':
- *         description: Asset not found
+ *         description: Not found
  *       '500':
  *         description: Server error
  */
@@ -47,28 +51,54 @@ module.exports = async (req, res) => {
       const { uuid } = req.params || {};
       const { name, rack, uPosition, notes, dataFields, rawJson } = req.body || {};
 
+      // Check uuid
       if (!uuid) {
          return res
             .status(400)
-            .json({ success: false, message: 'Asset UUID missing from request' });
+            .json({ success: false, message: 'Asset UUID is missing from the request' });
       }
 
-      const current = await Asset.findOne({ uuid }).sort({ version: -1 });
+      // Check name
+      if (!name) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset name is missing from the request' });
+      }
 
-      if (!current) {
+      // Check rack
+      if (!rack) {
+         return res
+            .json(400)
+            .json({ success: false, message: 'Asset rack ID is missing from the request' });
+      }
+
+      if (!isValidObjectId(rack)) {
+         return res.status(400).json({ success: false, message: 'Rack ID is invalid' });
+      }
+
+      const newRack = await Rack.findById(rack);
+
+      if (!newRack) {
+         return res.status(404).json({ success: false, message: 'Rack not found' });
+      }
+
+      // Check for current version
+      const currentAsset = await Asset.findOne({ uuid }).sort({ version: -1 });
+
+      if (!currentAsset) {
          return res.status(404).json({ success: false, message: 'Asset not found' });
       }
 
       const newVersion = new Asset({
-         uuid: current.uuid,
-         version: current.version + 1,
-         name: name ?? current.name,
-         rack: rack ?? current.rack,
-         uPosition: uPosition ?? current.uPosition,
-         notes: notes ?? current.notes,
-         dataFields: dataFields ?? current.dataFields,
-         rawJson: rawJson ?? current.rawJson,
-         systemType: current.systemType
+         uuid: currentAsset.uuid,
+         version: currentAsset.version + 1,
+         name: name ?? currentAsset.name,
+         rack: rack ?? currentAsset.rack,
+         uPosition: uPosition ?? currentAsset.uPosition,
+         notes: notes ?? currentAsset.notes,
+         dataFields: dataFields ?? currentAsset.dataFields,
+         rawJson: rawJson ?? currentAsset.rawJson,
+         systemType: currentAsset.systemType
       });
 
       await newVersion.save();

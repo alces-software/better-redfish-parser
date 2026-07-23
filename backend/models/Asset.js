@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+   { Manufacturers } = require('../enums/enums');
 
 /**
  * @openapi
@@ -15,10 +16,23 @@ const mongoose = require('mongoose');
  *           type: string
  *         uPosition:
  *           type: integer
+ *         manufacturer:
+ *           type: number
  *         notes:
  *           type: string
- *         hardwareData:
- *           type: object
+ *         dataFields:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               value:
+ *                 type: string
+ *               path:
+ *                 type: string
+ *         rawJson:
+ *           type: string
  *     Asset:
  *       type: object
  *       properties:
@@ -34,27 +48,28 @@ const mongoose = require('mongoose');
  *           $ref: '#/components/schemas/Rack'
  *         uPosition:
  *           type: integer
- *         notes:
- *           type: string
- *         imported_json:
- *           type: string
- *         cores:
- *           type: string
- *         processor_name:
- *           type: string
- *         processor_count:
- *           type: string
- *         memory:
- *           type: string
- *         model:
- *           type: string
- *         serial_number:
- *           type: string
  *         manufacturer:
  *           type: string
- *         led:
+ *         notes:
  *           type: string
- *         description:
+ *         dataFields:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               value:
+ *                 type: string
+ *               path:
+ *                 type: string
+ *         fans:
+ *           type: object
+ *         ethernetInterfaces:
+ *           type: object
+ *         bootOptions:
+ *           type: object
+ *         rawJson:
  *           type: string
  *       required:
  *         - name
@@ -62,6 +77,7 @@ const mongoose = require('mongoose');
  *         - version
  *         - rack
  *         - uPosition
+ *         - systemType
  */
 
 const assetSchema = new mongoose.Schema({
@@ -87,51 +103,24 @@ const assetSchema = new mongoose.Schema({
       type: Number,
       required: true
    },
+   manufacturer: {
+      type: String,
+      enum: Object.keys(Manufacturers),
+      required: true
+   },
    notes: {
       type: String,
       default: ''
    },
-   imported_json: {
-      type: String,
-      default: ''
-   },
-
-   // Extracted hardware data
-   cores: {
-      type: mongoose.Schema.Types.Mixed,
-      default: 'Not found'
-   },
-   processor_name: {
-      type: String,
-      default: 'Not found'
-   },
-   processor_count: {
-      type: mongoose.Schema.Types.Mixed,
-      default: 'Not found'
-   },
-   memory: {
-      type: String,
-      default: 'Not Found'
-   },
-   model: {
-      type: String,
-      default: 'Not Found'
-   },
-   serial_number: {
-      type: String,
-      default: 'Not Found'
-   },
-   manufacturer: {
-      type: String,
-      default: 'Not Found'
-   },
-   led: {
-      type: String,
-      default: 'Not Found'
-   },
-   description: {
-      type: String,
-      default: 'Not Found'
+   dataFields: {
+      type: [
+         {
+            title: { type: String, default: 'Unset' },
+            value: { type: String, default: 'Unset' },
+            path: { type: String, default: 'Unset' }
+         }
+      ],
+      default: []
    },
    fans: {
       type: [
@@ -149,7 +138,7 @@ const assetSchema = new mongoose.Schema({
    ethernetInterfaces: {
       type: [
          {
-            name: { type: String, default: 'Not found' },
+            id: { type: String, default: 'Not found' },
             description: { type: String, default: 'Not found' },
             macAddress: { type: String, default: 'Not found' },
             permanentMacAddress: { type: String, default: 'Not found' },
@@ -161,9 +150,23 @@ const assetSchema = new mongoose.Schema({
          }
       ],
       default: []
+   },
+   bootOptions: {
+      type: [
+         {
+            id: { type: String, default: 'Not found' },
+            displayName: { type: String, default: 'Not found' },
+            position: { type: String, default: 'Not found' },
+            enabled: { type: String, default: 'Not found' },
+            devicePath: { type: String, default: 'Not found' }
+         }
+      ],
+      default: []
+   },
+   rawJson: {
+      type: String,
+      default: ''
    }
-});
-
-assetSchema.index({ uuid: 1, version: 1 }, { unique: true });
+}).index({ uuid: 1, version: 1 }, { unique: true });
 
 module.exports = mongoose.model('Asset', assetSchema);

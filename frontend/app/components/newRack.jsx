@@ -35,10 +35,8 @@ export default function NewRack() {
 
    return (
       <div>
-           <div className=" relative justify-center md:justify-start flex items-center">
-            <h1 className="font-semibold text-center md:text-left  text-4xl">
-               New Rack
-            </h1>
+         <div className=" relative justify-center md:justify-start flex items-center">
+            <h1 className="font-semibold text-center md:text-left  text-4xl">New Rack</h1>
             <Link
                href="/"
                className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"

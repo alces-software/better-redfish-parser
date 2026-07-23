@@ -88,8 +88,6 @@ export default function EditRack() {
             </Link>
          </div>
 
-      
-
          <br />
          <hr />
          <br />

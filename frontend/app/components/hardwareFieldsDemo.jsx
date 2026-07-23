@@ -2,10 +2,9 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LuUpload } from "react-icons/lu";
-import { FaFileAlt } from "react-icons/fa";
-import { IoSend } from "react-icons/io5";
-
+import { LuUpload } from 'react-icons/lu';
+import { FaFileAlt } from 'react-icons/fa';
+import { IoSend } from 'react-icons/io5';
 
 const defaultFields = [
    { id: 1, name: 'Asset name', value: '', path: 'Name' },
@@ -282,17 +281,10 @@ export default function HardwareFieldsDemo() {
             )}
          </div>
 
-         
-
          {uploadedFile ? (
             <>
                <div className="mt-4 grid gap-4 md:grid-cols-[2fr_1fr]">
-
                   <div className="min-w-0 w-fit-content overflow-hidden rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
-
-
-
-
                      <div className="rounded-t-lg bg-slate-800 p-4">
                         <h2 className="text-2xl text-slate-300">Imported Redfish JSON</h2>
                      </div>
@@ -414,21 +406,17 @@ export default function HardwareFieldsDemo() {
                                        {editingFieldId === field.id ? 'Save' : 'Edit'}
                                     </button>
 
-                                    {field.name !== "Asset name" && field.name != "UUID" && field.name != "U position" && (
-
-                                       <button
-                                       type="button"
-                                       onClick={() => handleRemoveField(field.id)}
-                                       className="rounded-full border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-red-900"
-                                    >
-                                       Remove
-                                    </button>
-
-
-                                    )}
-
-                                    
-
+                                    {field.name !== 'Asset name' &&
+                                       field.name != 'UUID' &&
+                                       field.name != 'U position' && (
+                                          <button
+                                             type="button"
+                                             onClick={() => handleRemoveField(field.id)}
+                                             className="rounded-full border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-red-900"
+                                          >
+                                             Remove
+                                          </button>
+                                       )}
                                  </div>
                               </div>
                               {editingFieldId === field.id ? (
@@ -451,42 +439,41 @@ export default function HardwareFieldsDemo() {
                   </div>
                </div>
 
-                <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
-            <div className="grid gap-4 md:grid-cols-2">
-               <label className="block">
-                  <span className="block p-1 text-slate-300">Rack</span>
-                  <select
-                     name="rack"
-                     value={selectedRack}
-                     onChange={(event) => setSelectedRack(event.target.value)}
-                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
-                     required
-                  >
-                     <option value="">Select a rack</option>
+               <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
+                  <div className="grid gap-4 md:grid-cols-2">
+                     <label className="block">
+                        <span className="block p-1 text-slate-300">Rack</span>
+                        <select
+                           name="rack"
+                           value={selectedRack}
+                           onChange={(event) => setSelectedRack(event.target.value)}
+                           className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                           required
+                        >
+                           <option value="">Select a rack</option>
 
-                     {racks.map((rack) => (
-                        <option key={rack._id} value={rack._id}>
-                           {rack.name}
-                        </option>
-                     ))}
-                  </select>
-               </label>
+                           {racks.map((rack) => (
+                              <option key={rack._id} value={rack._id}>
+                                 {rack.name}
+                              </option>
+                           ))}
+                        </select>
+                     </label>
 
-               <label className="block">
-                  <span className="block p-1 text-slate-300">Notes</span>
-                  <input
-                     name="notes"
-                     type="text"
-                     value={notes}
-                     onChange={(event) => setNotes(event.target.value)}
-                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
-                  />
-               </label>
-            </div>
-         </div>
+                     <label className="block">
+                        <span className="block p-1 text-slate-300">Notes</span>
+                        <input
+                           name="notes"
+                           type="text"
+                           value={notes}
+                           onChange={(event) => setNotes(event.target.value)}
+                           className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                        />
+                     </label>
+                  </div>
+               </div>
 
-               <div className='flex justify-end mt-4 '>
-
+               <div className="flex justify-end mt-4 ">
                   <button
                      type="button"
                      onClick={handleCreateAsset}
@@ -556,42 +543,41 @@ export default function HardwareFieldsDemo() {
                   </div>
                </div>
 
-                <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
-            <div className="grid gap-4 md:grid-cols-2">
-               <label className="block">
-                  <span className="block p-1 text-slate-300">Rack</span>
-                  <select
-                     name="rack"
-                     value={selectedRack}
-                     onChange={(event) => setSelectedRack(event.target.value)}
-                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
-                     required
-                  >
-                     <option value="">Select a rack</option>
+               <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
+                  <div className="grid gap-4 md:grid-cols-2">
+                     <label className="block">
+                        <span className="block p-1 text-slate-300">Rack</span>
+                        <select
+                           name="rack"
+                           value={selectedRack}
+                           onChange={(event) => setSelectedRack(event.target.value)}
+                           className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                           required
+                        >
+                           <option value="">Select a rack</option>
 
-                     {racks.map((rack) => (
-                        <option key={rack._id} value={rack._id}>
-                           {rack.name}
-                        </option>
-                     ))}
-                  </select>
-               </label>
+                           {racks.map((rack) => (
+                              <option key={rack._id} value={rack._id}>
+                                 {rack.name}
+                              </option>
+                           ))}
+                        </select>
+                     </label>
 
-               <label className="block">
-                  <span className="block p-1 text-slate-300">Notes</span>
-                  <input
-                     name="notes"
-                     type="text"
-                     value={notes}
-                     onChange={(event) => setNotes(event.target.value)}
-                     className="m-1 h-9 w-full rounded-lg border p-1 text-white"
-                  />
-               </label>
-            </div>
-         </div>
+                     <label className="block">
+                        <span className="block p-1 text-slate-300">Notes</span>
+                        <input
+                           name="notes"
+                           type="text"
+                           value={notes}
+                           onChange={(event) => setNotes(event.target.value)}
+                           className="m-1 h-9 w-full rounded-lg border p-1 text-white"
+                        />
+                     </label>
+                  </div>
+               </div>
 
-               <div className='flex justify-end mt-4 '>
-
+               <div className="flex justify-end mt-4 ">
                   <button
                      disabled
 

@@ -67,7 +67,9 @@ export default function AssetsPage() {
 
    const hasPrevious = historyIndex > 0;
    const hasNext = historyIndex < history.length - 1;
-   const hardwareData = asset?.imported_json;
+   const hardwareData = asset?.rawJson;
+
+   console.log(asset);
 
    return (
       <div>

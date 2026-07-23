@@ -35,7 +35,7 @@ export default function NewAsset() {
             rack: formData.get('rack'),
             uPosition: Number(formData.get('uPosition')),
             notes: formData.get('notes'),
-            hardwareData
+            rawJson: hardwareData
          })
       });
 

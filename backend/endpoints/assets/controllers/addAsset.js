@@ -86,17 +86,19 @@ module.exports = async (req, res) => {
          return res.status(409).json({ success: false, message: 'Asset already exists' });
       }
 
-      const asset = new Asset({
+      console.log(req.body);
+
+      const asset = await new Asset({
          name,
          uuid,
          version: 1,
          rack: targetRack._id,
          uPosition,
-         systemType: Object.keys(systemTypes).find((v) => v === systemType),
+         systemType: Object.keys(systemTypes).find((v) => v === systemType) || 'HP',
          notes,
          dataFields,
-         rawJson: rawJson || ''
-      });
+         rawJson: JSON.stringify(rawJson) || ''
+      }).save();
 
       return res.status(201).json({ success: true, body: asset });
    } catch (err) {

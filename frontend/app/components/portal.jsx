@@ -40,7 +40,7 @@ export default function Portal() {
    }
    return (
       <section>
-         <div className='text-center md:text-left'>
+         <div className="text-center md:text-left">
             <h1 className="font-semibold  text-4xl">System Information Portal</h1>
             <p className="mt-4">View, edit, or delete existing assets, or create a new one.</p>
          </div>

@@ -89,7 +89,7 @@ module.exports = async (req, res) => {
          return res.status(404).json({ success: false, message: 'Asset not found' });
       }
 
-      const newVersion = new Asset({
+      const newVersion = await new Asset({
          uuid: currentAsset.uuid,
          version: currentAsset.version + 1,
          name: name ?? currentAsset.name,
@@ -99,9 +99,7 @@ module.exports = async (req, res) => {
          dataFields: dataFields ?? currentAsset.dataFields,
          rawJson: rawJson ?? currentAsset.rawJson,
          systemType: currentAsset.systemType
-      });
-
-      await newVersion.save();
+      }).save();
 
       return res.status(201).json({ success: true, body: newVersion });
    } catch (err) {

@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
       const assets = await Asset.find({ uuid }).populate('rack').sort({ version: -1 });
 
       if (!assets.length) {
-         return res.status(404).json({ success: false, message: 'N asset history found' });
+         return res.status(404).json({ success: false, message: 'No asset history found' });
       }
 
       return res.status(200).json({ success: true, body: assets });

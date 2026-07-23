@@ -70,7 +70,6 @@ body {
    }
 }
 
-
 .animate-spin-quarter-pause {
    animation: spinQuarterPause 6s ease-out infinite;
 }

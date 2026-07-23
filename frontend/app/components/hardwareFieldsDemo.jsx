@@ -2,10 +2,9 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { LuUpload } from "react-icons/lu";
-import { FaFileAlt } from "react-icons/fa";
-import { IoSend } from "react-icons/io5";
-
+import { LuUpload } from 'react-icons/lu';
+import { FaFileAlt } from 'react-icons/fa';
+import { IoSend } from 'react-icons/io5';
 
 const defaultFields = [
    { id: 1, name: 'Asset name', value: '', path: 'Name' },
@@ -120,10 +119,10 @@ export default function HardwareFieldsDemo() {
    const sectionData = parsedJson ? getValueByPath(parsedJson, selectedSection?.path ?? '') : null;
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-         .filter((match) => isSearchableValue(match.value))
-         .slice(0, 12)
+           .filter((match) => isSearchableValue(match.value))
+           .slice(0, 12)
       : [];
-   const uploadedFile = Boolean(fileName)
+   const uploadedFile = Boolean(fileName);
 
    useEffect(() => {
       async function getRacks() {
@@ -212,7 +211,6 @@ export default function HardwareFieldsDemo() {
    }
 
    function handleCreateAsset() {
-
       const assetNameField = fields.find((f) => f.name === 'Asset name');
       const uuidField = fields.find((f) => f.name === 'UUID');
       const uPosField = fields.find((f) => f.name === 'U position');
@@ -222,7 +220,10 @@ export default function HardwareFieldsDemo() {
       const uPos = uPosField ? getFieldValue(uPosField) : '';
 
       const collectedFields = fields
-         .filter((field) => field.name !== 'Asset name' && field.name !== 'UUID' && field.name !== 'U position')
+         .filter(
+            (field) =>
+               field.name !== 'Asset name' && field.name !== 'UUID' && field.name !== 'U position'
+         )
          .map((field) => ({
             name: field.name,
             value: getFieldValue(field),
@@ -246,9 +247,7 @@ export default function HardwareFieldsDemo() {
    return (
       <section>
          <div className="flex items-center">
-            <h1 className="font-semibold text-center md:text-left text-4xl">
-               Create new asset
-            </h1>
+            <h1 className="font-semibold text-center md:text-left text-4xl">Create new asset</h1>
             <Link
                href="/"
                className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
@@ -267,7 +266,12 @@ export default function HardwareFieldsDemo() {
                   className="sr-only"
                />
             </label>
-            {fileName && <span className="text-md flex items-center gap-1 text-slate-300">{fileName}<FaFileAlt /></span>}
+            {fileName && (
+               <span className="text-md flex items-center gap-1 text-slate-300">
+                  {fileName}
+                  <FaFileAlt />
+               </span>
+            )}
          </div>
 
          <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
@@ -305,21 +309,11 @@ export default function HardwareFieldsDemo() {
          </div>
 
          {uploadedFile ? (
-
             <>
-
-
-
                <div className="mt-4 grid gap-4 md:grid-cols-[2fr_1fr]">
-
                   <div className="min-w-0 max-w-3xl overflow-hidden rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
-
-
-
-
                      <div className="rounded-t-lg bg-slate-800 p-4">
                         <h2 className="text-2xl text-slate-300">Imported Redfish JSON</h2>
-
                      </div>
 
                      <div className="flex flex-wrap gap-2 p-4">
@@ -350,7 +344,9 @@ export default function HardwareFieldsDemo() {
                   </div>
 
                   <div className="rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
-                     <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">Tracked fields</h2>
+                     <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">
+                        Tracked fields
+                     </h2>
 
                      <div className="border-b border-slate-700 p-4">
                         <label className="block">
@@ -384,7 +380,9 @@ export default function HardwareFieldsDemo() {
                                     </button>
                                  ))
                               ) : (
-                                 <p className="p-2 text-sm text-slate-500">No matching keys found</p>
+                                 <p className="p-2 text-sm text-slate-500">
+                                    No matching keys found
+                                 </p>
                               )}
                            </div>
                         )}
@@ -461,8 +459,7 @@ export default function HardwareFieldsDemo() {
                      </div>
                   </div>
                </div>
-               <div className='flex justify-end mt-4 '>
-
+               <div className="flex justify-end mt-4 ">
                   <button
                      type="button"
                      onClick={handleCreateAsset}
@@ -472,41 +469,23 @@ export default function HardwareFieldsDemo() {
                   </button>
                </div>
             </>
-
-
-
-
-
-
          ) : (
-
             <>
-
                <div className="mt-4 grid gap-4 md:grid-cols-[2fr_1fr]">
-
                   <div className="rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
-
-
-
-
                      <div className="rounded-t-lg bg-slate-800 p-4">
                         <h2 className="text-2xl text-slate-300">Imported Redfish JSON</h2>
-
                      </div>
 
                      <div className="flex min-h-64 items-center justify-center">
                         <p className="text-lg text-slate-300">Upload a file to continue</p>
                      </div>
-
-
-
-
-
-
                   </div>
 
                   <div className="rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
-                     <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">Tracked fields</h2>
+                     <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">
+                        Tracked fields
+                     </h2>
 
                      <div className="border-b border-slate-700 p-4">
                         <label className="block">
@@ -518,8 +497,6 @@ export default function HardwareFieldsDemo() {
                               className="m-1 h-9 w-full rounded-lg border p-1 text-white placeholder:text-slate-500"
                            />
                         </label>
-
-
                      </div>
 
                      <form onSubmit={handleAddField} className="border-b border-slate-700 p-4">
@@ -550,11 +527,9 @@ export default function HardwareFieldsDemo() {
                         </button>
                      </form>
                   </div>
-
                </div>
 
-               <div className='flex justify-end mt-4 '>
-
+               <div className="flex justify-end mt-4 ">
                   <button
                      disabled
 
@@ -564,15 +539,7 @@ export default function HardwareFieldsDemo() {
                   </button>
                </div>
             </>
-
-
-
-
-
-
          )}
-
-
       </section>
    );
 }

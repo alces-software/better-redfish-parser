@@ -122,8 +122,8 @@ export default function HardwareFieldsDemo() {
    const sectionData = parsedJson ? getValueByPath(parsedJson, selectedSection?.path ?? '') : null;
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-         .filter((match) => isSearchableValue(match.value))
-         .slice(0, 12)
+           .filter((match) => isSearchableValue(match.value))
+           .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);
 
@@ -649,7 +649,6 @@ export default function HardwareFieldsDemo() {
                      </label>
                   </div>
                </div>
-
 
                <div className="flex justify-end mt-4 ">
                   <button

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+   { systemTypes } = require('../enums/enums');
 
 /**
  * @openapi
@@ -15,10 +16,14 @@ const mongoose = require('mongoose');
  *           type: string
  *         uPosition:
  *           type: integer
+ *         systemType:
+ *           type: string
  *         notes:
  *           type: string
- *         hardwareData:
+ *         dataFields:
  *           type: object
+ *         rawJson:
+ *           type: string
  *     Asset:
  *       type: object
  *       properties:
@@ -34,27 +39,19 @@ const mongoose = require('mongoose');
  *           $ref: '#/components/schemas/Rack'
  *         uPosition:
  *           type: integer
+ *         systemType:
+ *           type: string
  *         notes:
  *           type: string
- *         imported_json:
- *           type: string
- *         cores:
- *           type: string
- *         processor_name:
- *           type: string
- *         processor_count:
- *           type: string
- *         memory:
- *           type: string
- *         model:
- *           type: string
- *         serial_number:
- *           type: string
- *         manufacturer:
- *           type: string
- *         led:
- *           type: string
- *         description:
+ *         dataFields:
+ *           type: object
+ *         fans:
+ *           type: object
+ *         ethernetInterfaces:
+ *           type: object
+ *         bootOptions:
+ *           type: object
+ *         rawJson:
  *           type: string
  *       required:
  *         - name
@@ -62,6 +59,7 @@ const mongoose = require('mongoose');
  *         - version
  *         - rack
  *         - uPosition
+ *         - systemType
  */
 
 const assetSchema = new mongoose.Schema({
@@ -87,51 +85,25 @@ const assetSchema = new mongoose.Schema({
       type: Number,
       required: true
    },
+   systemType: {
+      type: String,
+      enum: Object.keys(systemTypes),
+      required: true
+   },
    notes: {
       type: String,
       default: ''
    },
-   imported_json: {
-      type: String,
-      default: ''
-   },
 
-   // Extracted hardware data
-   cores: {
-      type: mongoose.Schema.Types.Mixed,
-      default: 'Not found'
-   },
-   processor_name: {
-      type: String,
-      default: 'Not found'
-   },
-   processor_count: {
-      type: mongoose.Schema.Types.Mixed,
-      default: 'Not found'
-   },
-   memory: {
-      type: String,
-      default: 'Not Found'
-   },
-   model: {
-      type: String,
-      default: 'Not Found'
-   },
-   serial_number: {
-      type: String,
-      default: 'Not Found'
-   },
-   manufacturer: {
-      type: String,
-      default: 'Not Found'
-   },
-   led: {
-      type: String,
-      default: 'Not Found'
-   },
-   description: {
-      type: String,
-      default: 'Not Found'
+   dataFields: {
+      type: [
+         {
+            title: { type: String, default: 'Unset' },
+            value: { type: String, default: 'Unset' },
+            path: { type: String, default: 'Unset' }
+         }
+      ],
+      default: []
    },
    fans: {
       type: [
@@ -173,6 +145,10 @@ const assetSchema = new mongoose.Schema({
          }
       ],
       default: []
+   },
+   rawJson: {
+      type: String,
+      default: ''
    }
 });
 

@@ -44,7 +44,7 @@ const Asset = require('../../../models/Asset'),
  */
 module.exports = async (req, res) => {
    try {
-      const { rack, name, uuid, uPosition, notes, hardwareData } = req.body || {};
+      const { rack, name, uuid, uPosition, notes, dataFields, rawJson } = req.body || {};
 
       const targetRack = await Rack.findById(rack);
 
@@ -58,8 +58,6 @@ module.exports = async (req, res) => {
          return res.status(409).json({ success: false, message: 'Asset already exists' });
       }
 
-      const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
-
       const asset = new Asset({
          name,
          uuid,
@@ -67,8 +65,8 @@ module.exports = async (req, res) => {
          rack: targetRack._id,
          uPosition,
          notes,
-         imported_json: hardwareData || '',
-         ...extractHardwareData
+         dataFields,
+         rawJson: rawJson || ''
       });
 
       const savedAsset = await asset.save();

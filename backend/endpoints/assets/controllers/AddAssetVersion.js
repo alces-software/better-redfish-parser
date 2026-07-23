@@ -46,7 +46,7 @@ const Asset = require('../../../models/Asset'),
 module.exports = async (req, res) => {
    try {
       const { uuid } = req.params || {};
-      const { name, rack, uPosition, notes, hardwareData } = req.body || {};
+      const { name, rack, uPosition, notes, dataFields, rawJson } = req.body || {};
 
       if (!uuid) {
          return res
@@ -60,7 +60,7 @@ module.exports = async (req, res) => {
          return res.status(404).json({ success: false, message: 'Asset not found' });
       }
 
-      const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
+      // const extractHardwareData = hardwareData ? extractData(hardwareData) : {};
 
       const newVersion = new Asset({
          uuid: current.uuid,
@@ -69,19 +69,11 @@ module.exports = async (req, res) => {
          rack: rack ?? current.rack,
          uPosition: uPosition ?? current.uPosition,
          notes: notes ?? current.notes,
-         imported_json: hardwareData ?? current.imported_json,
-         cores: extractHardwareData.cores ?? current.cores,
-         processor_name: extractHardwareData.processor_name ?? current.processor_name,
-         processor_count: extractHardwareData.processor_count ?? current.processor_count,
-         memory: extractHardwareData.memory ?? current.memory,
-         model: extractHardwareData.model ?? current.model,
-         serial_number: extractHardwareData.serial_number ?? current.serial_number,
-         manufacturer: extractHardwareData.manufacturer ?? current.manufacturer,
-         led: extractHardwareData.led ?? current.led,
-         description: extractHardwareData.description ?? current.description,
-         fans: extractHardwareData.fans ?? current.fans,
-         ethernetInterfaces: extractHardwareData.ethernetInterfaces ?? current.ethernetInterfaces,
-         bootOptions: extractHardwareData.bootOptions ?? current.bootOptions
+         dataFields: dataFields ?? current.dataFields,
+         rawJson: rawJson ?? current.rawJson
+         // fans: extractHardwareData.fans ?? current.fans,
+         // ethernetInterfaces: extractHardwareData.ethernetInterfaces ?? current.ethernetInterfaces,
+         // bootOptions: extractHardwareData.bootOptions ?? current.bootOptions
       });
 
       await newVersion.save();

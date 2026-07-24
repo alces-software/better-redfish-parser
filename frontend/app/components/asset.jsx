@@ -6,55 +6,54 @@ import { useEffect, useState } from 'react';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { trpc } from '@/lib/trpc';
 
 export default function AssetsPage() {
    const router = useRouter();
    const searchParams = useSearchParams();
    const uuId = searchParams.get('id');
+   const historyQuery = trpc.assets.getHistory.useQuery(
+      { uuid: uuId ?? '' },
+      { enabled: Boolean(uuId) }
+   );
+   const history = historyQuery.data?.body ?? [];
    const [asset, setAsset] = useState(null);
-   const [history, setHistory] = useState([]);
    const [historyIndex, setHistoryIndex] = useState(0);
+   const utils = trpc.useUtils();
+   const deleteAsset = trpc.assets.delete.useMutation();
+
+   useEffect(() => {
+      function syncAsset() {
+         setAsset(history[historyIndex]);
+      }
+
+      syncAsset();
+   }, [history, historyIndex]);
 
    async function handleDelete() {
       if (!confirm('Are you sure you want to delete this asset?')) {
          return;
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${uuId}`, {
-         method: 'DELETE',
-         headers: {
-            'Content-Type': 'application/json'
-         }
-      });
+      try {
+         const res = await deleteAsset.mutateAsync({
+            uuid: uuId
+         });
 
-      if (!res.ok) {
-         const data = await res.json();
-         alert(data.message ?? 'Failed to delete asset');
-         return;
-      }
-
-      router.push('/');
-   }
-
-   useEffect(() => {
-      async function getAssetHistory() {
-         if (!uuId) return;
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${uuId}/history`);
-         const data = await res.json();
-
-         if (!res.ok) {
-            alert(data.message ?? 'Failed to load asset history');
+         if (!res.success) {
+            alert(res.message ?? 'Failed to delete asset');
             return;
          }
 
-         setHistory(data.body);
-         setAsset(data.body[0]);
-         setHistoryIndex(0);
-      }
+         void utils.assets.getAllLatest.invalidate();
+         void utils.assets.getHistory.invalidate({ uuid: uuId });
+         void utils.assets.getLatest.invalidate({ uuid: uuId });
 
-      getAssetHistory();
-   }, [uuId]);
+         router.replace('/');
+      } catch (error) {
+         alert(error instanceof Error ? error.message : 'Failed to delete asset');
+      }
+   }
 
    function handleHistoryChange(nextIndex) {
       const nextAsset = history[nextIndex];
@@ -67,103 +66,35 @@ export default function AssetsPage() {
 
    const hasPrevious = historyIndex > 0;
    const hasNext = historyIndex < history.length - 1;
-   const hardwareData = asset?.imported_json;
+   const hardwareData = asset?.rawJson;
+
+   const allDataFields = asset
+      ? [
+           { title: 'Asset Name', value: asset.name, path: 'name' },
+           { title: 'UUID', value: asset.uuid, path: 'uuid' },
+           { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
+           { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
+           { title: 'Notes', value: asset.notes, path: 'notes' },
+           ...(asset.dataFields ?? [])
+        ]
+      : [];
 
    return (
       <div>
-         <h1 className="font-semibold text-4xl">
+         <h1 className="font-semibold text-center md:text-left text-4xl">
             System information for <em>{asset?.name ?? uuId}</em>
          </h1>
 
          <div className="mt-15 flex flex-col items-center justify-center">
-            <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6">
+            <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6 mt-5">
                {asset && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
-                     <div>
-                        <span className="text-slate-500 text-sm">Asset Name</span>
-                        <p>{asset.name}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Rack Position</span>
-                        <p>{asset.uPosition}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Number of Slots</span>
-                        <p>{asset.version}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Manufacturer</span>
-                        <p>{asset.manufacturer}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Model</span>
-                        <p>{asset.model}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Serial Number</span>
-                        <p>{asset.serial_number}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Processor</span>
-                        <p>{asset.processor_name}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Processor Count</span>
-                        <p>{asset.processor_count}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Cores</span>
-                        <p>{asset.cores}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Memory</span>
-                        <p>{asset.memory}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">LED Status</span>
-                        <p>{asset.led}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Fan Count</span>
-                        <p>{asset?.fans.length != 0 ? asset.fans.length : 'Unknown'}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Ethernet Interface Count</span>
-                        <p>
-                           {asset?.ethernetInterfaces.length != 0
-                              ? asset.ethernetInterfaces.length
-                              : 'Unknown'}
-                        </p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Boot Options Count</span>
-                        <p>
-                           {asset?.bootOptions.length != 0 ? asset.bootOptions.length : 'Unknown'}
-                        </p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Notes</span>
-                        <p>{asset.notes}</p>
-                     </div>
-
-                     <div className="col-span-full">
-                        <span className="text-slate-500 text-sm">Description</span>
-                        <p>{asset.description}</p>
-                     </div>
+                     {allDataFields.map((field) => (
+                        <div key={`${field.title}-${field.path}`}>
+                           <span className="text-slate-500 text-sm">{field.title}</span>
+                           <p>{field.value}</p>
+                        </div>
+                     ))}
                   </div>
                )}
             </div>

@@ -1,0 +1,65 @@
+/**
+ * @openapi
+ * /api/assets/{uuid}:
+ *   get:
+ *     summary: Get the latest version of an asset by UUID
+ *     tags:
+ *       - Assets
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 body:
+ *                   $ref: '#/components/schemas/Asset'
+ *       '400':
+ *         description: Bad request
+ *       '404':
+ *         description: Asset not found
+ *       '500':
+ *         description: Server error
+ */
+
+import { Asset } from '../../../assets/models/Asset';
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {Promise<void>}
+ */
+export default async (req: import('express').Request, res: import('express').Response) => {
+   try {
+      const { uuid } = req.params || {};
+
+      // Check uuid
+      if (!uuid) {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset UUID missing from the request' });
+      }
+
+      // Get the latest asset version from the database
+      const asset = await Asset.findOne({ uuid }).sort({ version: -1 }).populate('rack');
+
+      if (!asset) {
+         return res.status(404).json({ success: false, message: 'Asset not found' });
+      }
+
+      return res.status(200).json({ success: true, body: asset });
+   } catch (error) {
+      return res
+         .status(500)
+         .json({ success: false, message: error instanceof Error ? error.message : String(error) });
+   }
+};

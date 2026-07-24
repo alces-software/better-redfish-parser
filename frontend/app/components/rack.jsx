@@ -1,54 +1,59 @@
 'use client';
 
+import { trpc } from '@/lib/trpc';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 
 export default function RacksPage() {
    const router = useRouter();
    const searchParams = useSearchParams();
    const rackId = searchParams.get('id');
-   const [rack, setRack] = useState(null);
+   const utils = trpc.useUtils();
+   const rackQuery = trpc.racks.getById.useQuery(
+      { id: rackId ?? '' },
+      {
+         enabled: Boolean(rackId)
+      }
+   );
+   const deleteRack = trpc.racks.delete.useMutation();
+   const rack = rackQuery.data?.body ?? null;
 
    async function handleDelete() {
       if (!confirm('Are you sure you want to delete this rack?')) {
          return;
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks/${rackId}`, {
-         method: 'DELETE',
-         headers: {
-            'Content-Type': 'application/json'
-         }
-      });
-
-      if (!res.ok) {
-         const data = await res.json();
-         alert(data.message ?? 'Failed to delete rack');
+      if (!rackId) {
+         alert('Rack ID is missing');
          return;
       }
 
-      router.push('/?mode=racks');
-   }
+      try {
+         const res = await deleteRack.mutateAsync({ id: rackId });
 
-   useEffect(() => {
-      async function getRack() {
-         if (!rackId) return;
+         if (!res.success) {
+            alert(res.message ?? 'Failed to delete rack');
+            return;
+         }
 
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks/${rackId}`);
-         const data = await res.json();
-         setRack(data.body);
+         void utils.racks.get.invalidate();
+         void utils.racks.getById.invalidate({ id: rackId });
+
+         router.replace('/?mode=racks');
+      } catch (error) {
+         alert(error instanceof Error ? error.message : 'Failed to delete rack');
       }
-
-      getRack();
-   }, [rackId]);
+   }
 
    return (
       <div>
-         <h1 className="font-semibold text-4xl">
+         <h1 className="font-semibold text-center md:text-left text-4xl">
             System information for <em>{rack?.name ?? rackId}</em>
          </h1>
+
+         {rackQuery.isLoading ? <p className="mt-4 text-slate-300">Loading rack...</p> : null}
+         {rackQuery.error ? <p className="mt-4 text-red-300">{rackQuery.error.message}</p> : null}
 
          <div className="mt-15 flex flex-col items-center justify-center">
             <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl">
@@ -57,13 +62,12 @@ export default function RacksPage() {
                      <tr>
                         <th className="rounded-tl-lg text-center p-4 pl-12">Name</th>
                         <th className="p-4 text-center">Size</th>
-
                         <th className="p-4 text-center rounded-tr-lg pr-12">Notes</th>
                      </tr>
                   </thead>
 
                   <tbody className="bg-slate-900">
-                     {rack && (
+                     {rack && !rackQuery.isLoading && !rackQuery.error && (
                         <tr>
                            <td className="rounded-bl-lg p-4 text-center pl-12">{rack.name}</td>
                            <td className="p-4 text-center">{rack.size}</td>

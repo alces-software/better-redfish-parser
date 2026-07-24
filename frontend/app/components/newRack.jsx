@@ -1,45 +1,42 @@
 'use client';
 
+import { trpc } from '@/lib/trpc';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function NewRack() {
    const router = useRouter();
+   const [errorMessage, setErrorMessage] = useState('');
+   const createRack = trpc.racks.add.useMutation();
 
    async function handleSubmit(event) {
       event.preventDefault();
 
       const formData = new FormData(event.currentTarget);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks`, {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-            name: formData.get('name'),
+      setErrorMessage('');
+
+      try {
+         const data = await createRack.mutateAsync({
+            name: String(formData.get('name') ?? ''),
             size: Number(formData.get('size')),
-            notes: formData.get('notes')
-         })
-      });
+            notes: String(formData.get('notes') ?? '')
+         });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-         alert(data.message ?? 'Failed to create rack');
-         return;
+         router.push(`/racks?id=${data.body._id}`);
+      } catch (error) {
+         setErrorMessage(error instanceof Error ? error.message : 'Failed to create rack');
       }
-
-      router.push(`/racks?id=${data.body._id}`);
    }
 
    return (
       <div>
-         <div className="flex items-center">
-            <h1 className="font-semibold text-4xl">New rack</h1>
+         <div className=" relative justify-center md:justify-start flex items-center">
+            <h1 className="font-semibold text-center md:text-left  text-4xl">New Rack</h1>
             <Link
                href="/"
-               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-900 p-2 transition hover:-translate-y-1"
+               className="ml-4 h-min w-min rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1 hover:bg-slate-900"
             >
                Cancel
             </Link>
@@ -49,23 +46,29 @@ export default function NewRack() {
          <hr />
          <br />
 
+         {errorMessage ? (
+            <p className="mb-4 rounded-lg border border-red-500/50 bg-red-950/60 p-3 text-red-200">
+               {errorMessage}
+            </p>
+         ) : null}
+
          <form
             onSubmit={handleSubmit}
             className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl"
          >
             <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Rack details</h2>
 
-            <div className="pl-2">
+            <div className="mx-auto">
                <p className="p-1 mx-4">Name</p>
                <input name="name" type="text" className="mx-4 rounded-lg border p-1 text-white" />
             </div>
 
-            <div className="mt-2 pl-2">
+            <div className="mt-2 mx-auto">
                <p className="p-1 mx-4">Size</p>
                <input name="size" type="text" className="mx-4 rounded-lg border p-1 text-white" />
             </div>
 
-            <div className="mt-2 pl-2">
+            <div className="mt-2 mx-auto">
                <p className="p-1 mx-4">Notes</p>
                <input name="notes" type="text" className="mx-4 rounded-lg border p-1 text-white" />
             </div>

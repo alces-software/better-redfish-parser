@@ -2,45 +2,38 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import Loading from '../components/loading';
+import { trpc } from '@/lib/trpc';
 
 function prettyPrintJson(value) {
-   if (!value) return '';
+   if (!value) return 'No Json';
 
-   try {
-      return JSON.stringify(JSON.parse(value), null, 2);
-   } catch {
-      return value;
+   let json = value;
+
+   for (let index = 0; index < 2; index += 1) {
+      if (typeof json !== 'string') break;
+
+      try {
+         json = JSON.parse(json);
+      } catch {
+         return json;
+      }
    }
+
+   return typeof json === 'object' ? JSON.stringify(json, null, 2) : String(json);
 }
 
 export default function Json() {
    const searchParams = useSearchParams();
    const assetId = searchParams.get('id');
    const version = searchParams.get('version');
-   const [asset, setAsset] = useState(null);
-   const [error, setError] = useState('');
-
-   useEffect(() => {
-      async function getJsonImport() {
-         if (!assetId) return;
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${assetId}/history`);
-         const data = await res.json();
-
-         if (!res.ok) {
-            setError(data.message ?? 'Failed to load JSON import');
-            return;
-         }
-
-         const matchingAsset = data.body.find((entry) => String(entry.version) === String(version));
-
-         setAsset(matchingAsset ?? data.body[0]);
-      }
-
-      getJsonImport();
-   }, [assetId, version]);
+   const historyQuery = trpc.assets.getHistory.useQuery(
+      { uuid: assetId ?? '' },
+      { enabled: Boolean(assetId) }
+   );
+   const history = historyQuery.data?.body ?? [];
+   const asset =
+      history.find((entry) => String(entry.version) === String(version)) ?? history[0] ?? null;
 
    if (!assetId) {
       return (
@@ -50,11 +43,11 @@ export default function Json() {
       );
    }
 
-   if (error) {
+   if (historyQuery.error) {
       return (
          <section>
             <h1 className="font-semibold text-4xl">JSON import</h1>
-            <p className="mt-4 text-slate-300">{error}</p>
+            <p className="mt-4 text-slate-300">{historyQuery.error.message}</p>
             <Link
                href={`/assets?id=${assetId}`}
                className="mt-6 inline-block rounded-full border border-slate-400 bg-slate-800 p-2 transition hover:-translate-y-1"
@@ -65,11 +58,11 @@ export default function Json() {
       );
    }
 
-   if (!asset) {
+   if (historyQuery.isLoading || !asset) {
       return (
          <section>
             <h1 className="font-semibold text-4xl">JSON import</h1>
-            <p className="mt-4 text-slate-300">Loading JSON import...</p>
+            <Loading />
          </section>
       );
    }
@@ -77,7 +70,7 @@ export default function Json() {
    return (
       <section>
          <div className="flex items-center">
-            <h1 className="font-semibold text-4xl">
+            <h1 className="font-semibold text-center md:text-left text-4xl">
                JSON import for <em>{asset.name}</em>
             </h1>
             <Link
@@ -93,7 +86,7 @@ export default function Json() {
                Version {asset.version}
             </h2>
             <pre className="max-h-[60vh] w-full overflow-auto whitespace-pre-wrap p-4 text-sm text-slate-300">
-               {asset.imported_json ? prettyPrintJson(asset.imported_json) : 'No Json'}
+               {asset.rawJson ? prettyPrintJson(asset.rawJson) : 'No Json'}
             </pre>
          </div>
       </section>

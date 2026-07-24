@@ -55,17 +55,17 @@ export default function NewRack() {
          >
             <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Rack details</h2>
 
-            <div className="pl-2">
+            <div className="mx-auto">
                <p className="p-1 mx-4">Name</p>
                <input name="name" type="text" className="mx-4 rounded-lg border p-1 text-white" />
             </div>
 
-            <div className="mt-2 pl-2">
+            <div className="mt-2 mx-auto">
                <p className="p-1 mx-4">Size</p>
                <input name="size" type="text" className="mx-4 rounded-lg border p-1 text-white" />
             </div>
 
-            <div className="mt-2 pl-2">
+            <div className="mt-2 mx-auto">
                <p className="p-1 mx-4">Notes</p>
                <input name="notes" type="text" className="mx-4 rounded-lg border p-1 text-white" />
             </div>

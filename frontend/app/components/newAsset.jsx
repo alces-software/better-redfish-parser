@@ -105,6 +105,7 @@ export default function NewAsset() {
    const [selectedManufacture, setSelectedManufacture] = useState(0);
    const [notes, setNotes] = useState('');
    const editInputRef = useRef(null);
+   const addNewAsset = trpc.assets.add.useMutation();
 
    const router = useRouter();
 
@@ -252,28 +253,16 @@ export default function NewAsset() {
          value: fileName
       });
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`, {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-            name: assetName,
-            uuid: uuID,
-            uPosition: uPos,
-            rack: selectedRack,
-            manufacturer: selectedManufacture,
-            notes,
-            dataFields: collectedFields,
-            rawJson: JSON.stringify(parsedJson, null, 2)
-         })
+      await addNewAsset.mutateAsync({
+         name: assetName,
+         uuid: uuID,
+         uPosition: Number(uPos),
+         rack: selectedRack,
+         manufacturer: selectedManufacture,
+         notes,
+         dataFields: collectedFields || [],
+         rawJson: JSON.stringify(parsedJson, null, 2)
       });
-
-      const data = await res.json();
-
-      console.log(data);
-
-      console.log(collectedFields);
 
       router.push(`/assets?id=${uuID}`);
    }

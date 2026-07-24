@@ -10,15 +10,17 @@ export default publicProcedure
       z.object({
          uuid: z.string(),
          name: z.string(),
-         rack: Types.ObjectId,
+         rack: z.string(),
          uPosition: z.number(),
          notes: z.string().optional(),
          dataFields: z
-            .object({
-               title: z.string(),
-               value: z.string(),
-               path: z.string()
-            })
+            .array(
+               z.object({
+                  title: z.string(),
+                  value: z.string(),
+                  path: z.string().optional(),
+               })
+            )
             .optional(),
          rawJson: z.json()
       })

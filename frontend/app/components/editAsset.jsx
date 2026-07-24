@@ -307,6 +307,7 @@ export default function EditAsset() {
       }
 
       const res = await addNewAssetVersion.mutateAsync({
+         uuid: assetId,
          name: assetName,
          rack: selectedRack,
          uPosition: Number(uPos),

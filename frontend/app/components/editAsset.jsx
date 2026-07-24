@@ -9,6 +9,7 @@ import { FaFileAlt } from 'react-icons/fa';
 import { IoSend } from 'react-icons/io5';
 import { LuUpload } from 'react-icons/lu';
 import Loading from './loading';
+import { trpc } from '@/lib/trpc';
 
 const newImportFields = [
    { id: 1, name: 'Asset name', value: '', path: 'Name', locked: true },
@@ -122,20 +123,27 @@ export default function EditAsset() {
    const searchParams = useSearchParams();
    const assetId = searchParams.get('id');
 
-   const [asset, setAsset] = useState(null);
-   const [racks, setRacks] = useState([]);
-   const [manufacturers, setManufactures] = useState([]);
+   const assetQuery = trpc.assets.getLatest.useQuery(
+      { uuid: assetId },
+      { enabled: Boolean(assetId) }
+   );
+   const asset = assetQuery.data?.body ?? null;
+   const racksQuery = trpc.racks.get.useQuery();
+   const racks = racksQuery.data?.body ?? [];
+   const manufacturersQuery = trpc.enums.manufacturers.useQuery();
+   const manufacturers = manufacturersQuery.data?.body ?? [];
    const [selectedRack, setSelectedRack] = useState('');
    const [selectedManufacturer, setSelectedManufacturer] = useState('');
    const [notes, setNotes] = useState('');
    const [jsonText, setJsonText] = useState(prettyPrint({}));
-   const [fileName, setFileName] = useState(null);
+   const [fileName, setFileName] = useState('');
    const [fields, setFields] = useState([]);
    const [fieldLabel, setFieldLabel] = useState('');
    const [fieldPath, setFieldPath] = useState('');
    const [pathSearch, setPathSearch] = useState('');
    const [editingFieldId, setEditingFieldId] = useState(null);
    const editInputRef = useRef(null);
+   const addNewAssetVersion = trpc.assets.addVersion.useMutation();
 
    const { parsedJson, parseError } = useMemo(() => {
       try {
@@ -160,61 +168,33 @@ export default function EditAsset() {
       asset?.manufacturer ??
       'Select a manufacturer';
    const savedFileName = asset?.dataFields?.find((field) => field.title === 'File name')?.value;
-   const displayedFileName = fileName ?? savedFileName;
+   const displayedFileName = fileName || savedFileName || '';
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-           .filter((match) => isSearchableValue(match.value))
-           .slice(0, 12)
+         .filter((match) => isSearchableValue(match.value))
+         .slice(0, 12)
       : [];
-
-   useEffect(() => {
-      async function getRacks() {
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks`);
-         const data = await res.json();
-         setRacks(data.body);
-      }
-
-      getRacks();
-   }, []);
-
-   useEffect(() => {
-      async function getManufactures() {
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enums/Manufacturers`);
-         const data = await res.json();
-         setManufactures(data.body);
-      }
-
-      getManufactures();
-   }, []);
-
-   useEffect(() => {
-      async function getAsset() {
-         if (!assetId) return;
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${assetId}`);
-         const data = await res.json();
-
-         if (!res.ok) {
-            alert(data.message ?? 'Failed to load asset');
-            return;
-         }
-
-         setAsset(data.body);
-         setSelectedRack(data.body?.rack?._id ?? data.body?.rack ?? '');
-         setSelectedManufacturer(data.body?.manufacturer ?? '');
-         setNotes(data.body?.notes ?? '');
-         setJsonText(getAssetJsonText(data.body));
-         setFields(buildFieldsFromAsset(data.body));
-      }
-
-      getAsset();
-   }, [assetId]);
 
    useEffect(() => {
       if (editingFieldId !== null) {
          editInputRef.current?.focus();
       }
    }, [editingFieldId]);
+
+   useEffect(() => {
+      if (!asset) return;
+
+      function updateFields() {
+         setSelectedRack(asset.rack?._id ?? asset.rack ?? '');
+         setSelectedManufacturer(asset.manufacturer ?? asset.manufacture ?? '');
+         setNotes(asset.notes ?? '');
+         setJsonText(getAssetJsonText(asset));
+         setFields(buildFieldsFromAsset(asset));
+         setFileName(asset.dataFields?.find((field) => field.title === 'File name')?.value ?? '');
+      }
+
+      updateFields();
+   }, [asset]);
 
    async function handleFileChange(event) {
       const file = event.target.files?.[0];
@@ -326,32 +306,23 @@ export default function EditAsset() {
          });
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${assetId}`, {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-            name: assetName,
-            rack: selectedRack,
-            uPosition: Number(uPos),
-            manufacturer: selectedManufacturer,
-            manufacture: selectedManufacturer,
-            notes,
-            dataFields: collectedFields,
-            rawJson: parsedJson ? prettyPrint(parsedJson) : jsonText
-         })
+      const res = await addNewAssetVersion.mutateAsync({
+         name: assetName,
+         rack: selectedRack,
+         uPosition: Number(uPos),
+         manufacturer: selectedManufacturer,
+         manufacture: selectedManufacturer,
+         notes,
+         dataFields: collectedFields,
+         rawJson: parsedJson ? prettyPrint(parsedJson) : jsonText
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-         alert(data.message ?? 'Failed to edit asset');
+      if (!res.success) {
+         alert(racks.body.message ?? 'Failed to edit asset');
          return;
       }
 
-      setAsset(data.body);
-      router.push(`/assets?id=${data.body.uuid}`);
+      router.push(`/assets?id=${res.body.uuid}`);
    }
 
    if (!assetId) {

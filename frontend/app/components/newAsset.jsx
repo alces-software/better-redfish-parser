@@ -8,6 +8,7 @@ import { IoSend } from 'react-icons/io5';
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/react';
 import { FaChevronDown } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
+import { trpc } from '@/lib/trpc';
 
 const defaultFields = [
    { id: 1, name: 'Asset name', value: '', path: 'Name' },
@@ -96,9 +97,11 @@ export default function NewAsset() {
    const [pathSearch, setPathSearch] = useState('');
    const [fileName, setFileName] = useState(null);
    const [editingFieldId, setEditingFieldId] = useState(null);
-   const [racks, setRacks] = useState([]);
+   const racksQuery = trpc.racks.get.useQuery();
+   const racks = racksQuery.data?.body ?? [];
    const [selectedRack, setSelectedRack] = useState('');
-   const [manufacturers, setManufactures] = useState([]);
+   const manufacturersQuery = trpc.enums.manufacturers.useQuery();
+   const manufacturers = manufacturersQuery.data?.body ?? [];
    const [selectedManufacture, setSelectedManufacture] = useState(0);
    const [notes, setNotes] = useState('');
    const editInputRef = useRef(null);
@@ -123,12 +126,10 @@ export default function NewAsset() {
       return !Array.isArray(value) && (value === null || typeof value !== 'object');
    }
 
-   const selectedSection = sections.find((section) => section.key === activeSection);
-   const sectionData = parsedJson ? getValueByPath(parsedJson, selectedSection?.path ?? '') : null;
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-           .filter((match) => isSearchableValue(match.value))
-           .slice(0, 12)
+         .filter((match) => isSearchableValue(match.value))
+         .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);
    const selectedRackName =
@@ -136,26 +137,6 @@ export default function NewAsset() {
    const selectedManufactureName =
       manufacturers.find((manufacture) => String(manufacture.value) === String(selectedManufacture))
          ?.name ?? 'Select a manufacturer';
-
-   useEffect(() => {
-      async function getRacks() {
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks`);
-         const data = await res.json();
-         setRacks(data.body);
-      }
-
-      getRacks();
-   }, []);
-
-   useEffect(() => {
-      async function getManufactures() {
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enums/Manufacturers`);
-         const data = await res.json();
-         setManufactures(data.body);
-      }
-
-      getManufactures();
-   }, []);
 
    useEffect(() => {
       if (editingFieldId !== null) {

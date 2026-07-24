@@ -15,13 +15,12 @@ export default function AssetsPage() {
    const historyQuery = trpc.assets.getHistory.useQuery(
       { uuid: uuId ?? '' },
       { enabled: Boolean(uuId) }
-   )
+   );
    const history = historyQuery.data?.body ?? [];
    const [asset, setAsset] = useState(null);
    const [historyIndex, setHistoryIndex] = useState(0);
    const utils = trpc.useUtils();
    const deleteAsset = trpc.assets.delete.useMutation();
-
 
    useEffect(() => {
       function syncAsset() {
@@ -29,7 +28,7 @@ export default function AssetsPage() {
       }
 
       syncAsset();
-   }, [history, historyIndex])
+   }, [history, historyIndex]);
 
    async function handleDelete() {
       if (!confirm('Are you sure you want to delete this asset?')) {
@@ -71,13 +70,13 @@ export default function AssetsPage() {
 
    const allDataFields = asset
       ? [
-         { title: 'Asset Name', value: asset.name, path: 'name' },
-         { title: 'UUID', value: asset.uuid, path: 'uuid' },
-         { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
-         { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
-         { title: 'Notes', value: asset.notes, path: 'notes' },
-         ...(asset.dataFields ?? [])
-      ]
+           { title: 'Asset Name', value: asset.name, path: 'name' },
+           { title: 'UUID', value: asset.uuid, path: 'uuid' },
+           { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
+           { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
+           { title: 'Notes', value: asset.notes, path: 'notes' },
+           ...(asset.dataFields ?? [])
+        ]
       : [];
 
    return (
@@ -87,11 +86,10 @@ export default function AssetsPage() {
          </h1>
 
          <div className="mt-15 flex flex-col items-center justify-center">
-
             <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6 mt-5">
                {asset && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
-                     {allDataFields.map(field => (
+                     {allDataFields.map((field) => (
                         <div key={`${field.title}-${field.path}`}>
                            <span className="text-slate-500 text-sm">{field.title}</span>
                            <p>{field.value}</p>
@@ -200,10 +198,11 @@ export default function AssetsPage() {
                            <h3 className="truncate text-lg font-semibold text-white">{fan.name}</h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${fan.state === 'Enabled'
-                                 ? 'bg-green-500/20 text-green-400'
-                                 : 'bg-red-500/20 text-red-400'
-                                 }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                                 fan.state === 'Enabled'
+                                    ? 'bg-green-500/20 text-green-400'
+                                    : 'bg-red-500/20 text-red-400'
+                              }`}
                            >
                               {fan.state === 'Enabled' ? 'Active' : 'Inactive'}
                            </span>
@@ -259,10 +258,11 @@ export default function AssetsPage() {
                            </h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${iface.health === 'OK'
-                                 ? 'bg-green-500/20 text-green-400'
-                                 : 'bg-red-500/20 text-red-400'
-                                 }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                                 iface.health === 'OK'
+                                    ? 'bg-green-500/20 text-green-400'
+                                    : 'bg-red-500/20 text-red-400'
+                              }`}
                            >
                               {iface.health}
                            </span>
@@ -299,10 +299,11 @@ export default function AssetsPage() {
                                  Link Status
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${iface.linkStatus === 'LinkUp'
-                                    ? 'text-green-400'
-                                    : 'text-yellow-400'
-                                    }`}
+                                 className={`mt-1 text-sm font-medium ${
+                                    iface.linkStatus === 'LinkUp'
+                                       ? 'text-green-400'
+                                       : 'text-yellow-400'
+                                 }`}
                               >
                                  {iface.linkStatus}
                               </p>
@@ -313,8 +314,9 @@ export default function AssetsPage() {
                                  Enabled
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${iface.enabled === 'true' ? 'text-green-400' : 'text-red-400'
-                                    }`}
+                                 className={`mt-1 text-sm font-medium ${
+                                    iface.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                 }`}
                               >
                                  {iface.enabled === 'true' ? 'Yes' : 'No'}
                               </p>
@@ -350,10 +352,11 @@ export default function AssetsPage() {
                            </div>
 
                            <span
-                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${option.enabled === 'true'
-                                 ? 'bg-green-500/20 text-green-400'
-                                 : 'bg-red-500/20 text-red-400'
-                                 }`}
+                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
+                                 option.enabled === 'true'
+                                    ? 'bg-green-500/20 text-green-400'
+                                    : 'bg-red-500/20 text-red-400'
+                              }`}
                            >
                               {option.enabled === 'true' ? <FaCheckCircle /> : <FaTimesCircle />}
 
@@ -398,8 +401,9 @@ export default function AssetsPage() {
                               </p>
 
                               <p
-                                 className={`mt-1 text-sm font-medium ${option.enabled === 'true' ? 'text-green-400' : 'text-red-400'
-                                    }`}
+                                 className={`mt-1 text-sm font-medium ${
+                                    option.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                 }`}
                               >
                                  {option.enabled === 'true' ? 'Available' : 'Disabled'}
                               </p>

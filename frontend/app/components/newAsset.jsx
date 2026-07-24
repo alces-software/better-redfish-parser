@@ -6,9 +6,8 @@ import { LuUpload } from 'react-icons/lu';
 import { FaFileAlt } from 'react-icons/fa';
 import { IoSend } from 'react-icons/io5';
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/react';
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-
 
 const defaultFields = [
    { id: 1, name: 'Asset name', value: '', path: 'Name' },
@@ -104,7 +103,7 @@ export default function NewAsset() {
    const [notes, setNotes] = useState('');
    const editInputRef = useRef(null);
 
-   const router = useRouter()
+   const router = useRouter();
 
    const { parsedJson, parseError } = useMemo(() => {
       try {
@@ -128,8 +127,8 @@ export default function NewAsset() {
    const sectionData = parsedJson ? getValueByPath(parsedJson, selectedSection?.path ?? '') : null;
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-         .filter((match) => isSearchableValue(match.value))
-         .slice(0, 12)
+           .filter((match) => isSearchableValue(match.value))
+           .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);
    const selectedRackName =
@@ -267,10 +266,10 @@ export default function NewAsset() {
             path: field.path
          }));
 
-         collectedFields.push({
-            title: "File name",
-            value: fileName
-         })
+      collectedFields.push({
+         title: 'File name',
+         value: fileName
+      });
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`, {
          method: 'POST',
@@ -293,9 +292,7 @@ export default function NewAsset() {
 
       console.log(data);
 
-      
       console.log(collectedFields);
-      
 
       router.push(`/assets?id=${uuID}`);
    }
@@ -317,11 +314,9 @@ export default function NewAsset() {
                <div className="relative m-1 w-fit-content">
                   <ListboxButton className="flex h-10 w-full cursor-pointer focus:outline-none gap-2 items-center justify-between rounded-full border border-slate-400 bg-slate-900 px-3 text-left text-white">
                      <span className="truncate">{selectedRackName}</span>
-                     <FaChevronDown/>
+                     <FaChevronDown />
                   </ListboxButton>
                   <ListboxOptions className="absolute z-20 mt-2 focus:outline-none max-h-60 w-full overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-1 text-white shadow-2xl">
-           
-
                      {racks.map((rack) => (
                         <ListboxOption
                            key={rack._id}
@@ -339,11 +334,9 @@ export default function NewAsset() {
                <div className="relative m-1 w-fit-content">
                   <ListboxButton className="flex h-10 w-full focus:outline-none cursor-pointer items-center gap-2 justify-between rounded-full border border-slate-400 bg-slate-900 px-3 text-left text-white">
                      <span className="truncate">{selectedManufactureName}</span>
-                     <FaChevronDown/>
+                     <FaChevronDown />
                   </ListboxButton>
                   <ListboxOptions className="absolute z-20 focus:outline-none mt-2 max-h-60 w-full overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-1 text-white shadow-2xl">
-                   
-
                      {manufacturers.map((manufacture) => (
                         <ListboxOption
                            key={manufacture.value}
@@ -375,12 +368,7 @@ export default function NewAsset() {
 
          {uploadedFile && selectedManufacture && selectedRack ? (
             <>
-           
-                  <div className="mt-4">
-
-
-      
-
+               <div className="mt-4">
                   <div className="rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
                      <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">
                         Tracked fields
@@ -506,13 +494,9 @@ export default function NewAsset() {
 
                <div className="mt-4 rounded-lg border border-slate-400 bg-slate-900 p-4 shadow-2xl drop-shadow-2xl">
                   <div className="grid gap-4 ">
-               
-
-                
-
                      <label className="block">
                         <span className="block p-1 text-slate-300">Notes</span>
-                          <textarea
+                        <textarea
                            name="notes"
                            rows={5}
                            type="text"
@@ -543,15 +527,12 @@ export default function NewAsset() {
                      </div>
 
                      <div className="flex min-h-64 items-center justify-center">
-                        <p className="text-lg text-slate-300">Select a rack, manufacturer, and upload a file to continue</p>
+                        <p className="text-lg text-slate-300">
+                           Select a rack, manufacturer, and upload a file to continue
+                        </p>
                      </div>
                   </div>
-
-                  
                </div>
-
-               
-
 
                <div className="flex justify-end mt-4 ">
                   <button

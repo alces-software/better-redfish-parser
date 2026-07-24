@@ -128,6 +128,12 @@ export default function NewAsset() {
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
            .filter((match) => isSearchableValue(match.value))
+           .sort((a, b) => {
+              const da = a.path.split('.').length;
+              const db = b.path.split('.').length;
+              if (da !== db) return da - db;
+              return a.path.localeCompare(b.path);
+           })
            .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);

@@ -90,7 +90,13 @@ function getAssetJsonText(asset) {
 
 function buildFieldsFromAsset(asset) {
    return [
-      { id: 'asset-name', name: 'Asset name', value: asset?.name ?? '', path: 'name', locked: true },
+      {
+         id: 'asset-name',
+         name: 'Asset name',
+         value: asset?.name ?? '',
+         path: 'name',
+         locked: true
+      },
       { id: 'asset-uuid', name: 'UUID', value: asset?.uuid ?? '', path: 'uuid', locked: true },
 
       {
@@ -436,7 +442,6 @@ export default function EditAsset() {
 
             <label className="inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-slate-800 bg-white px-4 text-md font-semibold text-slate-900 transition duration-200 ease-in-out hover:border-blue hover:bg-blue-800 hover:text-white">
                Upload file <LuUpload />
-              
                <input
                   type="file"
                   accept="application/json,.json,.txt"
@@ -557,7 +562,9 @@ export default function EditAsset() {
                            <input
                               ref={editInputRef}
                               value={getFieldValue(field)}
-                              onChange={(event) => handleFieldValueChange(field.id, event.target.value)}
+                              onChange={(event) =>
+                                 handleFieldValueChange(field.id, event.target.value)
+                              }
                               className="mt-3 h-9 w-full rounded-lg border border-slate-700 bg-slate-800 p-2 text-sm text-slate-300"
                            />
                         ) : (

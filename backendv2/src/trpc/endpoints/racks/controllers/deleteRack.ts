@@ -22,7 +22,7 @@ export default publicProcedure
          });
       }
 
-      // Fetch rack
+      // Find and delete the rack
       const rack = await Rack.findByIdAndDelete(id);
 
       if (!rack) {

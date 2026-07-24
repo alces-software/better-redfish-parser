@@ -1,84 +1,6 @@
-const mongoose = require('mongoose'),
-   { Manufacturers } = require('../enums/enums');
+import mongoose from 'mongoose';
 
-/**
- * @openapi
- * components:
- *   schemas:
- *     AssetInput:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *         uuid:
- *           type: string
- *         rack:
- *           type: string
- *         uPosition:
- *           type: integer
- *         manufacturer:
- *           type: number
- *         notes:
- *           type: string
- *         dataFields:
- *           type: array
- *           items:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               value:
- *                 type: string
- *               path:
- *                 type: string
- *         rawJson:
- *           type: string
- *     Asset:
- *       type: object
- *       properties:
- *         _id:
- *           type: string
- *         name:
- *           type: string
- *         uuid:
- *           type: string
- *         version:
- *           type: integer
- *         rack:
- *           $ref: '#/components/schemas/Rack'
- *         uPosition:
- *           type: integer
- *         manufacturer:
- *           type: string
- *         notes:
- *           type: string
- *         dataFields:
- *           type: array
- *           items:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               value:
- *                 type: string
- *               path:
- *                 type: string
- *         fans:
- *           type: object
- *         ethernetInterfaces:
- *           type: object
- *         bootOptions:
- *           type: object
- *         rawJson:
- *           type: string
- *       required:
- *         - name
- *         - uuid
- *         - version
- *         - rack
- *         - uPosition
- *         - manufacturer
- */
+import { Manufacturers } from '../enums/enums';
 
 const assetSchema = new mongoose.Schema({
    name: {
@@ -167,6 +89,8 @@ const assetSchema = new mongoose.Schema({
       type: String,
       default: ''
    }
-}).index({ uuid: 1, version: 1 }, { unique: true });
+});
 
-module.exports = mongoose.model('Asset', assetSchema);
+assetSchema.index({ uuid: 1, version: 1 }, { unique: true });
+
+export const Asset = mongoose.model('Asset', assetSchema);

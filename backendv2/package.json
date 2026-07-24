@@ -1,0 +1,40 @@
+{
+   "name": "better-redfish-parser",
+   "version": "1.0.0",
+   "description": "Clone the repo with `git clone https://github.com/alces-software/better-redfish-parser`",
+   "main": "index.js",
+   "scripts": {
+      "dev": "tsx watch src/index.ts",
+      "build": "tsc",
+      "start": "node dist/index.js",
+      "format": "prettier --write .",
+      "format:check": "prettier --check ."
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/alces-software/better-redfish-parser.git"
+   },
+   "keywords": [],
+   "type": "commonjs",
+   "bugs": {
+      "url": "https://github.com/alces-software/better-redfish-parser/issues"
+   },
+   "homepage": "https://github.com/alces-software/better-redfish-parser#readme",
+   "dependencies": {
+      "@trpc/client": "^11.18.0",
+      "@trpc/server": "^11.18.0",
+      "cors": "^2.8.6",
+      "dotenv": "^17.4.2",
+      "express": "^5.2.1",
+      "mongoose": "^9.8.0",
+      "zod": "^4.4.3"
+   },
+   "devDependencies": {
+      "@types/cors": "^2.8.19",
+      "@types/express": "^5.0.6",
+      "@types/node": "^26.1.1",
+      "prettier": "^3.9.6",
+      "tsx": "^4.23.1",
+      "typescript": "^7.0.2"
+   }
+}

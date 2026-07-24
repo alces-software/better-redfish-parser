@@ -69,8 +69,6 @@ export default function AssetsPage() {
    const hasNext = historyIndex < history.length - 1;
    const hardwareData = asset?.rawJson;
 
-   console.log(asset);
-
    return (
       <div>
          <h1 className="font-semibold text-center md:text-left text-4xl">
@@ -81,6 +79,11 @@ export default function AssetsPage() {
             <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6">
                {asset && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
+                     <div>
+                        <span className="text-slate-500 text-sm">Asset ID</span>
+                        <p>{asset._id}</p>
+                     </div>
+
                      <div>
                         <span className="text-slate-500 text-sm">Asset Name</span>
                         <p>{asset.name}</p>

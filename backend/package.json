@@ -1,32 +1,41 @@
 {
-   "name": "backend",
+   "name": "better-redfish-parser",
    "version": "1.0.0",
-   "description": "",
+   "description": "Clone the repo with `git clone https://github.com/alces-software/better-redfish-parser`",
    "main": "index.js",
    "scripts": {
-      "start": "node server.js",
-      "dev": "nodemon server.js",
-      "lint": "eslint .",
-      "format": "prettier . --write",
-      "format:check": "prettier . --check"
+      "dev": "tsx watch src/index.ts",
+      "build": "tsc",
+      "start": "node dist/index.js",
+      "start:build": "npm run build && npm run start",
+      "format": "prettier --write .",
+      "format:check": "prettier --check ."
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/alces-software/better-redfish-parser.git"
    },
    "keywords": [],
-   "author": "",
-   "license": "ISC",
    "type": "commonjs",
+   "bugs": {
+      "url": "https://github.com/alces-software/better-redfish-parser/issues"
+   },
+   "homepage": "https://github.com/alces-software/better-redfish-parser#readme",
    "dependencies": {
+      "@trpc/client": "^11.18.0",
+      "@trpc/server": "^11.18.0",
       "cors": "^2.8.6",
       "dotenv": "^17.4.2",
       "express": "^5.2.1",
       "mongoose": "^9.8.0",
-      "swagger-jsdoc": "^6.2.8",
-      "swagger-ui-express": "^4.6.3"
+      "zod": "^4.4.3"
    },
    "devDependencies": {
-      "@eslint/js": "^10.0.1",
-      "eslint-config-prettier": "^10.1.8",
-      "globals": "^17.6.0",
-      "nodemon": "^3.1.14",
-      "prettier": "^3.8.4"
+      "@types/cors": "^2.8.19",
+      "@types/express": "^5.0.6",
+      "@types/node": "^26.1.1",
+      "prettier": "^3.9.6",
+      "tsx": "^4.23.1",
+      "typescript": "^7.0.2"
    }
 }

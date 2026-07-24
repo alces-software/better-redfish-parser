@@ -1,16 +1,15 @@
+*.DS_Store
+
 frontend/package-lock.json
 backend/package-lock.json
-backendv2/package-lock.json
+backendOld/package-lock.json
 
 backend/node_modules/
-backendv2/node_modules/
-
+backendOld/node_modules/
 frontend/node_modules/
 
 frontend/.next/
 
 frontend/.env
 backend/.env
-backendv2/.env
-
-backendv2/dist/
+backendOld/.env

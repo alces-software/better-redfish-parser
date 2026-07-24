@@ -2,27 +2,22 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import Loading from './loading';
+import { trpc } from '@/lib/trpc';
 
 export default function EditRack() {
    const router = useRouter();
    const searchParams = useSearchParams();
    const rackId = searchParams.get('id');
-
-   const [rack, setRack] = useState(null);
-
-   useEffect(() => {
-      async function getRack() {
-         if (!rackId) return;
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks/${rackId}`);
-         const data = await res.json();
-         setRack(data.body);
+   const utils = trpc.useUtils();
+   const rackQuery = trpc.racks.getById.useQuery(
+      { id: rackId ?? '' },
+      {
+         enabled: Boolean(rackId)
       }
-
-      getRack();
-   }, [rackId]);
+   );
+   const updateRack = trpc.racks.update.useMutation();
+   const rack = rackQuery.data?.body ?? null;
 
    async function handleSubmit(event) {
       event.preventDefault();
@@ -33,27 +28,24 @@ export default function EditRack() {
 
       const formData = new FormData(event.currentTarget);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks/${rackId}`, {
-         method: 'PUT',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
+      const res = await updateRack.mutateAsync({
+         id: rackId,
+         changes: {
             name: formData.get('name'),
             size: Number(formData.get('size')),
             notes: formData.get('notes')
-         })
+         }
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-         alert(data.message ?? 'Failed to edit rack');
+      if (!res.success) {
+         alert(res.message ?? 'Failed to edit rack');
          return;
       }
 
-      setRack(data.body);
-      router.push(`/racks?id=${data.body._id}`);
+      void utils.racks.get.invalidate();
+      void utils.racks.getById.invalidate({ id: rackId });
+
+      router.push(`/racks?id=${rackId}`);
    }
 
    if (!rackId) {

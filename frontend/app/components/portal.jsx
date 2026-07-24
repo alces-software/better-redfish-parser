@@ -4,40 +4,26 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { GoChevronDown } from 'react-icons/go';
 import { FaPlus } from 'react-icons/fa6';
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { trpc } from '@/lib/trpc';
 
 export default function Portal() {
    const searchParams = useSearchParams();
    const urlMode = searchParams.get('mode');
    const initialMode = urlMode === 'assets' || urlMode === 'racks' ? urlMode : 'assets';
    const [mode, setMode] = useState(initialMode);
-   const [assets, setAssets] = useState([]);
-   const [racks, setRacks] = useState([]);
-
-   useEffect(() => {
-      async function getAssets() {
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`);
-         const data = await res.json();
-         setAssets(data.body);
-      }
-      getAssets();
-   }, []);
-
-   useEffect(() => {
-      async function getRacks() {
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/racks`);
-         const data = await res.json();
-         setRacks(data.body);
-      }
-      getRacks();
-   }, []);
+   const assetsQuery = trpc.assets.getAllLatest.useQuery();
+   const assets = assetsQuery.data?.body ?? [];
+   const racksQuery = trpc.racks.get.useQuery();
+   const racks = racksQuery.data?.body ?? [];
 
    function handleModeChange(nextMode) {
-      if (nextMode === mode) return;
-
+      if (nextMode === mode) {
+         return;
+      }
       setMode(nextMode);
    }
+
    return (
       <section>
          <div className="text-center md:text-left">

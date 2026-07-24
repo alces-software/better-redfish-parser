@@ -1,13 +1,13 @@
 /**
  * @openapi
- * /api/enums/system:
+ * /api/racks:
  *   get:
- *     summary: Get available system types
+ *     summary: List all racks
  *     tags:
- *       - Enums
+ *       - Racks
  *     responses:
  *       '200':
- *         description: List of available system types with their values
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
@@ -18,17 +18,12 @@
  *                 body:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       name:
- *                         type: string
- *                       value:
- *                         type: number
+ *                     $ref: '#/components/schemas/Rack'
  *       '500':
  *         description: Server error
  */
 
-import { getManufacturers } from '../../../assets/enums/functions';
+import { Rack } from '../../../assets/models/Rack';
 
 /**
  * @param {import('express').Request} req
@@ -37,10 +32,9 @@ import { getManufacturers } from '../../../assets/enums/functions';
  */
 export default async (req: import('express').Request, res: import('express').Response) => {
    try {
-      return res.status(200).json({
-         success: true,
-         body: getManufacturers()
-      });
+      const racks = await Rack.find();
+
+      return res.status(200).json({ success: true, body: racks });
    } catch (error) {
       return res
          .status(500)

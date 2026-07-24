@@ -1,12 +1,6 @@
-import { initTRPC } from '@trpc/server';
-
-const t = initTRPC.create();
-
-export const router = t.router;
-export const publicProcedure = t.procedure;
+import { router } from './base';
 
 // Setup api endpoints
-
 import { enumsRouter } from './endpoints/enums';
 
 export const appRouter = router({

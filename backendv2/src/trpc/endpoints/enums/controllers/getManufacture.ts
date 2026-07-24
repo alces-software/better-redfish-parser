@@ -1,7 +1,7 @@
-import { publicProcedure } from '../../..';
+import { publicProcedure } from '../../../base';
 import { getManufacturers } from '../../../../assets/enums/functions';
 
-export const ManufacturersEndpoint = publicProcedure.query(() => {
+export default publicProcedure.query(async () => {
    return {
       success: true,
       body: getManufacturers()

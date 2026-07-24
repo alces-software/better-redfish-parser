@@ -1,3 +1,3 @@
-import { router } from '../../index';
+import { router } from '../../base';
 
 export const enumsRouter = router({});

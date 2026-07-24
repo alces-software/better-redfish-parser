@@ -1,6 +1,6 @@
-import { router } from '../../index';
-import { ManufacturersEndpoint } from './../enums/controllers/manufacture';
+import { router } from '../../base';
+import getManufacturers from './controllers/getManufacture';
 
 export const enumsRouter = router({
-   system: ManufacturersEndpoint
+   manufacturers: getManufacturers
 });

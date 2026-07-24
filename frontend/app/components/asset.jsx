@@ -91,8 +91,8 @@ export default function AssetsPage() {
             <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6 mt-5">
                {asset && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
-                     {allDataFields.map(field => (
-                        <div key={`${field.title}-${field.path}`}>
+                     {allDataFields.map((field, index) => (
+                        <div key={`${field.title}-${index}`}>
                            <span className="text-slate-500 text-sm">{field.title}</span>
                            <p>{field.value}</p>
                         </div>

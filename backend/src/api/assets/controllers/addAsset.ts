@@ -115,6 +115,8 @@ export default async (req: import('express').Request, res: import('express').Res
          rawJson: JSON.stringify(rawJson, null, 2) || ''
       }).save();
 
+      console.log(asset);
+
       return res.status(201).json({ success: true, body: asset });
    } catch (error) {
       return res

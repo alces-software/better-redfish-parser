@@ -6,55 +6,55 @@ import { useEffect, useState } from 'react';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { trpc } from '@/lib/trpc';
 
 export default function AssetsPage() {
    const router = useRouter();
    const searchParams = useSearchParams();
    const uuId = searchParams.get('id');
+   const historyQuery = trpc.assets.getHistory.useQuery(
+      { uuid: uuId ?? '' },
+      { enabled: Boolean(uuId) }
+   )
+   const history = historyQuery.data?.body ?? [];
    const [asset, setAsset] = useState(null);
-   const [history, setHistory] = useState([]);
    const [historyIndex, setHistoryIndex] = useState(0);
+   const utils = trpc.useUtils();
+   const deleteAsset = trpc.assets.delete.useMutation();
+
+
+   useEffect(() => {
+      function syncAsset() {
+         setAsset(history[historyIndex]);
+      }
+
+      syncAsset();
+   }, [history, historyIndex])
 
    async function handleDelete() {
       if (!confirm('Are you sure you want to delete this asset?')) {
          return;
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${uuId}`, {
-         method: 'DELETE',
-         headers: {
-            'Content-Type': 'application/json'
-         }
-      });
+      try {
+         const res = await deleteAsset.mutateAsync({
+            uuid: uuId
+         });
 
-      if (!res.ok) {
-         const data = await res.json();
-         alert(data.message ?? 'Failed to delete asset');
-         return;
-      }
-
-      router.push('/');
-   }
-
-   useEffect(() => {
-      async function getAssetHistory() {
-         if (!uuId) return;
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets/${uuId}/history`);
-         const data = await res.json();
-
-         if (!res.ok) {
-            alert(data.message ?? 'Failed to load asset history');
+         if (!res.success) {
+            alert(res.message ?? 'Failed to delete asset');
             return;
          }
 
-         setHistory(data.body);
-         setAsset(data.body[0]);
-         setHistoryIndex(0);
-      }
+         void utils.assets.getAllLatest.invalidate();
+         void utils.assets.getHistory.invalidate({ uuid: uuId });
+         void utils.assets.getLatest.invalidate({ uuid: uuId });
 
-      getAssetHistory();
-   }, [uuId]);
+         router.replace('/');
+      } catch (error) {
+         alert(error instanceof Error ? error.message : 'Failed to delete asset');
+      }
+   }
 
    function handleHistoryChange(nextIndex) {
       const nextAsset = history[nextIndex];
@@ -70,15 +70,15 @@ export default function AssetsPage() {
    const hardwareData = asset?.rawJson;
 
    const allDataFields = asset
-   ? [
-        { title: 'Asset Name', value: asset.name, path: 'name' },
-        { title: 'UUID', value: asset.uuid, path: 'uuid' },
-        { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
-        { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
-        { title: 'Notes', value: asset.notes, path: 'notes' },
-        ...(asset.dataFields ?? [])
-     ]
-   : [];
+      ? [
+         { title: 'Asset Name', value: asset.name, path: 'name' },
+         { title: 'UUID', value: asset.uuid, path: 'uuid' },
+         { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
+         { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
+         { title: 'Notes', value: asset.notes, path: 'notes' },
+         ...(asset.dataFields ?? [])
+      ]
+      : [];
 
    return (
       <div>
@@ -200,11 +200,10 @@ export default function AssetsPage() {
                            <h3 className="truncate text-lg font-semibold text-white">{fan.name}</h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                                 fan.state === 'Enabled'
-                                    ? 'bg-green-500/20 text-green-400'
-                                    : 'bg-red-500/20 text-red-400'
-                              }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${fan.state === 'Enabled'
+                                 ? 'bg-green-500/20 text-green-400'
+                                 : 'bg-red-500/20 text-red-400'
+                                 }`}
                            >
                               {fan.state === 'Enabled' ? 'Active' : 'Inactive'}
                            </span>
@@ -260,11 +259,10 @@ export default function AssetsPage() {
                            </h3>
 
                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                                 iface.health === 'OK'
-                                    ? 'bg-green-500/20 text-green-400'
-                                    : 'bg-red-500/20 text-red-400'
-                              }`}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold ${iface.health === 'OK'
+                                 ? 'bg-green-500/20 text-green-400'
+                                 : 'bg-red-500/20 text-red-400'
+                                 }`}
                            >
                               {iface.health}
                            </span>
@@ -301,11 +299,10 @@ export default function AssetsPage() {
                                  Link Status
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${
-                                    iface.linkStatus === 'LinkUp'
-                                       ? 'text-green-400'
-                                       : 'text-yellow-400'
-                                 }`}
+                                 className={`mt-1 text-sm font-medium ${iface.linkStatus === 'LinkUp'
+                                    ? 'text-green-400'
+                                    : 'text-yellow-400'
+                                    }`}
                               >
                                  {iface.linkStatus}
                               </p>
@@ -316,9 +313,8 @@ export default function AssetsPage() {
                                  Enabled
                               </p>
                               <p
-                                 className={`mt-1 text-sm font-medium ${
-                                    iface.enabled === 'true' ? 'text-green-400' : 'text-red-400'
-                                 }`}
+                                 className={`mt-1 text-sm font-medium ${iface.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                    }`}
                               >
                                  {iface.enabled === 'true' ? 'Yes' : 'No'}
                               </p>
@@ -354,11 +350,10 @@ export default function AssetsPage() {
                            </div>
 
                            <span
-                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
-                                 option.enabled === 'true'
-                                    ? 'bg-green-500/20 text-green-400'
-                                    : 'bg-red-500/20 text-red-400'
-                              }`}
+                              className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${option.enabled === 'true'
+                                 ? 'bg-green-500/20 text-green-400'
+                                 : 'bg-red-500/20 text-red-400'
+                                 }`}
                            >
                               {option.enabled === 'true' ? <FaCheckCircle /> : <FaTimesCircle />}
 
@@ -403,9 +398,8 @@ export default function AssetsPage() {
                               </p>
 
                               <p
-                                 className={`mt-1 text-sm font-medium ${
-                                    option.enabled === 'true' ? 'text-green-400' : 'text-red-400'
-                                 }`}
+                                 className={`mt-1 text-sm font-medium ${option.enabled === 'true' ? 'text-green-400' : 'text-red-400'
+                                    }`}
                               >
                                  {option.enabled === 'true' ? 'Available' : 'Disabled'}
                               </p>

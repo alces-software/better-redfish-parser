@@ -69,23 +69,23 @@ export default publicProcedure
       }
 
       // Check manufacture
-      if (!manufacturer) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Asset manufacture is missing from the request'
-         });
-      }
+      // if (!manufacturer) {
+      //    throw new TRPCError({
+      //       code: 'BAD_REQUEST',
+      //       message: 'Asset manufacture is missing from the request'
+      //    });
+      // }
 
-      const manufactureName = Object.keys(Manufacturers).find(
-         (key) => Manufacturers[key as keyof typeof Manufacturers] === manufacturer
-      );
+      // const manufactureName = Object.keys(Manufacturers).find(
+      //    (key) => Manufacturers[key as keyof typeof Manufacturers] === manufacturer
+      // );
 
-      if (!manufactureName) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Asset manufacture is not recognised'
-         });
-      }
+      // if (!manufactureName) {
+      //    throw new TRPCError({
+      //       code: 'BAD_REQUEST',
+      //       message: 'Asset manufacture is not recognised'
+      //    });
+      // }
 
       // Check if asset exists already
       const existing = await Asset.findOne({ uuid, version: 1 });
@@ -103,7 +103,7 @@ export default publicProcedure
          version: 1,
          rack: targetRack._id,
          uPosition,
-         manufacturer: manufactureName || 'HP',
+         manufacturer: 'Dell',
          notes,
          dataFields,
          rawJson: JSON.stringify(rawJson, null, 2) || ''

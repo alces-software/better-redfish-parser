@@ -272,17 +272,6 @@ export default function NewAsset() {
             value: fileName
          })
 
-      const assetDetails = {
-         name: assetName,
-         uuid: uuID,
-         uPosition: uPos,
-         rack: selectedRack,
-         manufacture: selectedManufacture,
-         notes,
-         dataFields: collectedFields,
-         rawJson: parsedJson
-      };
-
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assets`, {
          method: 'POST',
          headers: {
@@ -293,7 +282,7 @@ export default function NewAsset() {
             uuid: uuID,
             uPosition: uPos,
             rack: selectedRack,
-            manufacture: selectedManufacture,
+            manufacturer: selectedManufacture,
             notes,
             dataFields: collectedFields,
             rawJson: JSON.stringify(parsedJson, null, 2)

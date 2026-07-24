@@ -2,14 +2,13 @@
 
 frontend/package-lock.json
 backend/package-lock.json
-backendOld/package-lock.json
 
 backend/node_modules/
-backendOld/node_modules/
 frontend/node_modules/
 
 frontend/.next/
 
+backend/dist/
+
 frontend/.env
 backend/.env
-backendOld/.env

@@ -69,6 +69,17 @@ export default function AssetsPage() {
    const hasNext = historyIndex < history.length - 1;
    const hardwareData = asset?.rawJson;
 
+   const allDataFields = asset
+   ? [
+        { title: 'Asset Name', value: asset.name, path: 'name' },
+        { title: 'UUID', value: asset.uuid, path: 'uuid' },
+        { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
+        { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
+        { title: 'Notes', value: asset.notes, path: 'notes' },
+        ...(asset.dataFields ?? [])
+     ]
+   : [];
+
    return (
       <div>
          <h1 className="font-semibold text-center md:text-left text-4xl">
@@ -76,63 +87,12 @@ export default function AssetsPage() {
          </h1>
 
          <div className="mt-15 flex flex-col items-center justify-center">
-            <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6">
-               {asset && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
-                     <div>
-                        <span className="text-slate-500 text-sm">Asset ID</span>
-                        <p>{asset._id}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Asset Name</span>
-                        <p>{asset.name}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Rack Position</span>
-                        <p>{asset.uPosition}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Manufacturer</span>
-                        <p>{asset.manufacturer}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Fan Count</span>
-                        <p>{asset?.fans.length != 0 ? asset.fans.length : 'Unknown'}</p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Ethernet Interface Count</span>
-                        <p>
-                           {asset?.ethernetInterfaces.length != 0
-                              ? asset.ethernetInterfaces.length
-                              : 'Unknown'}
-                        </p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Boot Options Count</span>
-                        <p>
-                           {asset?.bootOptions.length != 0 ? asset.bootOptions.length : 'Unknown'}
-                        </p>
-                     </div>
-
-                     <div>
-                        <span className="text-slate-500 text-sm">Notes</span>
-                        <p>{asset.notes}</p>
-                     </div>
-                  </div>
-               )}
-            </div>
 
             <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl bg-slate-900 p-6 mt-5">
                {asset && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-slate-300">
-                     {asset.dataFields.map((field) => (
-                        <div key={field._id}>
+                     {allDataFields.map(field => (
+                        <div key={`${field.title}-${field.path}`}>
                            <span className="text-slate-500 text-sm">{field.title}</span>
                            <p>{field.value}</p>
                         </div>

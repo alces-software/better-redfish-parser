@@ -6,13 +6,21 @@ import { useEffect, useState } from 'react';
 import Loading from '../components/loading';
 
 function prettyPrintJson(value) {
-   if (!value) return '';
+   if (!value) return 'No Json';
 
-   try {
-      return JSON.parse(value);
-   } catch {
-      return value;
+   let json = value;
+
+   for (let index = 0; index < 2; index += 1) {
+      if (typeof json !== 'string') break;
+
+      try {
+         json = JSON.parse(json);
+      } catch {
+         return json;
+      }
    }
+
+   return typeof json === 'object' ? JSON.stringify(json, null, 2) : String(json);
 }
 
 export default function Json() {

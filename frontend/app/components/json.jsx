@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Loading from '../components/loading';
 import { trpc } from '@/lib/trpc';
+import { IoDownloadOutline } from 'react-icons/io5';
 
 function prettyPrintJson(value) {
    if (!value) return 'No Json';
@@ -34,6 +35,21 @@ export default function Json() {
    const history = historyQuery.data?.body ?? [];
    const asset =
       history.find((entry) => String(entry.version) === String(version)) ?? history[0] ?? null;
+
+   function handleDownloadJson() {
+      if (!asset?.rawJson) return;
+
+      const jsonText = prettyPrintJson(asset.rawJson);
+      const blob = new Blob([jsonText], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${asset.name ?? 'asset'}-v${asset.version ?? 'unknown'}.json`;
+      link.click();
+
+      URL.revokeObjectURL(url);
+   }
 
    if (!assetId) {
       return (
@@ -82,9 +98,17 @@ export default function Json() {
          </div>
 
          <div className="mt-15 rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl">
-            <h2 className="rounded-t-lg bg-slate-800 p-4 text-2xl text-slate-300">
-               Version {asset.version}
-            </h2>
+            <div className="flex w-full items-center rounded-t-lg bg-slate-800">
+               <h2 className="p-4 text-2xl text-slate-300">Version {asset.version}</h2>
+
+               <button
+                  type="button"
+                  onClick={handleDownloadJson}
+                  className=" inline-flex cursor-pointer items-center justify-center whitespace-nowrap  transition hover:-translate-y-1 "
+               >
+                  <IoDownloadOutline className="h-6 w-6" />
+               </button>
+            </div>
             <pre className="max-h-[60vh] w-full overflow-auto whitespace-pre-wrap p-4 text-sm text-slate-300">
                {asset.rawJson ? prettyPrintJson(asset.rawJson) : 'No Json'}
             </pre>

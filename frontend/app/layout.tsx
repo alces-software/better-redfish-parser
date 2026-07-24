@@ -17,11 +17,6 @@ export const metadata: Metadata = {
    title: {
       default: 'Portal',
       template: '%s'
-   },
-   icons: {
-      icon: [{ url: '/favicon.ico' }, { url: '/images/alces_logo.png', type: 'image/png' }],
-      shortcut: '/favicon.ico',
-      apple: '/favicon.png'
    }
 };
 

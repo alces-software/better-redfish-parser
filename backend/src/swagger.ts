@@ -10,4 +10,4 @@ export default swaggerJsDoc({
       }
    },
    apis: [`${__dirname}/api/**/*.js`, `${__dirname}/assets/models/*.js`]
-})
+});

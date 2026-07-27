@@ -28,7 +28,7 @@ app.use(
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger';
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Connect to the database
 mongoose

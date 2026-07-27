@@ -76,7 +76,7 @@ export default function Portal() {
                   <div className="hidden bg-slate-800 border border-slate-800 rounded-lg group-hover:block">
                      {assets.map((asset) => (
                         <Link
-                           key={asset._id}
+                           key={asset.uuid}
                            className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm"
                            href={`/assets?id=${asset.uuid}`}
                         >
@@ -107,9 +107,9 @@ export default function Portal() {
                   <div className="hidden bg-slate-800 border border-slate-800 rounded-lg group-hover:block">
                      {racks.map((r) => (
                         <Link
-                           key={r._id}
+                           key={r.id}
                            className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm"
-                           href={`/racks?id=${r._id}`}
+                           href={`/racks?id=${r.id}`}
                         >
                            {r.name}{' '}
                         </Link>

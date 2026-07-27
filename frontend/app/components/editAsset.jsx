@@ -380,8 +380,8 @@ export default function EditAsset() {
 
                      {racks.map((rack) => (
                         <ListboxOption
-                           key={rack._id}
-                           value={rack._id}
+                           key={rack.id}
+                           value={rack.id}
                            className="cursor-pointer rounded-md p-2 text-sm hover:bg-slate-800"
                         >
                            {rack.name}

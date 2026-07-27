@@ -21,7 +21,7 @@ export default publicProcedure
                name: z.string(),
                version: z.number(),
                uuid: z.uuid(),
-               rack: z.string(),
+               rack: z.any(),
                uPosition: z.number(),
                notes: z.string(),
                dataFields: z.array(

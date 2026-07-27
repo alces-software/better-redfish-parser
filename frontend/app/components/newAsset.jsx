@@ -129,18 +129,18 @@ export default function NewAsset() {
 
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-           .filter((match) => isSearchableValue(match.value))
-           .sort((a, b) => {
-              const da = a.path.split('.').length;
-              const db = b.path.split('.').length;
-              if (da !== db) return da - db;
-              return a.path.localeCompare(b.path);
-           })
-           .slice(0, 12)
+         .filter((match) => isSearchableValue(match.value))
+         .sort((a, b) => {
+            const da = a.path.split('.').length;
+            const db = b.path.split('.').length;
+            if (da !== db) return da - db;
+            return a.path.localeCompare(b.path);
+         })
+         .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);
    const selectedRackName =
-      racks.find((rack) => rack._id === selectedRack)?.name ?? 'Select a rack';
+      racks.find((rack) => rack.id === selectedRack)?.name ?? 'Select a rack';
    const selectedManufactureName =
       manufacturers.find((manufacture) => String(manufacture.value) === String(selectedManufacture))
          ?.name ?? 'Select a manufacturer';
@@ -286,6 +286,8 @@ export default function NewAsset() {
             </Link>
          </div>
 
+         {console.log(selectedRack)}
+
          <div className="mt-15 flex flex-wrap items-center gap-2">
             <Listbox value={selectedRack} onChange={setSelectedRack}>
                <div className="relative m-1 w-fit-content">
@@ -296,8 +298,8 @@ export default function NewAsset() {
                   <ListboxOptions className="absolute z-20 mt-2 focus:outline-none max-h-60 w-full overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-1 text-white shadow-2xl">
                      {racks.map((rack) => (
                         <ListboxOption
-                           key={rack._id}
-                           value={rack._id}
+                           key={rack.id}
+                           value={rack.id}
                            className="cursor-pointer rounded-md p-2 text-sm hover:bg-slate-800"
                         >
                            {rack.name}

@@ -7,19 +7,17 @@ import { isValidObjectId } from 'mongoose';
 export default publicProcedure
    .input(
       z.object({
-         id: z.string()
+         id: z
+            .string()
+            .trim()
+            .min(1, 'Rack ID is missing from the request')
+            .refine(isValidObjectId, {
+               message: 'Rack ID is invalid'
+            })
       })
    )
    .query(async ({ input }) => {
       const { id } = input;
-
-      // Validate ID
-      if (!isValidObjectId(id)) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Rack ID is invalid'
-         });
-      }
 
       // Fetch rack
       const rack = await Rack.findById(id);

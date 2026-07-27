@@ -1,5 +1,83 @@
-import mongoose from 'mongoose';
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     AssetInput:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         uuid:
+ *           type: string
+ *         rack:
+ *           type: string
+ *         uPosition:
+ *           type: integer
+ *         manufacturer:
+ *           type: number
+ *         notes:
+ *           type: string
+ *         dataFields:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               value:
+ *                 type: string
+ *               path:
+ *                 type: string
+ *         rawJson:
+ *           type: string
+ *     Asset:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         uuid:
+ *           type: string
+ *         version:
+ *           type: integer
+ *         rack:
+ *           $ref: '#/components/schemas/Rack'
+ *         uPosition:
+ *           type: integer
+ *         manufacturer:
+ *           type: string
+ *         notes:
+ *           type: string
+ *         dataFields:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               value:
+ *                 type: string
+ *               path:
+ *                 type: string
+ *         fans:
+ *           type: object
+ *         ethernetInterfaces:
+ *           type: object
+ *         bootOptions:
+ *           type: object
+ *         rawJson:
+ *           type: string
+ *       required:
+ *         - name
+ *         - uuid
+ *         - version
+ *         - rack
+ *         - uPosition
+ *         - systemType
+ */
 
+import mongoose from 'mongoose';
 import { Manufacturers } from '../enums/enums';
 
 const assetSchema = new mongoose.Schema({

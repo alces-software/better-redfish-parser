@@ -24,6 +24,12 @@ app.use(
    })
 );
 
+// Setup api docs
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger';
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Connect to the database
 mongoose
    .connect(process.env.MONGO_URI || '', {

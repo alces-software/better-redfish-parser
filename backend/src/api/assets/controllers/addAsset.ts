@@ -86,6 +86,12 @@ export default async (req: import('express').Request, res: import('express').Res
             .json({ success: false, message: 'Asset manufacture is missing from the request' });
       }
 
+      if (typeof manufacturer !== 'number') {
+         return res
+            .status(400)
+            .json({ success: false, message: 'Asset manufacture is not a enum number' });
+      }
+
       const manufactureName = Object.keys(Manufacturers).find(
          (key) => Manufacturers[key as keyof typeof Manufacturers] === manufacturer
       );
@@ -109,7 +115,7 @@ export default async (req: import('express').Request, res: import('express').Res
          version: 1,
          rack: targetRack._id,
          uPosition,
-         manufacturer: manufactureName || 'HP',
+         manufacturer: manufactureName || 'Unknown',
          notes,
          dataFields,
          rawJson: JSON.stringify(rawJson, null, 2) || ''

@@ -69,13 +69,13 @@ export default function AssetsPage() {
 
    const allDataFields = asset
       ? [
-         { title: 'Asset Name', value: asset.name, path: 'name' },
-         { title: 'UUID', value: asset.uuid, path: 'uuid' },
-         { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
-         { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
-         { title: 'Notes', value: asset.notes, path: 'notes' },
-         ...(asset.dataFields ?? [])
-      ]
+           { title: 'Asset Name', value: asset.name, path: 'name' },
+           { title: 'UUID', value: asset.uuid, path: 'uuid' },
+           { title: 'Rack Position', value: asset.uPosition, path: 'uPosition' },
+           { title: 'Manufacturer', value: asset.manufacturer, path: 'manufacturer' },
+           { title: 'Notes', value: asset.notes, path: 'notes' },
+           ...(asset.dataFields ?? [])
+        ]
       : [];
 
    return (

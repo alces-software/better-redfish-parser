@@ -5,7 +5,7 @@ import { publicProcedure } from '../../../base';
 export default publicProcedure
    .meta({
       openapi: {
-         method: 'GET',
+         method: 'PUT',
          path: '/racks/',
          tags: ['racks'],
          errorResponses: {

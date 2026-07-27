@@ -2,7 +2,6 @@ import { TRPCError } from '@trpc/server';
 import { publicProcedure } from '../../../base';
 import { z } from 'zod';
 import { Asset } from '../../../../assets/models/Asset';
-import { Types } from 'mongoose';
 
 export default publicProcedure
    .meta({

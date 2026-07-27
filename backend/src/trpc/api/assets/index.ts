@@ -8,8 +8,8 @@ import getLatestAsset from './controllers/getLatestAsset';
 
 export default router({
    getAllLatest: getAllLatestAssets,
-   getLatest: getLatestAsset,
    getHistory: getAssetHistory,
+   getLatest: getLatestAsset,
    delete: deleteAsset,
    add: addAsset,
    addVersion: addAssetVersion

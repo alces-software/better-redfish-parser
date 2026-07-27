@@ -2,10 +2,21 @@ import { TRPCError } from '@trpc/server';
 import { publicProcedure } from '../../../base';
 import { z } from 'zod';
 import { Asset } from '../../../../assets/models/Asset';
-import { Types, isValidObjectId } from 'mongoose';
+import { isValidObjectId } from 'mongoose';
 import { Rack } from '../../../../assets/models/Rack';
 
 export default publicProcedure
+   .meta({
+      openapi: {
+         method: 'POST',
+         path: '/assets/{uuid}',
+         tags: ['assets'],
+         errorResponses: {
+            400: 'Bad Request',
+            500: 'Internal Server Error'
+         }
+      }
+   })
    .input(
       z.object({
          uuid: z.uuid().trim().min(1, 'Asset UUID is missing from the request'),
@@ -29,6 +40,27 @@ export default publicProcedure
             )
             .optional(),
          rawJson: z.json()
+      })
+   )
+   .output(
+      z.object({
+         success: z.literal(true),
+         body: z.object({
+            name: z.string(),
+            version: z.number(),
+            uuid: z.uuid(),
+            rack: z.any(),
+            uPosition: z.number(),
+            notes: z.string(),
+            dataFields: z.array(
+               z.object({
+                  title: z.string(),
+                  value: z.string(),
+                  path: z.string()
+               })
+            ),
+            rawJson: z.json()
+         })
       })
    )
    .mutation(async ({ input }) => {

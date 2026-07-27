@@ -5,6 +5,17 @@ import { Rack } from '../../../../assets/models/Rack';
 import { isValidObjectId } from 'mongoose';
 
 export default publicProcedure
+   .meta({
+      openapi: {
+         method: 'PUT',
+         path: '/racks/',
+         tags: ['racks'],
+         errorResponses: {
+            404: 'Not Found',
+            500: 'Internal Server Error'
+         }
+      }
+   })
    .input(
       z.object({
          id: z
@@ -23,6 +34,17 @@ export default publicProcedure
             .refine((changes) => Object.keys(changes).length > 0, {
                message: 'At least one rack field must be provided'
             })
+      })
+   )
+   .output(
+      z.object({
+         success: z.literal(true),
+         body: z.object({
+            id: z.string(),
+            name: z.string(),
+            size: z.number(),
+            notes: z.string()
+         })
       })
    )
    .mutation(async ({ input }) => {

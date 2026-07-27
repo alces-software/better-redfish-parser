@@ -60,19 +60,34 @@ export default function NewRack() {
          >
             <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Rack details</h2>
             <div className="grid grid-cols-2 gap-4 px-4">
-               <div className=''>
+               <div className="">
                   <p className="p-1">Name</p>
-                  <input name="name" type="text" className="w-full rounded-lg border p-2 text-white" required />
+                  <input
+                     name="name"
+                     type="text"
+                     className="w-full rounded-lg border p-2 text-white"
+                     required
+                  />
                </div>
 
-               <div className=''>
+               <div className="">
                   <p className="p-1">Size</p>
-                  <input name="size" type="text" className="w-full rounded-lg border p-2 text-white" required />
+                  <input
+                     name="size"
+                     type="text"
+                     className="w-full rounded-lg border p-2 text-white"
+                     required
+                  />
                </div>
 
                <div className="col-span-2 gap-1 ">
                   <p className="p-1">Notes</p>
-                  <textarea rows={5} name="notes" type="text" className="w-full rounded-lg border p-1 text-white" />
+                  <textarea
+                     rows={5}
+                     name="notes"
+                     type="text"
+                     className="w-full rounded-lg border p-1 text-white"
+                  />
                </div>
             </div>
 

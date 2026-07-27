@@ -18,7 +18,7 @@ export default publicProcedure
             .refine(isValidObjectId, {
                message: 'Rack ID is invalid'
             }),
-         uPosition: z.number().min(1, "The U-Position can't be less than 1"),
+         uPosition: z.number().min(0, "The U-Position can't be less than 1"),
          manufacturer: z.number().min(1, "The manufacture enum can't be less than 1 "),
          notes: z.string().trim().optional(),
          dataFields: z

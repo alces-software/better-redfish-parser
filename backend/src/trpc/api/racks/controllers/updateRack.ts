@@ -7,12 +7,18 @@ import { isValidObjectId } from 'mongoose';
 export default publicProcedure
    .input(
       z.object({
-         id: z.string(),
+         id: z
+            .string()
+            .trim()
+            .min(1, 'Rack ID is missing from the request')
+            .refine(isValidObjectId, {
+               message: 'Rack ID is invalid'
+            }),
          changes: z
             .object({
-               name: z.string().optional(),
-               size: z.number().optional(),
-               notes: z.string().optional()
+               name: z.string().trim().min(1, "The updated name can't be empty").optional(),
+               size: z.number().min(1, "The rack size can't be less than 1").optional(),
+               notes: z.string().trim().optional()
             })
             .refine((changes) => Object.keys(changes).length > 0, {
                message: 'At least one rack field must be provided'
@@ -21,21 +27,6 @@ export default publicProcedure
    )
    .mutation(async ({ input }) => {
       const { id, changes } = input;
-
-      // Validate ID
-      if (!id) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Rack ID is missing from the request'
-         });
-      }
-
-      if (!isValidObjectId(id)) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Rack ID is invalid'
-         });
-      }
 
       // Fetch rack
       const rack = await Rack.findByIdAndUpdate(id, changes, { returnDocument: 'after' });

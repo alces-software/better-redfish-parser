@@ -8,17 +8,23 @@ import { Rack } from '../../../../assets/models/Rack';
 export default publicProcedure
    .input(
       z.object({
-         uuid: z.string(),
-         name: z.string(),
-         rack: z.string(),
-         uPosition: z.number(),
-         notes: z.string().optional(),
+         uuid: z.uuid().trim().min(1, 'Asset UUID is missing from the request'),
+         name: z.string().trim().min(1, 'Asset name is missing from the request'),
+         rack: z
+            .string()
+            .trim()
+            .min(1, 'Asset rack ID missing from the request')
+            .refine(isValidObjectId, {
+               message: 'Rack ID is invalid'
+            }),
+         uPosition: z.number().min(1, "The U-Position can't be less than 1"),
+         notes: z.string().trim().optional(),
          dataFields: z
             .array(
                z.object({
-                  title: z.string(),
-                  value: z.string(),
-                  path: z.string().optional()
+                  title: z.string().trim().min(1, "The title of a datafield can't be empty"),
+                  value: z.string().trim(),
+                  path: z.string().trim().optional()
                })
             )
             .optional(),
@@ -28,43 +34,13 @@ export default publicProcedure
    .mutation(async ({ input }) => {
       const { uuid, name, rack, uPosition, notes, dataFields, rawJson } = input;
 
-      // Check the uuid
-      if (!rack) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Asset rack ID missing from the request'
-         });
-      }
-
-      if (!isValidObjectId(rack)) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Rack ID is invalid'
-         });
-      }
-
+      // Check if rack exists
       const targetRack = await Rack.findById(rack);
 
       if (!targetRack) {
          throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'Rack not found'
-         });
-      }
-
-      // Check name
-      if (!name) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Asset name is missing from the request'
-         });
-      }
-
-      // Check uuid
-      if (!uuid) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Asset UUID is missing from the request'
          });
       }
 

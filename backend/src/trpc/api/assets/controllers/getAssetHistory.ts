@@ -6,19 +6,11 @@ import { Asset } from '../../../../assets/models/Asset';
 export default publicProcedure
    .input(
       z.object({
-         uuid: z.string()
+         uuid: z.uuid().trim().min(1, 'Asset UUID missing from the request')
       })
    )
    .query(async ({ input }) => {
       const { uuid } = input;
-
-      // Check uuid
-      if (!uuid) {
-         throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Asset UUID missing from the request'
-         });
-      }
 
       // Get the latest asset version from the database
       const assets = await Asset.find({ uuid }).populate('rack').sort({ version: -1 });

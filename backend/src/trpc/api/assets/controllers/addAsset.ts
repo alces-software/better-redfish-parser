@@ -7,6 +7,18 @@ import { Manufacturers } from '../../../../assets/enums/enums';
 import { Rack } from '../../../../assets/models/Rack';
 
 export default publicProcedure
+   .meta({
+      openapi: {
+         method: 'POST',
+         path: '/assets/',
+         tags: ['assets'],
+         errorResponses: {
+            400: 'Bad Request',
+            409: 'Conflict',
+            500: 'Internal Server Error'
+         }
+      }
+   })
    .input(
       z.object({
          uuid: z.uuid().trim().min(1, 'Asset UUID is missing from the request'),
@@ -31,6 +43,27 @@ export default publicProcedure
             )
             .optional(),
          rawJson: z.json()
+      })
+   )
+   .output(
+      z.object({
+         success: z.literal(true),
+         body: z.object({
+            name: z.string(),
+            version: z.number(),
+            uuid: z.uuid(),
+            rack: z.any(),
+            uPosition: z.number(),
+            notes: z.string(),
+            dataFields: z.array(
+               z.object({
+                  title: z.string(),
+                  value: z.string(),
+                  path: z.string()
+               })
+            ),
+            rawJson: z.json()
+         })
       })
    )
    .mutation(async ({ input }) => {

@@ -1,12 +1,27 @@
-import { TRPCError } from '@trpc/server';
 import { publicProcedure } from '../../../base';
 import { z } from 'zod';
 import { Asset } from '../../../../assets/models/Asset';
 
 export default publicProcedure
+   .meta({
+      openapi: {
+         method: 'DELETE',
+         path: '/assets/{uuid}',
+         tags: ['assets'],
+         errorResponses: {
+            500: 'Internal Server Error'
+         }
+      }
+   })
    .input(
       z.object({
          uuid: z.uuid().trim().min(1, 'Asset UUID missing from the request')
+      })
+   )
+   .output(
+      z.object({
+         success: z.literal(true),
+         body: z.number()
       })
    )
    .mutation(async ({ input }) => {

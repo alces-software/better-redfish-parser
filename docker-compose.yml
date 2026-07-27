@@ -8,6 +8,8 @@ services:
     command: "./setup.sh"
     volumes:
       - ./frontend:/srv/app
+      - frontend_node_modules:/srv/app/node_modules
+      - frontend_next:/srv/app/.next
     depends_on:
       - backend
     tty: true
@@ -46,3 +48,5 @@ services:
 
 volumes:
   dbdata6:
+  frontend_node_modules:
+  frontend_next:

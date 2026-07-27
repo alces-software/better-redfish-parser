@@ -479,7 +479,7 @@ export default function EditAsset() {
                   {pathSearch && (
                      <div className="mt-3 max-h-56 max-w-fit overflow-auto rounded-lg border border-slate-700 bg-slate-950">
                         {pathMatches.length ? (
-                           pathMatches.map((match) => (
+                           pathMatches.filter((match) => fields.every((field) => field.path !== match.path)).map((match) => (
                               <button
                                  key={match.path}
                                  type="button"

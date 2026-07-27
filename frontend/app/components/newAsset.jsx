@@ -127,8 +127,8 @@ export default function NewAsset() {
    const sectionData = parsedJson ? getValueByPath(parsedJson, selectedSection?.path ?? '') : null;
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-           .filter((match) => isSearchableValue(match.value))
-           .slice(0, 12)
+         .filter((match) => isSearchableValue(match.value))
+         .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);
    const selectedRackName =
@@ -182,6 +182,7 @@ export default function NewAsset() {
       event.preventDefault();
 
       if (!fieldLabel || !fieldPath) return;
+      if (fields.some((field) => field.path === fieldPath)) return;
 
       setFields((currentFields) => [
          ...currentFields,
@@ -388,7 +389,7 @@ export default function NewAsset() {
                         {pathSearch && (
                            <div className="mt-3 max-h-56 overflow-auto max-w-fit rounded-lg border border-slate-700 bg-slate-950">
                               {pathMatches.length ? (
-                                 pathMatches.map((match) => (
+                                 pathMatches.filter((match) => fields.every((field) => field.path !== match.path)).map((match) => (
                                     <button
                                        key={match.path}
                                        type="button"
@@ -448,7 +449,7 @@ export default function NewAsset() {
                               <div className="flex items-start divide-justify-between gap-3">
                                  <div>
                                     <p className="font-medium text-slate-300">{field.name}</p>
-                                    {/* <p className="mt-1 text-xs text-slate-500">{field.path}</p> */}
+                                    <p className="mt-1 text-xs text-slate-500">{field.path}</p>
                                  </div>
                                  <div className="flex gap-2">
                                     <button

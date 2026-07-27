@@ -97,6 +97,7 @@ export default function EditRack() {
                   type="text"
                   defaultValue={rack.name ?? ''}
                   className="mx-4 rounded-lg border p-1 text-white"
+                  required
                />
             </div>
 
@@ -107,6 +108,7 @@ export default function EditRack() {
                   type="text"
                   defaultValue={rack.size ?? ''}
                   className="mx-4 rounded-lg border p-1 text-white"
+                  required
                />
             </div>
 
@@ -117,6 +119,7 @@ export default function EditRack() {
                   type="text"
                   defaultValue={rack.notes ?? ''}
                   className="mx-4 rounded-lg border p-1 text-white"
+                  required
                />
             </div>
 

@@ -4,6 +4,7 @@ import { trpc } from '@/lib/trpc';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { IoSend } from 'react-icons/io5';
 
 export default function NewRack() {
    const router = useRouter();
@@ -32,7 +33,7 @@ export default function NewRack() {
 
    return (
       <div>
-         <div className=" relative justify-center md:justify-start flex items-center">
+         <div className="justify-center md:justify-start flex items-center">
             <h1 className="font-semibold text-center md:text-left  text-4xl">New Rack</h1>
             <Link
                href="/"
@@ -43,7 +44,7 @@ export default function NewRack() {
          </div>
 
          <br />
-         <hr />
+
          <br />
 
          {errorMessage ? (
@@ -53,45 +54,48 @@ export default function NewRack() {
          ) : null}
 
          <form
+            id="new-rack-form"
             onSubmit={handleSubmit}
-            className="mx-auto flex w-min flex-col rounded-lg border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl"
+            className="flex w-full flex-col rounded-lg pb-6 border border-slate-400 bg-slate-900 shadow-2xl drop-shadow-2xl"
          >
             <h2 className="mb-4 rounded-t-lg bg-slate-800 p-4 text-2xl">Rack details</h2>
+            <div className="grid grid-cols-2 gap-4 px-4">
+               <div className=''>
+                  <p className="p-1">Name</p>
+                  <input name="name" type="text" className="w-full rounded-lg border p-2 text-white" required />
+               </div>
 
-            <div className="mx-auto">
-               <p className="p-1 mx-4">Name</p>
-               <input
-                  name="name"
-                  type="text"
-                  className="mx-4 rounded-lg border p-1 text-white"
-                  required
-               />
+               <div className=''>
+                  <p className="p-1">Size</p>
+                  <input name="size" type="text" className="w-full rounded-lg border p-2 text-white" required />
+               </div>
+
+               <div className="col-span-2 gap-1 ">
+                  <p className="p-1">Notes</p>
+                  <textarea rows={5} name="notes" type="text" className="w-full rounded-lg border p-1 text-white" />
+               </div>
             </div>
 
-            <div className="mt-2 mx-auto">
-               <p className="p-1 mx-4">Size</p>
-               <input
-                  name="size"
-                  type="text"
-                  className="mx-4 rounded-lg border p-1 text-white"
-                  required
-               />
-            </div>
-
-            <div className="mt-2 mx-auto">
-               <p className="p-1 mx-4">Notes</p>
-               <input name="notes" type="text" className="mx-4 rounded-lg border p-1 text-white" />
-            </div>
-
-            <div className="my-4 flex justify-end px-4">
+            {/* <div className="my-4 flex justify-end px-4">
                <button
                   type="submit"
                   className="cursor-pointer rounded-full border border-blue-700 bg-blue-700 px-2 py-1 transition hover:-translate-y-1"
                >
                   Create Rack
                </button>
-            </div>
+            </div> */}
          </form>
+
+         <div className="flex justify-end mt-4 ">
+            <button
+               type="submit"
+               form="new-rack-form"
+
+               className="gap-2 inline-flex cursor-pointer items-center justify-center w-fit-content px-4 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800"
+            >
+               Create Rack <IoSend />
+            </button>
+         </div>
       </div>
    );
 }

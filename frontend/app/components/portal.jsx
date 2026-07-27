@@ -28,7 +28,7 @@ export default function Portal() {
       <section>
          <div className="text-center md:text-left">
             <h1 className="font-semibold  text-4xl">System Information Portal</h1>
-            <p className="mt-4">View, edit, or delete existing assets, or create a new one.</p>
+            <p className="mt-4">View, edit, or delete existing racks and assets, or create new ones.</p>
          </div>
 
          <div className="mb-8 flex mt-6 justify-center">

@@ -1,8 +1,7 @@
 #!/bin/bash
 
-npm install
+npm i
 
-# npm run build
-# npm run start
+# npm run start:build
 
 npm run dev

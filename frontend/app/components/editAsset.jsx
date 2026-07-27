@@ -171,8 +171,14 @@ export default function EditAsset() {
    const displayedFileName = fileName || savedFileName || '';
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-         .filter((match) => isSearchableValue(match.value))
-         .slice(0, 12)
+           .filter((match) => isSearchableValue(match.value))
+           .sort((a, b) => {
+              const da = a.path.split('.').length;
+              const db = b.path.split('.').length;
+              if (da !== db) return da - db;
+              return a.path.localeCompare(b.path);
+           })
+           .slice(0, 12)
       : [];
 
    useEffect(() => {
@@ -451,23 +457,25 @@ export default function EditAsset() {
                   {pathSearch && (
                      <div className="mt-3 max-h-56 max-w-fit overflow-auto rounded-lg border border-slate-700 bg-slate-950">
                         {pathMatches.length ? (
-                           pathMatches.map((match) => (
-                              <button
-                                 key={match.path}
-                                 type="button"
-                                 onClick={() => {
-                                    setFieldPath(match.path);
-                                    setFieldLabel(match.path.split('.').at(-1) ?? '');
-                                    setPathSearch('');
-                                 }}
-                                 className="block w-full cursor-pointer border-b border-slate-800 p-2 text-left text-sm transition hover:bg-slate-900"
-                              >
-                                 <span className="block text-slate-300">{match.path}</span>
-                                 <span className="mt-1 block truncate text-xs text-slate-500">
-                                    {formatValue(match.value)}
-                                 </span>
-                              </button>
-                           ))
+                           pathMatches
+                              .filter((match) => fields.every((field) => field.path !== match.path))
+                              .map((match) => (
+                                 <button
+                                    key={match.path}
+                                    type="button"
+                                    onClick={() => {
+                                       setFieldPath(match.path);
+                                       setFieldLabel(match.path.split('.').at(-1) ?? '');
+                                       setPathSearch('');
+                                    }}
+                                    className="block w-full cursor-pointer border-b border-slate-800 p-2 text-left text-sm transition hover:bg-slate-900"
+                                 >
+                                    <span className="block text-slate-300">{match.path}</span>
+                                    <span className="mt-1 block truncate text-xs text-slate-500">
+                                       {formatValue(match.value)}
+                                    </span>
+                                 </button>
+                              ))
                         ) : (
                            <p className="p-2 text-sm text-slate-500">No matching keys found</p>
                         )}

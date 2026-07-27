@@ -60,12 +60,22 @@ export default function NewRack() {
 
             <div className="mx-auto">
                <p className="p-1 mx-4">Name</p>
-               <input name="name" type="text" className="mx-4 rounded-lg border p-1 text-white" />
+               <input
+                  name="name"
+                  type="text"
+                  className="mx-4 rounded-lg border p-1 text-white"
+                  required
+               />
             </div>
 
             <div className="mt-2 mx-auto">
                <p className="p-1 mx-4">Size</p>
-               <input name="size" type="text" className="mx-4 rounded-lg border p-1 text-white" />
+               <input
+                  name="size"
+                  type="text"
+                  className="mx-4 rounded-lg border p-1 text-white"
+                  required
+               />
             </div>
 
             <div className="mt-2 mx-auto">

@@ -18,7 +18,7 @@ export default publicProcedure
                z.object({
                   title: z.string(),
                   value: z.string(),
-                  path: z.string().optional(),
+                  path: z.string().optional()
                })
             )
             .optional(),

@@ -20,7 +20,7 @@ export default publicProcedure
                z.object({
                   title: z.string(),
                   value: z.string(),
-                  path: z.string().optional(),
+                  path: z.string().optional()
                })
             )
             .optional(),
@@ -71,23 +71,23 @@ export default publicProcedure
       }
 
       // Check manufacture
-      // if (!manufacturer) {
-      //    throw new TRPCError({
-      //       code: 'BAD_REQUEST',
-      //       message: 'Asset manufacture is missing from the request'
-      //    });
-      // }
+      if (!manufacturer) {
+         throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Asset manufacture is missing from the request'
+         });
+      }
 
-      // const manufactureName = Object.keys(Manufacturers).find(
-      //    (key) => Manufacturers[key as keyof typeof Manufacturers] === manufacturer
-      // );
+      const manufactureName = Object.keys(Manufacturers).find(
+         (key) => Manufacturers[key as keyof typeof Manufacturers] === manufacturer
+      );
 
-      // if (!manufactureName) {
-      //    throw new TRPCError({
-      //       code: 'BAD_REQUEST',
-      //       message: 'Asset manufacture is not recognised'
-      //    });
-      // }
+      if (!manufactureName) {
+         throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Asset manufacture is not recognised'
+         });
+      }
 
       // Check if asset exists already
       const existing = await Asset.findOne({ uuid, version: 1 });
@@ -105,7 +105,7 @@ export default publicProcedure
          version: 1,
          rack: targetRack._id,
          uPosition,
-         manufacturer: 'Dell',
+         manufacturer: manufactureName || 'Unknown',
          notes,
          dataFields,
          rawJson: JSON.stringify(rawJson, null, 2) || ''

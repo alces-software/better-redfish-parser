@@ -105,7 +105,7 @@ export default function Portal() {
                      <GoChevronDown className="h-6 w-6 group-hover:rotate-180 transition duration-350 ease-in-out" />
                   </button>
                   <div className="hidden bg-slate-800 border border-slate-800 rounded-lg group-hover:block">
-                     {racks.map((r,index) => (
+                     {racks.map((r, index) => (
                         <Link
                            key={index}
                            className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm"

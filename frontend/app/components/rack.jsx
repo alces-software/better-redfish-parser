@@ -2,8 +2,9 @@
 
 import { trpc } from '@/lib/trpc';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter} from 'next/navigation';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
+import { useEffect } from 'react';
 
 const colours = ['sky', 'emerald', 'amber'];
 
@@ -19,9 +20,12 @@ export default function RacksPage() {
       }
    );
 
-   function handleClick() {
-      console.log(assets);
-   }
+    useEffect(() =>{ 
+       if (!rackId) {
+          router.replace("/")
+       }
+ 
+    }, [rackId, router]);
 
    const assetsQuery = trpc.assets.getAllLatest.useQuery();
    const allAssets = assetsQuery.data?.body ?? [];

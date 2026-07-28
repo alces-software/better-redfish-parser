@@ -21,6 +21,13 @@ export default function AssetsPage() {
    const utils = trpc.useUtils();
    const deleteAsset = trpc.assets.delete.useMutation();
 
+   useEffect(() =>{ 
+      if (!uuId) {
+         router.replace("/")
+      }
+
+   }, [uuId, router])
+
    useEffect(() => {
       function syncAsset() {
          setAsset(history[historyIndex]);

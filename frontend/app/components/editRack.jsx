@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Loading from './loading';
 import { trpc } from '@/lib/trpc';
 import { IoSend } from 'react-icons/io5';
+import { useEffect } from 'react';
 
 export default function EditRack() {
    const router = useRouter();
@@ -19,6 +20,13 @@ export default function EditRack() {
    );
    const updateRack = trpc.racks.update.useMutation();
    const rack = rackQuery.data?.body ?? null;
+
+    useEffect(() =>{ 
+       if (!rackId) {
+          router.replace("/")
+       }
+ 
+    }, [rackId, router]);
 
    async function handleSubmit(event) {
       event.preventDefault();

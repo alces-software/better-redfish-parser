@@ -21,16 +21,16 @@ const defaultFields = [
    { id: 8, name: 'NIC count', value: '', path: 'NetworkInterfaces.Members.length' }
 ];
 
-const sections = [
-   { key: 'raw', label: 'Raw JSON', path: '' },
-   { key: 'system', label: 'System', path: '' },
-   { key: 'processors', label: 'Processors', path: 'ProcessorSummary' },
-   { key: 'memory', label: 'Memory', path: 'MemorySummary' },
-   { key: 'network', label: 'Network', path: 'NetworkInterfaces' },
-   { key: 'storage', label: 'Storage', path: 'Storage' },
-   { key: 'power', label: 'Power', path: 'Power' },
-   { key: 'thermal', label: 'Thermal', path: 'Thermal' }
-];
+// const sections = [
+//    { key: 'raw', label: 'Raw JSON', path: '' },
+//    { key: 'system', label: 'System', path: '' },
+//    { key: 'processors', label: 'Processors', path: 'ProcessorSummary' },
+//    { key: 'memory', label: 'Memory', path: 'MemorySummary' },
+//    { key: 'network', label: 'Network', path: 'NetworkInterfaces' },
+//    { key: 'storage', label: 'Storage', path: 'Storage' },
+//    { key: 'power', label: 'Power', path: 'Power' },
+//    { key: 'thermal', label: 'Thermal', path: 'Thermal' }
+// ];
 
 function getValueByPath(data, path) {
    if (!path) return data;
@@ -107,6 +107,34 @@ export default function NewAsset() {
    const editInputRef = useRef(null);
    const addNewAsset = trpc.assets.add.useMutation();
 
+   const [columns, setColumns] = useState(1);
+
+   const missingGridItems = (columns - (fields.length % columns)) % columns;
+   const gridFields = [
+      ...fields,
+      ...Array.from({ length: missingGridItems }, (_, index) => ({
+         id: `placeholder-${index}`,
+         placeholder: true
+      }))
+   ];
+
+   useEffect(() => {
+      function updateColumns() {
+         if (window.innerWidth >= 1024) {
+            setColumns(3);
+         } else if (window.innerWidth >= 640) {
+            setColumns(2);
+         } else {
+            setColumns(1);
+         }
+      }
+
+      updateColumns();
+      window.addEventListener('resize', updateColumns);
+
+      return () => window.removeEventListener('resize', updateColumns);
+   }, []);
+
    const router = useRouter();
 
    const { parsedJson, parseError } = useMemo(() => {
@@ -124,7 +152,8 @@ export default function NewAsset() {
    }, [jsonText]);
 
    function isSearchableValue(value) {
-      return !Array.isArray(value) && (value === null || typeof value !== 'object');
+      // return !Array.isArray(value) && (value === null || typeof value !== 'object');
+      return value === null || typeof value !== 'object';
    }
 
    const pathMatches = parsedJson
@@ -424,49 +453,53 @@ export default function NewAsset() {
                         </button>
                      </form>
 
-                     <div className="grid grid-cols-1 sm:grid-cols-2  rounded-b-lg lg:grid-cols-3 ">
-                        {fields.map((field) => (
-                           <div key={field.id} className="p-4 border-r border-b border-slate-800">
-                              <div className="flex items-start divide-justify-between gap-3">
-                                 <div>
-                                    <p className="font-medium text-slate-300">{field.name}</p>
-                                    <p className="mt-1 text-xs text-slate-500">{field.path}</p>
-                                 </div>
-                                 <div className="flex gap-2">
-                                    <button
-                                       type="button"
-                                       onClick={() => handleEditField(field)}
-                                       className="rounded-full border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-slate-800"
-                                    >
-                                       {editingFieldId === field.id ? 'Save' : 'Edit'}
-                                    </button>
-
-                                    {field.name !== 'Asset name' &&
-                                       field.name != 'UUID' &&
-                                       field.name != 'U position' && (
+                     <div className="grid grid-cols-1 sm:grid-cols-2 divide-x rounded-b-lg lg:grid-cols-3 ">
+                        {gridFields.map((field) => (
+                           <div key={field.id} className="p-4 border-t  border-slate-800">
+                              {!field.placeholder && (
+                                 <>
+                                    <div className="flex items-start justify-between gap-3">
+                                       <div>
+                                          <p className="font-medium text-slate-300">{field.name}</p>
+                                       </div>
+                                       <div className="flex gap-2">
                                           <button
                                              type="button"
-                                             onClick={() => handleRemoveField(field.id)}
-                                             className="rounded-full border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-red-900"
+                                             onClick={() => handleEditField(field)}
+                                             className="rounded-full border border-slate-400 cursor-pointer px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-slate-800"
                                           >
-                                             Remove
+                                             {editingFieldId === field.id ? 'Save' : 'Edit'}
                                           </button>
-                                       )}
-                                 </div>
-                              </div>
-                              {editingFieldId === field.id ? (
-                                 <input
-                                    ref={editInputRef}
-                                    value={getFieldValue(field)}
-                                    onChange={(event) =>
-                                       handleFieldValueChange(field.id, event.target.value)
-                                    }
-                                    className="mt-3 h-9 w-full rounded-lg border border-slate-700 bg-slate-800 p-2 text-sm text-slate-300"
-                                 />
-                              ) : (
-                                 <p className="mt-3 rounded-lg bg-slate-800 p-2 text-sm text-slate-300">
-                                    {getFieldValue(field)}
-                                 </p>
+
+                                          {field.name !== 'Asset name' &&
+                                             field.name != 'UUID' &&
+                                             field.name != 'U position' && (
+                                                <button
+                                                   type="button"
+                                                   onClick={() => handleRemoveField(field.id)}
+                                                   className="rounded-full cursor-pointer border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-red-900"
+                                                >
+                                                   Remove
+                                                </button>
+                                             )}
+                                       </div>
+                                    </div>
+                                    <p className="mt-1 text-xs text-slate-500">{field.path}</p>
+                                    {editingFieldId === field.id ? (
+                                       <input
+                                          ref={editInputRef}
+                                          value={getFieldValue(field)}
+                                          onChange={(event) =>
+                                             handleFieldValueChange(field.id, event.target.value)
+                                          }
+                                          className="mt-3 h-9 w-full rounded-lg border border-slate-700 bg-slate-800 p-2 text-sm text-slate-300"
+                                       />
+                                    ) : (
+                                       <p className="mt-3 rounded-lg bg-slate-800 p-2 text-sm text-slate-300">
+                                          {getFieldValue(field)}
+                                       </p>
+                                    )}
+                                 </>
                               )}
                            </div>
                         ))}
@@ -494,7 +527,7 @@ export default function NewAsset() {
                   <button
                      type="button"
                      onClick={handleCreateAsset}
-                     className="gap-2 inline-flex cursor-pointer items-center justify-center w-fit-content px-4 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800"
+                     className="gap-2 inline-flex cursor-pointer items-center justify-center w-fit-content px-4 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full hover:border-green-800"
                   >
                      Create asset <IoSend />
                   </button>

@@ -47,6 +47,7 @@ export default function EditRack() {
       void utils.racks.getById.invalidate({ id: rackId });
 
       router.push(`/racks?id=${rackId}`);
+      router.refresh();
    }
 
    if (!rackId) {
@@ -71,7 +72,7 @@ export default function EditRack() {
       <div>
          <div className="justify-center md:justify-start flex items-center">
             <h1 className="font-semibold text-center md:text-left  text-4xl">
-               Edit <em>{rack.name}</em>
+               Edit <span className="text-sky-300">{rack.name}</span>
             </h1>
             <Link
                href={`/racks?id=${rackId}`}
@@ -99,7 +100,7 @@ export default function EditRack() {
                      name="name"
                      type="text"
                      defaultValue={rack.name ?? ''}
-                     className="w-full rounded-lg border p-2 text-white"
+                     className="w-full rounded-lg border p-2 border-slate-400 text-white"
                      required
                   />
                </div>
@@ -110,7 +111,7 @@ export default function EditRack() {
                      name="size"
                      type="text"
                      defaultValue={rack.size ?? ''}
-                     className="w-full rounded-lg border p-2 text-white"
+                     className="w-full rounded-lg border p-2 border-slate-400 text-white"
                      required
                   />
                </div>
@@ -121,7 +122,7 @@ export default function EditRack() {
                      rows={5}
                      name="notes"
                      defaultValue={rack.notes ?? ''}
-                     className="w-full rounded-lg border p-1 text-white"
+                     className="w-full rounded-lg border p-1 border-slate-400 text-white"
                   />
                </div>
             </div>
@@ -131,7 +132,7 @@ export default function EditRack() {
             <button
                type="submit"
                form="edit-rack-form"
-               className="gap-2 inline-flex cursor-pointer items-center justify-center w-fit-content px-4 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800"
+               className="gap-2 inline-flex cursor-pointer items-center justify-center w-fit-content px-4 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full hover:border-green-800"
             >
                Save Changes <IoSend />
             </button>

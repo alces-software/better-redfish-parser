@@ -6,6 +6,17 @@ import { isValidObjectId } from 'mongoose';
 import { Asset } from '../../../../assets/models/Asset';
 
 export default publicProcedure
+   .meta({
+      openapi: {
+         method: 'DELETE',
+         path: '/racks/{id}',
+         tags: ['racks'],
+         errorResponses: {
+            404: 'Not Found',
+            500: 'Internal Server Error'
+         }
+      }
+   })
    .input(
       z.object({
          id: z
@@ -15,6 +26,12 @@ export default publicProcedure
             .refine(isValidObjectId, {
                message: 'Rack ID is invalid'
             })
+      })
+   )
+   .output(
+      z.object({
+         success: z.literal(true),
+         message: z.literal('Rack deleted')
       })
    )
    .mutation(async ({ input }) => {

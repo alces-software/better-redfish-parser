@@ -30,6 +30,7 @@
       "mongoose": "^9.8.0",
       "swagger-jsdoc": "^6.3.0",
       "swagger-ui-express": "^5.0.1",
+      "trpc-to-openapi": "^3.3.0",
       "zod": "^4.4.3"
    },
    "devDependencies": {

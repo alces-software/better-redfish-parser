@@ -2,6 +2,6 @@
 
 npm i
 
-# npm run start:build
+npm run start:build
 
-npm run dev
+# npm run dev

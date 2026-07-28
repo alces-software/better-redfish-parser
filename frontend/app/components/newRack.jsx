@@ -25,7 +25,7 @@ export default function NewRack() {
             notes: String(formData.get('notes') ?? '')
          });
 
-         router.push(`/racks?id=${data.body._id}`);
+         router.push(`/racks?id=${data.body.id}`);
       } catch (error) {
          setErrorMessage(error instanceof Error ? error.message : 'Failed to create rack');
       }

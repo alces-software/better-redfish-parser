@@ -87,7 +87,7 @@ export default function Json() {
       <section>
          <div className="flex items-center">
             <h1 className="font-semibold text-center md:text-left text-4xl">
-               JSON import for <em>{asset.name}</em>
+               JSON import for <span className='text-sky-300'>{asset.name}</span>
             </h1>
             <Link
                href={`/assets?id=${assetId}`}

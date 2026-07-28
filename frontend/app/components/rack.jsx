@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 
+const colours = ["sky", "emerald", "amber"]
+
 export default function RacksPage() {
    const router = useRouter();
    const searchParams = useSearchParams();
@@ -16,6 +18,25 @@ export default function RacksPage() {
          enabled: Boolean(rackId)
       }
    );
+
+   function handleClick() {
+      console.log(assets)
+   }
+
+   const assetsQuery = trpc.assets.getAllLatest.useQuery();
+   const allAssets = assetsQuery.data?.body ?? [];
+   const assetHistoryQueries = trpc.useQueries((t) =>
+      allAssets.map((asset) => t.assets.getHistory({ uuid: asset.uuid }))
+   );
+   const latestAssets = allAssets.map(
+      (asset, index) => assetHistoryQueries[index]?.data?.body?.[0] ?? asset
+   );
+
+   const assets = latestAssets.filter((asset) => {
+      const assetRackId = asset.rack?._id ?? asset.rack;
+      return String(assetRackId) === String(rackId);
+   });
+
    const deleteRack = trpc.racks.delete.useMutation();
    const rack = rackQuery.data?.body ?? null;
 
@@ -49,13 +70,13 @@ export default function RacksPage() {
    return (
       <div>
          <h1 className="font-semibold text-center md:text-left text-4xl">
-            System information for <em>{rack?.name ?? rackId}</em>
+            System information for <span className='text-sky-300'>{rack?.name ?? rackId}</span>
          </h1>
 
          {rackQuery.isLoading ? <p className="mt-4 text-slate-300">Loading rack...</p> : null}
          {rackQuery.error ? <p className="mt-4 text-red-300">{rackQuery.error.message}</p> : null}
 
-         <div className="mt-15 flex flex-col items-center justify-center">
+         {/* <div className="mt-15 flex flex-col items-center justify-center">
             <div className="rounded-lg border border-slate-400 shadow-2xl drop-shadow-2xl">
                <table className="text-slate-300">
                   <thead className="bg-slate-800">
@@ -78,8 +99,58 @@ export default function RacksPage() {
                   </tbody>
                </table>
             </div>
-         </div>
+         </div> */}
 
+         <div className="mt-15 flex flex-col items-center justify-center">
+            {rack && (
+               <div className="grid grid-cols-2 border rounded-lg border-slate-400">
+
+                  <div className="bg-slate-900 border rounded-tl-lg border-transparent p-4 pt-8 text-center ">
+                     <strong>Name</strong>
+                  </div>
+                  <div className="bg-slate-800 p-4 pt-8 border rounded-tr-lg border-transparent text-center">
+                     <p>{rack.name}</p>
+                  </div>
+
+                  <div className="bg-slate-900 p-4 text-center">
+                     <strong>Size</strong>
+                  </div>
+                  <div className="bg-slate-800 p-4 text-center">
+                     <p>{rack.size}</p>
+                  </div>
+
+                  <div className="bg-slate-900 p-4 text-center">
+                     <strong>Notes</strong>
+                  </div>
+                  <div className="bg-slate-800 p-4 text-center">
+                     <p>{rack.notes}</p>
+                  </div>
+
+                  <div className="bg-slate-900 text-center border justify-center flex rounded-bl-lg border-transparent p-4 items-center">
+                     <strong>Asset List</strong>
+                  </div>
+
+                  <div className="bg-slate-800 max-w-100 flex  flex-wrap gap-1 border rounded-br-lg border-transparent p-4">
+                    
+                        {assets.length ? (
+                           assets.map((asset, index) => (
+                              
+                              <a
+                              href={`/assets?id=${asset.uuid}`}
+                                 key={asset._id ?? asset.uuid}
+                                 className={`border w-fit rounded-full mt-1 bg-sky-500/20 text-sky-300 font-medium border-transparent transition hover:-translate-y-1 cursor-pointer border-slate-600 p-2`}
+                              >
+                                 {asset.name}
+                              </a>
+                           ))
+                        ) : (
+                           <p className="text-sm text-sky-500">No assets in this rack</p>
+                        )}
+                    
+                  </div>
+               </div>
+            )}
+         </div>
          <div className="mt-25 grid grid-cols-3 gap-2">
             <div className="col-start-1">
                <Link
@@ -110,6 +181,8 @@ export default function RacksPage() {
                   </button>
                </div>
             </div>
+
+           
          </div>
       </div>
    );

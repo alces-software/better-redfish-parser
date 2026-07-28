@@ -11,15 +11,7 @@ import { LuUpload } from 'react-icons/lu';
 import Loading from './loading';
 import { trpc } from '@/lib/trpc';
 
-const newImportFields = [
-   { id: 1, name: 'Asset name', value: '', path: 'Name', locked: true },
-   { id: 2, name: 'U position', value: '', path: 'Uposition', locked: true },
-   { id: 3, name: 'Model', value: '', path: 'Model' },
-   { id: 4, name: 'Serial number', value: '', path: 'SerialNumber' },
-   { id: 5, name: 'CPU cores', value: '', path: 'ProcessorSummary.CoreCount' },
-   { id: 6, name: 'Memory GiB', value: '', path: 'MemorySummary.TotalSystemMemoryGiB' },
-   { id: 7, name: 'NIC count', value: '', path: 'NetworkInterfaces.Members.length' }
-];
+
 
 function getValueByPath(data, path) {
    if (!path) return data;
@@ -95,16 +87,16 @@ function buildFieldsFromAsset(asset) {
          id: 'asset-name',
          name: 'Asset name',
          value: asset?.name ?? '',
-         path: 'name',
+         path: 'Name',
          locked: true
       },
-      { id: 'asset-uuid', name: 'UUID', value: asset?.uuid ?? '', path: 'uuid', locked: true },
+
 
       {
          id: 'asset-u-position',
          name: 'U position',
          value: asset?.uPosition ?? '',
-         path: 'uPosition',
+         path: 'Uposition',
          locked: true
       },
       ...(asset?.dataFields ?? [])
@@ -123,6 +115,8 @@ export default function EditAsset() {
    const searchParams = useSearchParams();
    const assetId = searchParams.get('id');
 
+   const utils = trpc.useUtils();
+
    const assetQuery = trpc.assets.getLatest.useQuery(
       { uuid: assetId },
       { enabled: Boolean(assetId) }
@@ -137,6 +131,7 @@ export default function EditAsset() {
    const [notes, setNotes] = useState('');
    const [jsonText, setJsonText] = useState(prettyPrint({}));
    const [fileName, setFileName] = useState('');
+   const [usingUploadedFile, setUsingUploadedFile] = useState(false);
    const [fields, setFields] = useState([]);
    const [fieldLabel, setFieldLabel] = useState('');
    const [fieldPath, setFieldPath] = useState('');
@@ -144,6 +139,36 @@ export default function EditAsset() {
    const [editingFieldId, setEditingFieldId] = useState(null);
    const editInputRef = useRef(null);
    const addNewAssetVersion = trpc.assets.addVersion.useMutation();
+   const [columns, setColumns] = useState(1);
+
+   const missingGridItems = (columns - (fields.length % columns)) % columns;
+   const gridFields = [
+      ...fields,
+      ...Array.from({ length: missingGridItems }, (_, index) => ({
+         id: `placeholder-${index}`,
+         placeholder: true
+      }))
+   ];
+
+
+   useEffect(() => {
+      function updateColumns() {
+         if (window.innerWidth >= 1024) {
+            setColumns(3);
+         } else if (window.innerWidth >= 640) {
+            setColumns(2);
+         } else {
+            setColumns(1);
+         }
+      }
+
+      updateColumns();
+      window.addEventListener('resize', updateColumns);
+
+      return () => window.removeEventListener('resize', updateColumns);
+   }, []);
+
+
 
    const { parsedJson, parseError } = useMemo(() => {
       try {
@@ -171,14 +196,14 @@ export default function EditAsset() {
    const displayedFileName = fileName || savedFileName || '';
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-           .filter((match) => isSearchableValue(match.value))
-           .sort((a, b) => {
-              const da = a.path.split('.').length;
-              const db = b.path.split('.').length;
-              if (da !== db) return da - db;
-              return a.path.localeCompare(b.path);
-           })
-           .slice(0, 12)
+         .filter((match) => isSearchableValue(match.value))
+         .sort((a, b) => {
+            const da = a.path.split('.').length;
+            const db = b.path.split('.').length;
+            if (da !== db) return da - db;
+            return a.path.localeCompare(b.path);
+         })
+         .slice(0, 12)
       : [];
 
    useEffect(() => {
@@ -197,6 +222,7 @@ export default function EditAsset() {
          setJsonText(getAssetJsonText(asset));
          setFields(buildFieldsFromAsset(asset));
          setFileName(asset.dataFields?.find((field) => field.title === 'File name')?.value ?? '');
+         setUsingUploadedFile(false);
       }
 
       updateFields();
@@ -206,13 +232,14 @@ export default function EditAsset() {
       const file = event.target.files?.[0];
       if (!file) return;
 
-      setFields(newImportFields);
+      // setFields(newImportFields);
       setFieldLabel('');
       setFieldPath('');
       setPathSearch('');
       setEditingFieldId(null);
       setNotes('');
       setFileName(file.name);
+      setUsingUploadedFile(true);
       setJsonText(await file.text());
    }
 
@@ -239,10 +266,22 @@ export default function EditAsset() {
       if (editingFieldId === fieldId) setEditingFieldId(null);
    }
 
+   // function getFieldValue(field) {
+   //    if (field.edited) return String(field.value ?? '');
+   //    if (field.value !== undefined && field.value !== '') return String(field.value);
+   //    if (!parsedJson) return 'Not found';
+
+   //    return formatValue(getValueByPath(parsedJson, field.path));
+   // }
+
    function getFieldValue(field) {
       if (field.edited) return String(field.value ?? '');
-      if (field.value !== undefined && field.value !== '') return String(field.value);
-      if (!parsedJson) return 'Not found';
+
+      if (field.name === 'U position') {
+         return formatValue(field.value);
+      }
+
+      if (!usingUploadedFile || !parsedJson) return formatValue(field.value);
 
       return formatValue(getValueByPath(parsedJson, field.path));
    }
@@ -329,6 +368,13 @@ export default function EditAsset() {
          return;
       }
 
+      await utils.assets.getAllLatest.invalidate();
+      await utils.assets.getLatest.invalidate({ uuid: res.body.uuid });
+      await utils.assets.getHistory.invalidate({ uuid: res.body.uuid });
+
+      await utils.racks.get.invalidate();
+      await utils.racks.getById.invalidate({ id: selectedRack });
+
       router.push(`/assets?id=${res.body.uuid}`);
    }
 
@@ -353,7 +399,7 @@ export default function EditAsset() {
       <section>
          <div className="flex items-center">
             <h1 className="font-semibold text-center text-4xl md:text-left">
-               Edit <em>{asset?.name ?? assetId}</em>
+               Edit <span className='text-sky-300'>{asset?.name ?? assetId}</span>
             </h1>
             <Link
                href={`/assets?id=${asset.uuid}`}
@@ -371,12 +417,7 @@ export default function EditAsset() {
                      <FaChevronDown />
                   </ListboxButton>
                   <ListboxOptions className="absolute z-20 mt-2 max-h-60 w-full overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-1 text-white shadow-2xl focus:outline-none">
-                     <ListboxOption
-                        value=""
-                        className="cursor-pointer rounded-md p-2 text-sm text-slate-400 hover:bg-slate-800"
-                     >
-                        Select a rack
-                     </ListboxOption>
+
 
                      {racks.map((rack) => (
                         <ListboxOption
@@ -398,12 +439,7 @@ export default function EditAsset() {
                      <FaChevronDown />
                   </ListboxButton>
                   <ListboxOptions className="absolute z-20 mt-2 max-h-60 w-full overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-1 text-white shadow-2xl focus:outline-none">
-                     <ListboxOption
-                        value=""
-                        className="cursor-pointer rounded-md p-2 text-sm text-slate-400 hover:bg-slate-800"
-                     >
-                        Select a manufacturer
-                     </ListboxOption>
+
 
                      {manufacturers.map((manufacturer) => (
                         <ListboxOption
@@ -511,46 +547,56 @@ export default function EditAsset() {
                   </button>
                </form>
 
-               <div className="grid grid-cols-1 divide-y sm:grid-cols-2 lg:grid-cols-3">
-                  {fields.map((field) => (
-                     <div key={field.id} className="border border-slate-800 p-4">
-                        <div className="flex items-start justify-between gap-3">
-                           <div>
-                              <p className="font-medium text-slate-300">{field.name}</p>
-                           </div>
-                           <div className="flex gap-2">
-                              <button
-                                 type="button"
-                                 onClick={() => handleEditField(field)}
-                                 className="rounded-full border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-slate-800"
-                              >
-                                 {editingFieldId === field.id ? 'Save' : 'Edit'}
-                              </button>
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                  {gridFields.map((field) => (
+                     <div key={field.id} className="border-t border-r border-slate-800 p-4">
+                        {!field.placeholder && (
+                           <>
+                              <div className="flex items-start justify-between gap-3">
+                                 <div>
+                                    <p className="font-medium text-slate-300">{field.name}</p>
 
-                              {!field.locked && (
-                                 <button
-                                    type="button"
-                                    onClick={() => handleRemoveField(field.id)}
-                                    className="rounded-full border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-red-900"
-                                 >
-                                    Remove
-                                 </button>
+                                 </div>
+                                 <div className="flex gap-2">
+                                    <button
+                                       type="button"
+                                       onClick={() => handleEditField(field)}
+                                       className="rounded-full border cursor-pointer border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-slate-800"
+                                    >
+                                       {editingFieldId === field.id ? 'Save' : 'Edit'}
+                                    </button>
+
+                                    {field.name !== 'Asset name' &&
+                                       field.name != 'UUID' &&
+                                       field.name != 'U position' && (
+                                          <button
+                                             type="button"
+                                             onClick={() => handleRemoveField(field.id)}
+                                             className="rounded-full cursor-pointer border border-slate-400 px-2 py-1 text-xs text-slate-300 transition hover:-translate-y-1 hover:bg-red-900"
+                                          >
+                                             Remove
+                                          </button>
+                                       )}
+                                 </div>
+                              </div>
+                              <p className="mt-1 text-xs text-slate-500">
+                                 {field.path}
+                              </p>
+                              {editingFieldId === field.id ? (
+                                 <input
+                                    ref={editInputRef}
+                                    value={getFieldValue(field)}
+                                    onChange={(event) =>
+                                       handleFieldValueChange(field.id, event.target.value)
+                                    }
+                                    className="mt-3 h-9 w-full rounded-lg border border-slate-700 bg-slate-800 p-2 text-sm text-slate-300"
+                                 />
+                              ) : (
+                                 <p className="mt-3 rounded-lg bg-slate-800 p-2 text-sm text-slate-300">
+                                    {getFieldValue(field)}
+                                 </p>
                               )}
-                           </div>
-                        </div>
-                        {editingFieldId === field.id ? (
-                           <input
-                              ref={editInputRef}
-                              value={getFieldValue(field)}
-                              onChange={(event) =>
-                                 handleFieldValueChange(field.id, event.target.value)
-                              }
-                              className="mt-3 h-9 w-full rounded-lg border border-slate-700 bg-slate-800 p-2 text-sm text-slate-300"
-                           />
-                        ) : (
-                           <p className="mt-3 rounded-lg bg-slate-800 p-2 text-sm text-slate-300">
-                              {getFieldValue(field)}
-                           </p>
+                           </>
                         )}
                      </div>
                   ))}
@@ -575,7 +621,7 @@ export default function EditAsset() {
             <button
                type="button"
                onClick={handleSubmit}
-               className="inline-flex h-10 w-fit-content cursor-pointer items-center justify-center gap-2 rounded-full border border-green-800 bg-white px-4 font-medium text-slate-900 transition duration-200 ease-in-out hover:bg-green-800 hover:text-white"
+               className="inline-flex h-10 w-fit-content cursor-pointer items-center justify-center gap-2 rounded-full border hover:border-green-800 bg-white px-4 font-medium text-slate-900 transition duration-200 ease-in-out hover:bg-green-800 hover:text-white"
             >
                Save changes <IoSend />
             </button>

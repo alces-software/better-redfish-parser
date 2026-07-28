@@ -88,7 +88,7 @@ export default function Portal() {
                <div className="relative">
                   <a
                      href="/new-asset"
-                     className="gap-2 inline-flex items-center justify-center w-44 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800"
+                     className="gap-2 inline-flex items-center justify-center w-44 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full hover:border-green-800"
                   >
                      Create new asset <FaPlus />
                   </a>
@@ -119,7 +119,7 @@ export default function Portal() {
                <div className="relative">
                   <a
                      href="/new-rack"
-                     className="gap-2 inline-flex items-center justify-center w-44 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800"
+                     className="gap-2 inline-flex items-center justify-center w-44 h-10 border  bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full hover:border-green-800"
                   >
                      Create new rack <FaPlus />
                   </a>

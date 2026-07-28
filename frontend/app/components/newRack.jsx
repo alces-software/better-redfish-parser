@@ -65,7 +65,7 @@ export default function NewRack() {
                   <input
                      name="name"
                      type="text"
-                     className="w-full rounded-lg border p-2 text-white"
+                     className="w-full rounded-lg border p-2 border-slate-400 text-white"
                      required
                   />
                </div>
@@ -75,7 +75,7 @@ export default function NewRack() {
                   <input
                      name="size"
                      type="text"
-                     className="w-full rounded-lg border p-2 text-white"
+                     className="w-full rounded-lg border p-2 border-slate-400 text-white"
                      required
                   />
                </div>
@@ -86,7 +86,7 @@ export default function NewRack() {
                      rows={5}
                      name="notes"
                      type="text"
-                     className="w-full rounded-lg border p-1 text-white"
+                     className="w-full rounded-lg border p-1 border-slate-400 text-white"
                   />
                </div>
             </div>
@@ -106,7 +106,7 @@ export default function NewRack() {
                type="submit"
                form="new-rack-form"
 
-               className="gap-2 inline-flex cursor-pointer items-center justify-center w-fit-content px-4 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full border-green-800"
+               className="gap-2 inline-flex cursor-pointer items-center justify-center w-fit-content px-4 h-10 border bg-white text-slate-900 hover:text-white transition duration-200 font-medium ease-in-out hover:bg-green-800 rounded-full hover:border-green-800"
             >
                Create Rack <IoSend />
             </button>

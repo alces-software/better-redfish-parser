@@ -21,12 +21,11 @@ export default function EditRack() {
    const updateRack = trpc.racks.update.useMutation();
    const rack = rackQuery.data?.body ?? null;
 
-    useEffect(() =>{ 
-       if (!rackId) {
-          router.replace("/")
-       }
- 
-    }, [rackId, router]);
+   useEffect(() => {
+      if (!rackId) {
+         router.replace('/');
+      }
+   }, [rackId, router]);
 
    async function handleSubmit(event) {
       event.preventDefault();

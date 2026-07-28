@@ -138,7 +138,7 @@ export default function RacksPage() {
                         assets.map((asset, index) => (
                            <a
                               href={`/assets?id=${asset.uuid}`}
-                              key={asset._id ?? asset.uuid}
+                              key={asset.id ?? asset.uuid}
                               className={`border w-fit rounded-full mt-1 bg-sky-500/20 text-sky-300 font-medium border-transparent transition hover:-translate-y-1 cursor-pointer border-slate-600 p-2`}
                            >
                               {asset.name}

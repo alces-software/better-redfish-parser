@@ -186,7 +186,7 @@ export default function EditAsset() {
    }, [jsonText]);
 
    const selectedRackName =
-      racks.find((rack) => rack._id === selectedRack)?.name ?? asset?.rack?.name ?? 'Select a rack';
+      racks.find((rack) => rack.id === selectedRack)?.name ?? asset?.rack?.name ?? 'Select a rack';
    const selectedManufacturerName =
       manufacturers.find(
          (manufacturer) => String(manufacturer.value) === String(selectedManufacturer)

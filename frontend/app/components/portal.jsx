@@ -109,7 +109,7 @@ export default function Portal() {
                         <Link
                            key={index}
                            className="block cursor-pointer group-hover:pointer-events-auto pointer-events-none border border-transparent hover:bg-slate-900 rounded-sm"
-                           href={`/racks?id=${r._id}`}
+                           href={`/racks?id=${r.id}`}
                         >
                            {r.name}{' '}
                         </Link>

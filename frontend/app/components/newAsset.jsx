@@ -153,19 +153,19 @@ export default function NewAsset() {
 
    function isSearchableValue(value) {
       // return !Array.isArray(value) && (value === null || typeof value !== 'object');
-      return (value === null || typeof value !== 'object');
+      return value === null || typeof value !== 'object';
    }
 
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-         .filter((match) => isSearchableValue(match.value))
-         .sort((a, b) => {
-            const da = a.path.split('.').length;
-            const db = b.path.split('.').length;
-            if (da !== db) return da - db;
-            return a.path.localeCompare(b.path);
-         })
-         .slice(0, 12)
+           .filter((match) => isSearchableValue(match.value))
+           .sort((a, b) => {
+              const da = a.path.split('.').length;
+              const db = b.path.split('.').length;
+              if (da !== db) return da - db;
+              return a.path.localeCompare(b.path);
+           })
+           .slice(0, 12)
       : [];
    const uploadedFile = Boolean(fileName);
    const selectedRackName = racks.find((rack) => rack.id === selectedRack)?.name ?? 'Select a rack';
@@ -455,16 +455,12 @@ export default function NewAsset() {
 
                      <div className="grid grid-cols-1 sm:grid-cols-2 divide-x rounded-b-lg lg:grid-cols-3 ">
                         {gridFields.map((field) => (
-                           <div
-                              key={field.id}
-                              className="p-4 border-t  border-slate-800"
-                           >
+                           <div key={field.id} className="p-4 border-t  border-slate-800">
                               {!field.placeholder && (
                                  <>
                                     <div className="flex items-start justify-between gap-3">
                                        <div>
                                           <p className="font-medium text-slate-300">{field.name}</p>
-                                        
                                        </div>
                                        <div className="flex gap-2">
                                           <button
@@ -488,9 +484,7 @@ export default function NewAsset() {
                                              )}
                                        </div>
                                     </div>
-                                      <p className="mt-1 text-xs text-slate-500">
-                                             {field.path}
-                                          </p>
+                                    <p className="mt-1 text-xs text-slate-500">{field.path}</p>
                                     {editingFieldId === field.id ? (
                                        <input
                                           ref={editInputRef}

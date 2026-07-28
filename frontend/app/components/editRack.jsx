@@ -72,7 +72,7 @@ export default function EditRack() {
       <div>
          <div className="justify-center md:justify-start flex items-center">
             <h1 className="font-semibold text-center md:text-left  text-4xl">
-               Edit <span className='text-sky-300' >{rack.name}</span>
+               Edit <span className="text-sky-300">{rack.name}</span>
             </h1>
             <Link
                href={`/racks?id=${rackId}`}

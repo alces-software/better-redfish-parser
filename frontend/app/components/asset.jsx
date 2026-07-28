@@ -81,7 +81,7 @@ export default function AssetsPage() {
    return (
       <div>
          <h1 className="font-semibold text-center  md:text-left text-4xl">
-            System information for <span className='text-sky-300'>{asset?.name ?? uuId}</span>
+            System information for <span className="text-sky-300">{asset?.name ?? uuId}</span>
          </h1>
 
          <div className="mt-15 flex flex-col items-center justify-center">
@@ -138,7 +138,10 @@ export default function AssetsPage() {
                      <GoChevronRight />
                   </button>
                ) : (
-                  <button type="button" className="pointer-events-none border rounded-full rounded-full p-2 opacity-0">
+                  <button
+                     type="button"
+                     className="pointer-events-none border rounded-full rounded-full p-2 opacity-0"
+                  >
                      <GoChevronRight />
                   </button>
                )}

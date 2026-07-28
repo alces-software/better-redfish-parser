@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 
-const colours = ["sky", "emerald", "amber"]
+const colours = ['sky', 'emerald', 'amber'];
 
 export default function RacksPage() {
    const router = useRouter();
@@ -20,7 +20,7 @@ export default function RacksPage() {
    );
 
    function handleClick() {
-      console.log(assets)
+      console.log(assets);
    }
 
    const assetsQuery = trpc.assets.getAllLatest.useQuery();
@@ -70,7 +70,7 @@ export default function RacksPage() {
    return (
       <div>
          <h1 className="font-semibold text-center md:text-left text-4xl">
-            System information for <span className='text-sky-300'>{rack?.name ?? rackId}</span>
+            System information for <span className="text-sky-300">{rack?.name ?? rackId}</span>
          </h1>
 
          {rackQuery.isLoading ? <p className="mt-4 text-slate-300">Loading rack...</p> : null}
@@ -104,7 +104,6 @@ export default function RacksPage() {
          <div className="mt-15 flex flex-col items-center justify-center">
             {rack && (
                <div className="grid grid-cols-2 border rounded-lg border-slate-400">
-
                   <div className="bg-slate-900 border rounded-tl-lg border-transparent p-4 pt-8 text-center ">
                      <strong>Name</strong>
                   </div>
@@ -131,22 +130,19 @@ export default function RacksPage() {
                   </div>
 
                   <div className="bg-slate-800 max-w-100 flex  flex-wrap gap-1 border rounded-br-lg border-transparent p-4">
-                    
-                        {assets.length ? (
-                           assets.map((asset, index) => (
-                              
-                              <a
+                     {assets.length ? (
+                        assets.map((asset, index) => (
+                           <a
                               href={`/assets?id=${asset.uuid}`}
-                                 key={asset._id ?? asset.uuid}
-                                 className={`border w-fit rounded-full mt-1 bg-sky-500/20 text-sky-300 font-medium border-transparent transition hover:-translate-y-1 cursor-pointer border-slate-600 p-2`}
-                              >
-                                 {asset.name}
-                              </a>
-                           ))
-                        ) : (
-                           <p className="text-sm text-sky-500">No assets in this rack</p>
-                        )}
-                    
+                              key={asset._id ?? asset.uuid}
+                              className={`border w-fit rounded-full mt-1 bg-sky-500/20 text-sky-300 font-medium border-transparent transition hover:-translate-y-1 cursor-pointer border-slate-600 p-2`}
+                           >
+                              {asset.name}
+                           </a>
+                        ))
+                     ) : (
+                        <p className="text-sm text-sky-500">No assets in this rack</p>
+                     )}
                   </div>
                </div>
             )}
@@ -181,8 +177,6 @@ export default function RacksPage() {
                   </button>
                </div>
             </div>
-
-           
          </div>
       </div>
    );

@@ -11,8 +11,6 @@ import { LuUpload } from 'react-icons/lu';
 import Loading from './loading';
 import { trpc } from '@/lib/trpc';
 
-
-
 function getValueByPath(data, path) {
    if (!path) return data;
 
@@ -91,7 +89,6 @@ function buildFieldsFromAsset(asset) {
          locked: true
       },
 
-
       {
          id: 'asset-u-position',
          name: 'U position',
@@ -150,7 +147,6 @@ export default function EditAsset() {
       }))
    ];
 
-
    useEffect(() => {
       function updateColumns() {
          if (window.innerWidth >= 1024) {
@@ -167,8 +163,6 @@ export default function EditAsset() {
 
       return () => window.removeEventListener('resize', updateColumns);
    }, []);
-
-
 
    const { parsedJson, parseError } = useMemo(() => {
       try {
@@ -196,14 +190,14 @@ export default function EditAsset() {
    const displayedFileName = fileName || savedFileName || '';
    const pathMatches = parsedJson
       ? findMatchingPaths(parsedJson, pathSearch)
-         .filter((match) => isSearchableValue(match.value))
-         .sort((a, b) => {
-            const da = a.path.split('.').length;
-            const db = b.path.split('.').length;
-            if (da !== db) return da - db;
-            return a.path.localeCompare(b.path);
-         })
-         .slice(0, 12)
+           .filter((match) => isSearchableValue(match.value))
+           .sort((a, b) => {
+              const da = a.path.split('.').length;
+              const db = b.path.split('.').length;
+              if (da !== db) return da - db;
+              return a.path.localeCompare(b.path);
+           })
+           .slice(0, 12)
       : [];
 
    useEffect(() => {
@@ -399,7 +393,7 @@ export default function EditAsset() {
       <section>
          <div className="flex items-center">
             <h1 className="font-semibold text-center text-4xl md:text-left">
-               Edit <span className='text-sky-300'>{asset?.name ?? assetId}</span>
+               Edit <span className="text-sky-300">{asset?.name ?? assetId}</span>
             </h1>
             <Link
                href={`/assets?id=${asset.uuid}`}
@@ -417,8 +411,6 @@ export default function EditAsset() {
                      <FaChevronDown />
                   </ListboxButton>
                   <ListboxOptions className="absolute z-20 mt-2 max-h-60 w-full overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-1 text-white shadow-2xl focus:outline-none">
-
-
                      {racks.map((rack) => (
                         <ListboxOption
                            key={rack.id}
@@ -439,8 +431,6 @@ export default function EditAsset() {
                      <FaChevronDown />
                   </ListboxButton>
                   <ListboxOptions className="absolute z-20 mt-2 max-h-60 w-full overflow-auto rounded-lg border border-slate-400 bg-slate-900 p-1 text-white shadow-2xl focus:outline-none">
-
-
                      {manufacturers.map((manufacturer) => (
                         <ListboxOption
                            key={manufacturer.value}
@@ -555,7 +545,6 @@ export default function EditAsset() {
                               <div className="flex items-start justify-between gap-3">
                                  <div>
                                     <p className="font-medium text-slate-300">{field.name}</p>
-
                                  </div>
                                  <div className="flex gap-2">
                                     <button
@@ -579,9 +568,7 @@ export default function EditAsset() {
                                        )}
                                  </div>
                               </div>
-                              <p className="mt-1 text-xs text-slate-500">
-                                 {field.path}
-                              </p>
+                              <p className="mt-1 text-xs text-slate-500">{field.path}</p>
                               {editingFieldId === field.id ? (
                                  <input
                                     ref={editInputRef}

@@ -15,7 +15,7 @@ export default publicProcedure
    })
    .input(
       z.object({
-         uuid: z.uuid().trim().min(1, 'Asset UUID missing from the request')
+         uuid: z.string().trim().min(1, 'Asset UUID missing from the request')
       })
    )
    .output(

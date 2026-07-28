@@ -20,7 +20,7 @@ export default publicProcedure
             z.object({
                name: z.string(),
                version: z.number(),
-               uuid: z.uuid(),
+               uuid: z.string(),
                rack: z.any(),
                uPosition: z.number(),
                notes: z.string(),

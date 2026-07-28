@@ -112,6 +112,12 @@ export default function EditAsset() {
    const searchParams = useSearchParams();
    const assetId = searchParams.get('id');
 
+   useEffect(() => {
+      if (!assetId) {
+         router.replace('/');
+      }
+   }, [assetId, router]);
+
    const utils = trpc.useUtils();
 
    const assetQuery = trpc.assets.getLatest.useQuery(
